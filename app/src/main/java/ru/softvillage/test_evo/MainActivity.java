@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         Button preparePrintBut = findViewById(R.id.sell_prepare_button);
         preparePrintBut.setOnClickListener(v -> printOrder());
 
+        Button startService = findViewById(R.id.start_service_button);
+
+
     }
 
     @SuppressLint("LongLogTag")

@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    implementation 'joda-time:joda-time:2.10.10'
 
    /*Evotor API*/
     implementation group: 'com.github.evotor', name: 'integration-library', version: 'v0.4.48'
