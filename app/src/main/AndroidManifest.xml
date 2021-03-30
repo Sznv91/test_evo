@@ -13,6 +13,8 @@
 
     <!--    Интеренет для Retrofit-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="ru.evotor.permission.receipt.print.INTERNET_RECEIPT" />
+    <uses-permission android:name="ru.evotor.permission.receipt.print.INTERNET" />
 
     <application
         android:name=".EvoApp"
