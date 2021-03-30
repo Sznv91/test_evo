@@ -39,10 +39,9 @@ public class PrintUtil {
     }
 
     @SuppressLint("LongLogTag")
-    public void printOrder(Context context, List<Position> list, BigDecimal receiptCost) {
+    public void printOrder(Context context, List<Position> list, BigDecimal receiptCost, PrintCallback callback) {
         Log.d(EvoApp.TAG + "_List", list.toString());
         Log.d(EvoApp.TAG + "_List", receiptCost.toString());
-//        receiptCost = new BigDecimal(150);
 
         //Способ оплаты
         HashMap payments = new HashMap<Payment, BigDecimal>();
@@ -100,7 +99,8 @@ public class PrintUtil {
                             Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
                             break;
                         case ERROR:
-                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
+                            callback.printFailure(list, receiptCost);
+//                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;
                     }
                 } catch (IntegrationException e) {
@@ -210,5 +210,10 @@ public class PrintUtil {
             }
         });
 
+    }
+
+    public interface PrintCallback{
+        void printSuccess();
+        void printFailure(List<Position> list, BigDecimal receiptCost);
     }
 }
