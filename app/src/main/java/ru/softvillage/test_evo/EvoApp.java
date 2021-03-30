@@ -1,8 +1,13 @@
 package ru.softvillage.test_evo;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.util.Log;
 
 import com.google.gson.Gson;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import lombok.Getter;
 import okhttp3.OkHttpClient;
@@ -27,12 +32,19 @@ public class EvoApp extends Application {
     }
 
     private void initRetrofit() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        @SuppressLint("LongLogTag") HttpLoggingInterceptor logging = new HttpLoggingInterceptor(s -> Log.d(TAG + "_Network", s));
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                })
                 .build();
+
 
         orderInterface = new Retrofit.Builder()
                 .baseUrl("https://kkt-evotor.ru/")
@@ -40,5 +52,6 @@ public class EvoApp extends Application {
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build()
                 .create(OrderInterface.class);
+
     }
 }
