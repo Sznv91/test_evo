@@ -1,11 +1,15 @@
 package ru.softvillage.test_evo;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +27,7 @@ import retrofit2.Response;
 import ru.evotor.framework.receipt.Position;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
 import ru.softvillage.test_evo.network.entity.Order;
+import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
 
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         preparePrintBut.setOnClickListener(v -> printOrder());
 
         Button startService = findViewById(R.id.start_service_button);
+        startService.setOnClickListener(v -> startForegroundService());
 
 
     }
@@ -109,6 +115,26 @@ public class MainActivity extends AppCompatActivity {
             );
             Log.d(EvoApp.TAG + "_Handler", String.format("List: %s", entry.getKey()));
         }
+    }
+
+    private void startForegroundService() {
+        if (isMyServiceRunning(ForegroundServiceDispatcher.class)) {
+            Toast.makeText(getApplicationContext(), "Service already running", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent startIntent = new Intent(this, ForegroundServiceDispatcher.class);
+        startIntent.setAction("start");
+        startService(startIntent);
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
