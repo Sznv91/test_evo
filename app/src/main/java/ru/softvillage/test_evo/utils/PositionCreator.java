@@ -5,11 +5,11 @@ import android.annotation.SuppressLint;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.evotor.framework.receipt.Position;
@@ -36,6 +36,15 @@ public class PositionCreator {
                                 good.measurePrecision,
                                 good.price,
                                 good.quantity);
+
+                if (!good.discount.equals(BigDecimal.ZERO)) {
+                    BigDecimal priceWithDiscount = new BigDecimal("100").subtract(good.discount).divide(new BigDecimal("100")).multiply(good.price);
+                    position.setPriceWithDiscountPosition(priceWithDiscount);
+                    receiptCost = receiptCost.add(priceWithDiscount).multiply(good.quantity);
+                } else {
+                    receiptCost = receiptCost.add(good.price).multiply(good.quantity);
+                }
+
                 switch (good.type.number) {
                     case 0:
                         position.toNormal();
@@ -60,7 +69,6 @@ public class PositionCreator {
                         break;
                 }
                 tResult.positions.add(position.build());
-                receiptCost = receiptCost.add(good.price);
             }
             tResult.setOrderData(order);
             tResult.setSumPrice(receiptCost);
@@ -73,14 +81,11 @@ public class PositionCreator {
         @Getter
         private final List<PositionTo> orderList = new ArrayList<>();
 
+        @Data
         public static class PositionTo {
-            @Getter
-            private final List<Position> positions = new ArrayList<>();
-            @Getter
-            @Setter
+            @Setter(AccessLevel.NONE)
+            private List<Position> positions = new ArrayList<>();
             private BigDecimal sumPrice = new BigDecimal(BigInteger.ZERO);
-            @Getter
-            @Setter
             private Order orderData = null;
         }
 
