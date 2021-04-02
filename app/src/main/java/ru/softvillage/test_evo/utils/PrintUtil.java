@@ -39,15 +39,15 @@ public class PrintUtil {
     }
 
     @SuppressLint("LongLogTag")
-    public void printOrder(Context context, List<Position> list, BigDecimal receiptCost, PrintCallback callback) {
-        Log.d(EvoApp.TAG + "_List", list.toString());
-        Log.d(EvoApp.TAG + "_List", receiptCost.toString());
+    public void printOrder(Context context, PositionCreator.OrderTo.PositionTo order, PrintCallback callback) {
+        /*Log.d(EvoApp.TAG + "_List", list.toString());
+        Log.d(EvoApp.TAG + "_List", receiptCost.toString());*/
 
         //Способ оплаты
         HashMap payments = new HashMap<Payment, BigDecimal>();
         payments.put(new Payment(
                 UUID.randomUUID().toString(),
-                receiptCost,
+                order.getSumPrice(),
                 null,
                 new PaymentPerformer(
                         new PaymentSystem(PaymentType.ELECTRON, "Internet", "12424"),
@@ -59,7 +59,7 @@ public class PrintUtil {
                 null,
                 null,
                 null
-        ), receiptCost);
+        ), order.getSumPrice());
         PrintGroup printGroup = new PrintGroup(
                 UUID.randomUUID().toString(),
                 PrintGroup.Type.CASH_RECEIPT,
@@ -72,7 +72,7 @@ public class PrintUtil {
                 null);
         Receipt.PrintReceipt printReceipt = new Receipt.PrintReceipt(
                 printGroup,
-                list,
+                order.getPositions(),
                 payments,
                 new HashMap<Payment, BigDecimal>(), new HashMap<String, BigDecimal>()
         );
@@ -83,8 +83,10 @@ public class PrintUtil {
 //        BigDecimal receiptDiscount = new BigDecimal(1000);
         new PrintSellReceiptCommand(listDocs,
                 null,
-                "79011234567",
-                "example@example.com",
+//                "79011234567",
+                order.getOrderData().phone,
+//                "example@example.com",
+                order.getOrderData().email,
                 /*receiptDiscount*/ BigDecimal.ZERO,
                 null,
                 null,
@@ -99,7 +101,7 @@ public class PrintUtil {
                             Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
                             break;
                         case ERROR:
-                            callback.printFailure(list, receiptCost);
+                            callback.printFailure(order);
 //                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;
                     }
@@ -212,8 +214,9 @@ public class PrintUtil {
 
     }
 
-    public interface PrintCallback{
+    public interface PrintCallback {
         void printSuccess();
-        void printFailure(List<Position> list, BigDecimal receiptCost);
+
+        void printFailure(PositionCreator.OrderTo.PositionTo order /*List<Position> list, BigDecimal receiptCost*/);
     }
 }

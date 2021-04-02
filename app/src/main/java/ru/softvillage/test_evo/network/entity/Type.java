@@ -11,6 +11,7 @@ public class Type {
 
     @SerializedName("number")
     @Expose
+    //0 - товар, 1 -услуга //To normal + to Service
     public Integer number;
     @SerializedName("mark_info")
     @Expose

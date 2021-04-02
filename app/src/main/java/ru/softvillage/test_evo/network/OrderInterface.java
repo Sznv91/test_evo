@@ -11,4 +11,7 @@ public interface OrderInterface {
 
     @GET("test_app/order.php")
     Call<NetworkAnswer> getOrder();
+
+    @GET("test_app/index.php")
+    Call<NetworkAnswer> getMainRequest();
 }

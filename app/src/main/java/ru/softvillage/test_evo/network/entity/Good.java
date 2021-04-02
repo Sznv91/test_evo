@@ -30,12 +30,18 @@ public class Good {
     public BigDecimal price;
     @SerializedName("discount")
     @Expose
+    //в процентах, на позицию.
+
     public BigDecimal discount;
     @SerializedName("quantity")
     @Expose
+    //Количество товара
     public BigDecimal quantity;
+
     @SerializedName("nds")
     @Expose
+    //-1 ; 0; 10; 20
+    //На каждую позицию
     public Integer nds;
     @SerializedName("type")
     @Expose
