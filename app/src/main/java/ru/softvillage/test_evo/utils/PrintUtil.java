@@ -92,7 +92,7 @@ public class PrintUtil {
                 receiptDiscount,
                 null,
                 null,
-                null).process(context, new IntegrationManagerCallback() {
+                order.getOrderData().userUUID).process(context, new IntegrationManagerCallback() {
             @Override
             public void run(IntegrationManagerFuture integrationManagerFuture) {
                 try {

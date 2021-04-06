@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
         new TabLayoutMediator(tabLayout,viewPager, (tab, position) -> {
             tab.setText("Object " + (position+1));
+            if (position == 1){
+                tab.setIcon(R.drawable.ic_baseline_receipt_24);
+            }
             viewPager.setCurrentItem(tab.getPosition(), true);
         }).attach();
     }

@@ -15,6 +15,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.softvillage.test_evo.network.OrderInterface;
+import ru.softvillage.test_evo.roomDb.DbHelper;
+import ru.softvillage.test_evo.roomDb.LocalDataBase;
 
 public class EvoApp extends Application {
     public static final String TAG = "ru.softvillage.test_evo";
@@ -23,12 +25,21 @@ public class EvoApp extends Application {
     private static EvoApp instance;
     @Getter
     private OrderInterface orderInterface;
+    @Getter
+    private DbHelper dbHelper;
 
     @Override
     public void onCreate() {
+        super.onCreate();
         instance = this;
         initRetrofit();
-        super.onCreate();
+        initDbHelper();
+    }
+
+    private void initDbHelper() {
+        LocalDataBase db = LocalDataBase.getDataBase(this);
+        dbHelper = new DbHelper(db);
+
     }
 
     private void initRetrofit() {

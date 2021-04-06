@@ -26,7 +26,7 @@ public class  Order {
     @SerializedName("userUUID")
     @Expose
     //PrintSellReceiptCommand
-    public Object userUUID;
+    public String userUUID;
     @SerializedName("paymant_system")
     @Expose
     //Сохраняем в БД
