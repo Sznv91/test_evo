@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,9 +39,23 @@ public class PositionCreator {
                                 good.quantity);
 
                 if (!good.discount.equals(BigDecimal.ZERO)) {
-                    BigDecimal priceWithDiscount = new BigDecimal("100").subtract(good.discount).divide(new BigDecimal("100")).multiply(good.price);
+                    /*BigDecimal priceWithDiscount = new BigDecimal("100").subtract(good.discount).divide(new BigDecimal("100"), 2 , RoundingMode.CEILING).multiply(good.price);
                     position.setPriceWithDiscountPosition(priceWithDiscount);
-                    receiptCost = receiptCost.add(priceWithDiscount).multiply(good.quantity);
+                    receiptCost = receiptCost.add(priceWithDiscount).multiply(good.quantity);*/
+
+                    /*MathContext mc = new MathContext(3, RoundingMode.CEILING *//*RoundingMode.HALF_DOWN*//*);
+                    BigDecimal sum = good.price.divide(good.discount, 2, RoundingMode.CEILING);
+                    BigDecimal priceWithDiscount = good.price.subtract(sum);
+                    position.setPriceWithDiscountPosition(priceWithDiscount);
+                    receiptCost = receiptCost.add(priceWithDiscount).multiply(good.quantity);*/
+                    BigDecimal costWithoutDiscount = good.price.multiply(good.quantity); // Общая цена.
+                    BigDecimal onePercent = costWithoutDiscount.divide(BigDecimal.valueOf(100)/*, 6, RoundingMode.CEILING*/); //Стоимость одного процента общей цены
+                    BigDecimal sumOfDiscount = onePercent.multiply(good.discount); // Сумма скидки в деньгах
+                    BigDecimal finalCostPosition = costWithoutDiscount.subtract(sumOfDiscount); // Цена позиций после вычета скидки
+                    receiptCost = receiptCost.add(finalCostPosition);
+                    BigDecimal priceWithDiscountPerOnePosition = finalCostPosition.divide(good.quantity/*, 6, RoundingMode.CEILING*/);
+                    position.setPriceWithDiscountPosition(priceWithDiscountPerOnePosition); // Добавляем пересчинанную стоимость в чек.
+                    //BigDecimal CostAllPosition = finalCostPosition.multiply(good.quantity); // Цена позици с учетом скидки за несколько единиц
                 } else {
                     receiptCost = receiptCost.add(good.price).multiply(good.quantity);
                 }
@@ -85,7 +100,7 @@ public class PositionCreator {
         public static class PositionTo {
             @Setter(AccessLevel.NONE)
             private List<Position> positions = new ArrayList<>();
-            private BigDecimal sumPrice = new BigDecimal(BigInteger.ZERO);
+            private BigDecimal sumPrice = BigDecimal.ZERO;
             private Order orderData = null;
         }
 

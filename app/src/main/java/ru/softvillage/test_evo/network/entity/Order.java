@@ -1,6 +1,7 @@
 
 package ru.softvillage.test_evo.network.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -33,7 +34,7 @@ public class  Order {
     @SerializedName("check_discount")
     @Expose
     // Сделать перерасчет. в процентах. Распр. на весь чек.
-    public Integer checkDiscount;
+    public BigDecimal checkDiscount;
     @SerializedName("goods")
     @Expose
     public List<Good> goods = null;

@@ -6,9 +6,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ru.evotor.framework.component.PaymentPerformer;
@@ -40,14 +43,21 @@ public class PrintUtil {
 
     @SuppressLint("LongLogTag")
     public void printOrder(Context context, PositionCreator.OrderTo.PositionTo order, PrintCallback callback) {
-        /*Log.d(EvoApp.TAG + "_List", list.toString());
-        Log.d(EvoApp.TAG + "_List", receiptCost.toString());*/
+        Log.d(EvoApp.TAG + "_GSON_PrintUtil", "Cумма чека: " + order.getSumPrice().toString());
 
+        //Добавление скидки на чек
+        BigDecimal receiptDiscount = BigDecimal.ZERO;
+        if (!order.getOrderData().checkDiscount.equals(BigDecimal.ZERO)) {
+            MathContext mc = new MathContext(6, RoundingMode.HALF_UP);
+            receiptDiscount = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING).multiply(order.getOrderData().checkDiscount);
+        }
+
+        BigDecimal finalCost = order.getSumPrice().subtract(receiptDiscount);
         //Способ оплаты
-        HashMap payments = new HashMap<Payment, BigDecimal>();
+        Map<Payment, BigDecimal> payments = new HashMap<>();
         payments.put(new Payment(
                 UUID.randomUUID().toString(),
-                order.getSumPrice(),
+                finalCost,
                 null,
                 new PaymentPerformer(
                         new PaymentSystem(PaymentType.ELECTRON, "Internet", "12424"),
@@ -59,7 +69,7 @@ public class PrintUtil {
                 null,
                 null,
                 null
-        ), order.getSumPrice());
+        ), finalCost);
         PrintGroup printGroup = new PrintGroup(
                 UUID.randomUUID().toString(),
                 PrintGroup.Type.CASH_RECEIPT,
@@ -79,15 +89,14 @@ public class PrintUtil {
 
         ArrayList<Receipt.PrintReceipt> listDocs = new ArrayList<>();
         listDocs.add(printReceipt);
-        //Добавление скидки на чек
-//        BigDecimal receiptDiscount = new BigDecimal(1000);
+
         new PrintSellReceiptCommand(listDocs,
                 null,
 //                "79011234567",
                 order.getOrderData().phone,
 //                "example@example.com",
                 order.getOrderData().email,
-                /*receiptDiscount*/ BigDecimal.ZERO,
+                receiptDiscount,
                 null,
                 null,
                 null).process(context, new IntegrationManagerCallback() {
@@ -102,7 +111,7 @@ public class PrintUtil {
                             break;
                         case ERROR:
                             callback.printFailure(order);
-//                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;
                     }
                 } catch (IntegrationException e) {
