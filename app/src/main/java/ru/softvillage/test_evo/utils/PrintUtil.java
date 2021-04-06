@@ -1,12 +1,9 @@
 package ru.softvillage.test_evo.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +23,6 @@ import ru.evotor.framework.receipt.Payment;
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
-import ru.softvillage.test_evo.EvoApp;
 
 public class PrintUtil {
     private static PrintUtil instance;
@@ -41,15 +37,12 @@ public class PrintUtil {
         return instance;
     }
 
-    @SuppressLint("LongLogTag")
     public void printOrder(Context context, PositionCreator.OrderTo.PositionTo order, PrintCallback callback) {
-        Log.d(EvoApp.TAG + "_GSON_PrintUtil", "Cумма чека: " + order.getSumPrice().toString());
 
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
         if (!order.getOrderData().checkDiscount.equals(BigDecimal.ZERO)) {
-            MathContext mc = new MathContext(6, RoundingMode.HALF_UP);
-            receiptDiscount = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING).multiply(order.getOrderData().checkDiscount);
+            receiptDiscount = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(order.getOrderData().checkDiscount);
         }
 
         BigDecimal finalCost = order.getSumPrice().subtract(receiptDiscount);
@@ -111,7 +104,7 @@ public class PrintUtil {
                             break;
                         case ERROR:
                             callback.printFailure(order);
-                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;
                     }
                 } catch (IntegrationException e) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AC1C1C"
+    tools:context=".tabs.fragments.StatisticFragment">
+
+    <Button
+        android:id="@+id/button_start_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start service"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/print_example"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="print example recipient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_start_service" />
+
+    <Button
+        android:id="@+id/print_calculate_recipient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="print calc recipient"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/print_example" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/discount_all_order"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#99C0C5"
+        android:inputType="number"
+        android:text="3"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/print_calculate_recipient" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,9 @@
 package ru.softvillage.test_evo.utils;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.TaxNumber;
+import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.network.entity.Good;
 import ru.softvillage.test_evo.network.entity.Order;
 
@@ -39,23 +40,20 @@ public class PositionCreator {
                                 good.quantity);
 
                 if (!good.discount.equals(BigDecimal.ZERO)) {
-                    /*BigDecimal priceWithDiscount = new BigDecimal("100").subtract(good.discount).divide(new BigDecimal("100"), 2 , RoundingMode.CEILING).multiply(good.price);
+                    Log.d(EvoApp.TAG + "_GSON", "///////////////////////");
+                    BigDecimal priceOnePercentPerSingleQuantity = good.price.divide(BigDecimal.valueOf(100)/*, 2, RoundingMode.HALF_UP*/);
+                    Log.d(EvoApp.TAG + "_GSON", String.format("Цена без скидки: %s", good.price));
+                    Log.d(EvoApp.TAG + "_GSON", String.format("Стоимость одного процена, неокругленная: %s", priceOnePercentPerSingleQuantity));
+                    Log.d(EvoApp.TAG + "_GSON", String.format("Стоимость одного процена, округленная (не исп в расчете чека) : %s", good.price.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toPlainString()));
+                    BigDecimal priceDiscount = priceOnePercentPerSingleQuantity.multiply(good.discount);
+                    Log.d(EvoApp.TAG + "_GSON", String.format("Размер скидки: %s", priceDiscount));
+                    BigDecimal priceWithDiscount = rounding(good.price.subtract(priceDiscount));
+                    Log.d(EvoApp.TAG + "_GSON", String.format("Цена за одну позицию с учетом скидки: %s", priceWithDiscount));
                     position.setPriceWithDiscountPosition(priceWithDiscount);
-                    receiptCost = receiptCost.add(priceWithDiscount).multiply(good.quantity);*/
-
-                    /*MathContext mc = new MathContext(3, RoundingMode.CEILING *//*RoundingMode.HALF_DOWN*//*);
-                    BigDecimal sum = good.price.divide(good.discount, 2, RoundingMode.CEILING);
-                    BigDecimal priceWithDiscount = good.price.subtract(sum);
-                    position.setPriceWithDiscountPosition(priceWithDiscount);
-                    receiptCost = receiptCost.add(priceWithDiscount).multiply(good.quantity);*/
-                    BigDecimal costWithoutDiscount = good.price.multiply(good.quantity); // Общая цена.
-                    BigDecimal onePercent = costWithoutDiscount.divide(BigDecimal.valueOf(100)/*, 6, RoundingMode.CEILING*/); //Стоимость одного процента общей цены
-                    BigDecimal sumOfDiscount = onePercent.multiply(good.discount); // Сумма скидки в деньгах
-                    BigDecimal finalCostPosition = costWithoutDiscount.subtract(sumOfDiscount); // Цена позиций после вычета скидки
-                    receiptCost = receiptCost.add(finalCostPosition);
-                    BigDecimal priceWithDiscountPerOnePosition = finalCostPosition.divide(good.quantity/*, 6, RoundingMode.CEILING*/);
-                    position.setPriceWithDiscountPosition(priceWithDiscountPerOnePosition); // Добавляем пересчинанную стоимость в чек.
-                    //BigDecimal CostAllPosition = finalCostPosition.multiply(good.quantity); // Цена позици с учетом скидки за несколько единиц
+                    BigDecimal priceAllContWithDiscount = priceWithDiscount.multiply(good.quantity);
+                    Log.d(EvoApp.TAG + "_GSON", String.format("Цена за всё количество товара с учетом скидки: %s", priceAllContWithDiscount));
+                    receiptCost = receiptCost.add(priceAllContWithDiscount);
+                    Log.d(EvoApp.TAG + "_GSON", "///////////////////////");
                 } else {
                     receiptCost = receiptCost.add(good.price).multiply(good.quantity);
                 }
@@ -104,5 +102,9 @@ public class PositionCreator {
             private Order orderData = null;
         }
 
+    }
+
+    private static BigDecimal rounding(BigDecimal val) {
+        return val.multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING);
     }
 }
