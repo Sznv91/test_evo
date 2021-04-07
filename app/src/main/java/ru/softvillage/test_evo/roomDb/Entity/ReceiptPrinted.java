@@ -19,12 +19,17 @@ import ru.softvillage.test_evo.roomDb.DateTimeConverter;
 public class ReceiptPrinted {
 
     @PrimaryKey
-    long id;
+    private long id;
 
     @ColumnInfo(name = "summary_price")
-    BigDecimal price;
+    private BigDecimal price;
     @ColumnInfo(name = "date_time_received")
-    LocalDateTime received;
+    private LocalDateTime received;
+    @ColumnInfo(name = "count_position")
+    private int countOfPosition;
+
     @ColumnInfo(name = "date_time_printed")
-    LocalDateTime printed;
+    private LocalDateTime printed;
+    @ColumnInfo(name = "receipt_number")
+    private long receiptNumber;
 }

@@ -9,6 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
 
 @Dao
@@ -20,6 +21,7 @@ public interface ReceiptDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ReceiptPrinted receipt);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(ReceiptPrinted receipt);
+    //    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update(entity = ReceiptPrinted.class)
+    void update(PartialReceiptPrinted receipt);
 }

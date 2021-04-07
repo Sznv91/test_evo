@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
 
 public class DbHelper {
@@ -22,7 +23,7 @@ public class DbHelper {
         );
     }
 
-    public void updateReceipt(ReceiptPrinted receipt) {
+    public void updateReceipt(PartialReceiptPrinted receipt) {
         LocalDataBase.databaseWriteExecutor.execute(() ->
                 dataBase.receiptDao().update(receipt));
     }

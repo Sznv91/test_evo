@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LiveData;
 
+import org.joda.time.LocalDateTime;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,6 +28,7 @@ import ru.softvillage.test_evo.liveDataHolder.OrderLiveData;
 import ru.softvillage.test_evo.liveDataHolder.States;
 import ru.softvillage.test_evo.network.OrderInterface;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
 // Примеры:
@@ -101,6 +104,13 @@ public class ForegroundServiceDispatcher extends Service {
                                 Log.d(EvoApp.TAG, "Received TRUE Order");
                                 PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(response.body().getOrderList());
                                 for (PositionCreator.OrderTo.PositionTo orderTo : toProcessing.getOrderList()) {
+                                    //todo Вынести в отдельный метод.
+                                    ReceiptPrinted dataToDb = new ReceiptPrinted();
+                                    dataToDb.setReceived(LocalDateTime.now());
+                                    dataToDb.setPrice(orderTo.getSumPrice());
+                                    dataToDb.setId(orderTo.getOrderData().id);
+                                    dataToDb.setCountOfPosition(orderTo.getPositions().size());
+                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
                                     PrintUtil.getInstance().printOrder(getApplicationContext(), orderTo, printCallback);
                                 }
 

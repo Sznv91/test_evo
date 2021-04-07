@@ -1,7 +1,11 @@
 package ru.softvillage.test_evo.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
+
+import org.joda.time.LocalDateTime;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,6 +27,8 @@ import ru.evotor.framework.receipt.Payment;
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
+import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 
 public class PrintUtil {
     private static PrintUtil instance;
@@ -70,7 +76,7 @@ public class PrintUtil {
                 null,
                 null,
                 null,
-                true,
+                false, //true
                 null,
                 null);
         Receipt.PrintReceipt printReceipt = new Receipt.PrintReceipt(
@@ -101,6 +107,13 @@ public class PrintUtil {
                         case OK:
                             PrintReceiptCommandResult printSellReceiptResult = PrintReceiptCommandResult.create(result.getData());
                             Toast.makeText(context, "OK", Toast.LENGTH_LONG).show();
+
+                            PartialReceiptPrinted dataToDb = new PartialReceiptPrinted();
+                            dataToDb.setPrinted(LocalDateTime.now());
+                            dataToDb.setReceiptNumber(Long.parseLong(result.getData().getString("receiptNumber")));
+                            dataToDb.setId(order.getOrderData().id);
+                            EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
+
                             break;
                         case ERROR:
                             callback.printFailure(order);
