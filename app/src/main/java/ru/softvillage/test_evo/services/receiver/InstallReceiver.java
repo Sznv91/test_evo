@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,9 +19,15 @@ public class InstallReceiver extends BroadcastReceiver {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
 //        throw new UnsupportedOperationException("Not yet implemented");
-        Intent startIntent = new Intent(context, ForegroundServiceDispatcher.class);
+        /*Intent startIntent = new Intent(context, ForegroundServiceDispatcher.class);
         startIntent.setAction("start");
-        context.startService(startIntent);
+        context.startService(startIntent);*/
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(new Intent(context, ForegroundServiceDispatcher.class));
+        } else {
+            context.startService(new Intent(context, ForegroundServiceDispatcher.class));
+        }
 
         Log.d("ru.evotor." + EvoApp.TAG, "Screen ACTION");
         Toast.makeText(context, "Screen ACTION", Toast.LENGTH_LONG).show();

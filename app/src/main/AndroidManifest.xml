@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.softvillage.test_evo">
+    package="ru.softvillage.test_evo"
+    android:installLocation="internalOnly">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Для версии P (Android 9 : API level: 28) -->
+    <!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>-->
+    <!--    <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />-->
     <!-- Разрешение на печать своих данных в чеке -->
     <uses-permission android:name="ru.evotor.permission.receipt.printExtra.SET" /> <!-- Разрешение на передачу чека по email или на телефон -->
     <uses-permission android:name="ru.evotor.permission.receipt.print.INTERNET_RECEIPT" />
     <uses-permission android:name="ru.evotor.pushnotifications.PUSH_RECEIVE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Для версии P (Android 9 : API level: 28) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Интеренет для Retrofit -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="ru.evotor.permission.receipt.print.INTERNET_RECEIPT" />
     <uses-permission android:name="ru.evotor.permission.receipt.print.INTERNET" />
+    <!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />-->
 
     <application
         android:name=".EvoApp"
@@ -20,6 +24,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
+
+        <receiver android:name=".services.receiver.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".services.receiver.InstallReceiver"
             android:enabled="true"
@@ -28,14 +39,9 @@
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />-->
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+<!--                <action android:name="android.intent.action.PACKAGE_REPLACED" />-->
 
-<!--                <data android:scheme="package" />-->
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".services.receiver.BootBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!--                <data android:scheme="package" />-->
             </intent-filter>
         </receiver>
         <receiver
@@ -49,11 +55,11 @@
         <service
             android:name=".services.MyService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".services.ForegroundServiceDispatcher"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <meta-data
             android:name="app_uuid"

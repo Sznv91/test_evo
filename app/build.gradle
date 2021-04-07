@@ -8,9 +8,9 @@ android {
 
     defaultConfig {
         applicationId "ru.softvillage.test_evo"
-        minSdkVersion 23
+        minSdkVersion 29
         targetSdkVersion 30
-        versionCode 2
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

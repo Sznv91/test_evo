@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#B4B4B4">
+
+    <ImageView
+        android:id="@+id/iv_static_check_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_checklist_ok_24"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_static_sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Чек продажи № "
+        app:layout_constraintStart_toEndOf="@+id/iv_static_check_list"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_receipt_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        app:layout_constraintStart_toEndOf="@+id/tv_static_sale"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="3143" />
+
+    <TextView
+        android:id="@+id/tv_static_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" на "
+        app:layout_constraintStart_toEndOf="@+id/text_view_receipt_number"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_good_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        app:layout_constraintStart_toEndOf="@+id/tv_static_on"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="32" />
+
+    <TextView
+        android:id="@+id/tv_static_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" позиции"
+        app:layout_constraintStart_toEndOf="@+id/text_view_good_count"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_static_summ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сумма "
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/iv_static_check_list"
+        app:layout_constraintTop_toBottomOf="@id/tv_static_sale" />
+
+    <TextView
+        android:textSize="10sp"
+        android:id="@+id/text_view_total_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        app:layout_constraintStart_toEndOf="@+id/tv_static_summ"
+        app:layout_constraintTop_toBottomOf="@id/tv_static_sale"
+        tools:text="313131" />
+
+    <TextView
+        android:id="@+id/tv_static_rub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" руб."
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/text_view_total_cost"
+        app:layout_constraintTop_toBottomOf="@id/tv_static_sale" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

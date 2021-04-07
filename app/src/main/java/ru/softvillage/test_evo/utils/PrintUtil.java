@@ -76,7 +76,7 @@ public class PrintUtil {
                 null,
                 null,
                 null,
-                false, //true
+                true, //true
                 null,
                 null);
         Receipt.PrintReceipt printReceipt = new Receipt.PrintReceipt(

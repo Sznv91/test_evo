@@ -6,28 +6,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.joda.time.LocalDateTime;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.BigDecimalConverter;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptViewModel;
 
 public class ReceiptFragment extends Fragment {
     private int counter = 0;
 
+    ReceiptItemAdapter recyclerAdapter;
     private ReceiptViewModel mViewModel;
+    List<ReceiptPrinted> list = new ArrayList<>();
 
     public static ReceiptFragment newInstance() {
         return new ReceiptFragment();
@@ -42,8 +46,8 @@ public class ReceiptFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((Button) view.findViewById(R.id.print_to_log)).setOnClickListener(v -> callToDb());
-        ((Button) view.findViewById(R.id.add_record_to_db)).setOnClickListener(v -> addRecord());
+        /*((Button) view.findViewById(R.id.print_to_log)).setOnClickListener(v -> callToDb());
+        ((Button) view.findViewById(R.id.add_record_to_db)).setOnClickListener(v -> addRecord());*/
     }
 
     @Override
@@ -56,11 +60,11 @@ public class ReceiptFragment extends Fragment {
     ///////////////////////////////////////////////////////
     @SuppressLint("LongLogTag")
     private void callToDb() {
-       EvoApp.getInstance().getDbHelper().getAll().observe(this, receiptPrinters -> {
-           for (ReceiptPrinted receipt : receiptPrinters){
-               Log.d(EvoApp.TAG + "_RoomDb", receipt.toString());
-           }
-       });
+        EvoApp.getInstance().getDbHelper().getAll().observe(this, receiptPrinters -> {
+            for (ReceiptPrinted receipt : receiptPrinters) {
+                Log.d(EvoApp.TAG + "_RoomDb", receipt.toString());
+            }
+        });
     }
 
 
@@ -70,6 +74,15 @@ public class ReceiptFragment extends Fragment {
         data.setPrice(BigDecimal.valueOf(123).add(BigDecimal.valueOf(counter)));
         data.setReceived(LocalDateTime.now());
         EvoApp.getInstance().getDbHelper().insertReceiptToDb(data);
+    }
+    /////////////////////////////////////////////////////////
+
+    private void initRecyclerView() {
+        RecyclerView recycler = getView().findViewById(R.id.receipt_list_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recycler.setLayoutManager(layoutManager);
+        recyclerAdapter = new ReceiptItemAdapter(LayoutInflater.from(getContext()), list/*, id -> modelView.onMovieListSelect(id)*/);
+        recycler.setAdapter(recyclerAdapter);
     }
 
 
