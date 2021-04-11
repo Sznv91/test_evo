@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +49,7 @@ public class ReceiptFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         /*((Button) view.findViewById(R.id.print_to_log)).setOnClickListener(v -> callToDb());
         ((Button) view.findViewById(R.id.add_record_to_db)).setOnClickListener(v -> addRecord());*/
+        initRecyclerView();
     }
 
     @Override
@@ -77,13 +79,28 @@ public class ReceiptFragment extends Fragment {
     }
     /////////////////////////////////////////////////////////
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void initRecyclerView() {
         RecyclerView recycler = getView().findViewById(R.id.receipt_list_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(layoutManager);
-        recyclerAdapter = new ReceiptItemAdapter(LayoutInflater.from(getContext()), list/*, id -> modelView.onMovieListSelect(id)*/);
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(getContext().getDrawable(R.drawable.line_divider));
+        recycler.addItemDecoration(divider);
+        recyclerAdapter = new ReceiptItemAdapter(LayoutInflater.from(getContext()), list, recipientEntity -> {
+            Log.d(EvoApp.TAG+"_Recycler", "click - click " + recipientEntity.getReceiptNumber());
+        });
+
+        EvoApp.getInstance().getDbHelper().getAll().observe(getViewLifecycleOwner(), receiptPrinteds ->
+        {
+            recyclerAdapter.setItems(receiptPrinteds);
+            Log.d(EvoApp.TAG+"_Db", receiptPrinteds.toString());
+        });
         recycler.setAdapter(recyclerAdapter);
     }
 
+    public interface itemClickInterface{
+        public void clickClick(ReceiptPrinted recipientEntity);
+    }
 
 }

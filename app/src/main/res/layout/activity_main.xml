@@ -18,19 +18,19 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <androidx.appcompat.widget.Toolbar
+                android:background="#FF5722"
                 app:title="qweqwe"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:background="?attr/colorPrimary"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <com.google.android.material.tabs.TabLayout
-                android:background="#FF5722"
+                android:background="#5DFF22"
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 app:tabInlineLabel="true" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -43,6 +43,8 @@
 
     </LinearLayout>
     <!--android:layout_height="?attr/actionBarSize"-->
+<!--    android:background="?attr/colorPrimary"-->
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

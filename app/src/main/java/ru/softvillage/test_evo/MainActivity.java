@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
 //        if (!Settings.canDrawOverlays(getApplicationContext())) { startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)); }
 
 

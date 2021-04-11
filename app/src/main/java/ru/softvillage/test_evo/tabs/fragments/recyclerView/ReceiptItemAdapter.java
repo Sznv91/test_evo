@@ -8,17 +8,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.tabs.fragments.ReceiptFragment;
 
+@RequiredArgsConstructor
 public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemViewHolder> {
     private final LayoutInflater inflater;
     private final List<ReceiptPrinted> itemList;
+    private final ReceiptFragment.itemClickInterface callback;
 
-    public ReceiptItemAdapter(LayoutInflater inflater, List<ReceiptPrinted> itemList) {
+    /*public ReceiptItemAdapter(LayoutInflater inflater, List<ReceiptPrinted> itemList) {
         this.inflater = inflater;
         this.itemList = itemList;
-    }
+    }*/
 
     @NonNull
     @Override
@@ -29,11 +33,18 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemViewHold
     @Override
     public void onBindViewHolder(@NonNull ReceiptItemViewHolder holder, int position) {
         holder.bind(itemList.get(position));
+        holder.itemView.setOnClickListener(v -> callback.clickClick(itemList.get(position)));
 
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public void setItems(List<ReceiptPrinted> entityList) {
+        itemList.clear();
+        itemList.addAll(entityList);
+        notifyDataSetChanged();
     }
 }
