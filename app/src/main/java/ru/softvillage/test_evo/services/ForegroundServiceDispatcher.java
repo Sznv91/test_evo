@@ -18,17 +18,23 @@ import androidx.lifecycle.LiveData;
 
 import org.joda.time.LocalDateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.evotor.framework.receipt.Position;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.MainActivity;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.liveDataHolder.OrderLiveData;
 import ru.softvillage.test_evo.liveDataHolder.States;
 import ru.softvillage.test_evo.network.OrderInterface;
+import ru.softvillage.test_evo.network.entity.Good;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
 // Примеры:
@@ -104,12 +110,12 @@ public class ForegroundServiceDispatcher extends Service {
                                 Log.d(EvoApp.TAG, "Received TRUE Order");
                                 PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(response.body().getOrderList());
                                 for (PositionCreator.OrderTo.PositionTo orderTo : toProcessing.getOrderList()) {
+                                    List <GoodEntity> goodsToDB = new ArrayList<>();
+                                    orderTo.getOrderData().goods.forEach(good -> {
+                                        goodsToDB.add(new GoodEntity(good, orderTo.getOrderData().id));
+                                    });
                                     //todo Вынести в отдельный метод.
-                                    ReceiptPrinted dataToDb = new ReceiptPrinted();
-                                    dataToDb.setReceived(LocalDateTime.now());
-                                    dataToDb.setPrice(orderTo.getSumPrice());
-                                    dataToDb.setId(orderTo.getOrderData().id);
-                                    dataToDb.setCountOfPosition(orderTo.getPositions().size());
+                                    ReceiptEntity dataToDb = new ReceiptEntity(orderTo);
                                     EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
                                     PrintUtil.getInstance().printOrder(getApplicationContext(), orderTo, printCallback);
                                 }

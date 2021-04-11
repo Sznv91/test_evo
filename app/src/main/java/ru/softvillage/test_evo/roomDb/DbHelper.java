@@ -5,19 +5,19 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
 public class DbHelper {
     LocalDataBase dataBase;
 
-    LiveData<List<ReceiptPrinted>> receiptList;
+    LiveData<List<ReceiptEntity>> receiptList;
 
     public DbHelper(LocalDataBase dataBase) {
         this.dataBase = dataBase;
         receiptList = this.dataBase.receiptDao().getAll();
     }
 
-    public void insertReceiptToDb(ReceiptPrinted receipt) {
+    public void insertReceiptToDb(ReceiptEntity receipt) {
         LocalDataBase.databaseWriteExecutor.execute(
                 () -> dataBase.receiptDao().insert(receipt)
         );
@@ -28,7 +28,11 @@ public class DbHelper {
                 dataBase.receiptDao().update(receipt));
     }
 
-    public LiveData<List<ReceiptPrinted>> getAll() {
+    public LiveData<List<ReceiptEntity>> getAll() {
         return receiptList;
+    }
+
+    public LiveData<ReceiptEntity> getById(long receiptId){
+        return dataBase.receiptDao().getById(receiptId);
     }
 }

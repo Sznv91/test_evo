@@ -12,11 +12,22 @@ import java.math.BigDecimal;
 import lombok.Data;
 import ru.softvillage.test_evo.roomDb.BigDecimalConverter;
 import ru.softvillage.test_evo.roomDb.DateTimeConverter;
+import ru.softvillage.test_evo.utils.PositionCreator;
 
-@Entity(tableName = "receipt_printed")
+@Entity(tableName = "receipt")
 @Data
 @TypeConverters({DateTimeConverter.class, BigDecimalConverter.class})
-public class ReceiptPrinted {
+public class ReceiptEntity {
+
+    public ReceiptEntity() {
+    }
+
+    public ReceiptEntity(PositionCreator.OrderTo.PositionTo orderTo) {
+        id = orderTo.getOrderData().id;
+        received = LocalDateTime.now();
+        price = orderTo.getSumPrice();
+        countOfPosition = orderTo.getPositions().size();
+    }
 
     @PrimaryKey
     private long id;

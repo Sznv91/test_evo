@@ -33,6 +33,8 @@ public class EvoApp extends Application {
     private OrderInterface orderInterface;
     @Getter
     private DbHelper dbHelper;
+    @Getter
+    private FragmentDispatcher fragmentDispatcher;
 
     @Override
     public void onCreate() {
@@ -40,6 +42,7 @@ public class EvoApp extends Application {
         instance = this;
         initRetrofit();
         initDbHelper();
+        initFragmentDispatcher();
     }
 
     private void initDbHelper() {
@@ -117,5 +120,9 @@ public class EvoApp extends Application {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void initFragmentDispatcher(){
+        fragmentDispatcher = new FragmentDispatcher();
     }
 }

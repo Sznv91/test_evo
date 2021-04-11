@@ -16,6 +16,10 @@ public class FragmentAdapter extends FragmentStateAdapter {
         super(fragmentManager, lifecycle);
     }
 
+    public FragmentAdapter(Fragment fragment) {
+        super(fragment);
+    }
+
 
     @NonNull
     @Override

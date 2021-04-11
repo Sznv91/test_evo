@@ -10,9 +10,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ru.softvillage.test_evo.roomDb.Entity.PushEvent;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
-@Database(entities = {PushEvent.class, ReceiptPrinted.class}, version = 1, exportSchema = false)
+@Database(entities = {PushEvent.class, ReceiptEntity.class}, version = 1, exportSchema = false)
 public abstract class LocalDataBase extends RoomDatabase {
 
     public abstract PushEventDao pushEventDao();

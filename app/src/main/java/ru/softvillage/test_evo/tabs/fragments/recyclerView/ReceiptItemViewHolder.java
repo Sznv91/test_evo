@@ -1,15 +1,13 @@
 package ru.softvillage.test_evo.tabs.fragments.recyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
 public class ReceiptItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView receiptNumber;
@@ -23,7 +21,7 @@ public class ReceiptItemViewHolder extends RecyclerView.ViewHolder {
         totalCost = itemView.findViewById(R.id.text_view_total_cost);
     }
 
-    public void bind(ReceiptPrinted entity) {
+    public void bind(ReceiptEntity entity) {
         receiptNumber.setText(String.valueOf(entity.getReceiptNumber()));
         goodCount.setText(String.valueOf(entity.getCountOfPosition()));
         totalCost.setText(String.valueOf(entity.getPrice().toPlainString()));

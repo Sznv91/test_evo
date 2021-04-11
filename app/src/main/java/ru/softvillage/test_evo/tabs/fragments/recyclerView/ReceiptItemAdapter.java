@@ -6,17 +6,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.fragments.ReceiptFragment;
 
 @RequiredArgsConstructor
 public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemViewHolder> {
     private final LayoutInflater inflater;
-    private final List<ReceiptPrinted> itemList;
+    private List<ReceiptEntity> itemList = new ArrayList<>();
     private final ReceiptFragment.itemClickInterface callback;
 
     /*public ReceiptItemAdapter(LayoutInflater inflater, List<ReceiptPrinted> itemList) {
@@ -42,7 +43,7 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<ReceiptItemViewHold
         return itemList.size();
     }
 
-    public void setItems(List<ReceiptPrinted> entityList) {
+    public void setItems(List<ReceiptEntity> entityList) {
         itemList.clear();
         itemList.addAll(entityList);
         notifyDataSetChanged();

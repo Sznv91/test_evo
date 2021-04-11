@@ -2,7 +2,6 @@ package ru.softvillage.test_evo.tabs.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +14,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.joda.time.LocalDateTime;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptPrinted;
-import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptViewModel;
 
 public class ReceiptFragment extends Fragment {
     private int counter = 0;
 
-    ReceiptItemAdapter recyclerAdapter;
     private ReceiptViewModel mViewModel;
-    List<ReceiptPrinted> list = new ArrayList<>();
 
     public static ReceiptFragment newInstance() {
         return new ReceiptFragment();
@@ -41,14 +30,13 @@ public class ReceiptFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mViewModel = new ViewModelProvider(this).get(ReceiptViewModel.class);
         return inflater.inflate(R.layout.receipt_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*((Button) view.findViewById(R.id.print_to_log)).setOnClickListener(v -> callToDb());
-        ((Button) view.findViewById(R.id.add_record_to_db)).setOnClickListener(v -> addRecord());*/
         initRecyclerView();
     }
 
@@ -58,26 +46,7 @@ public class ReceiptFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(ReceiptViewModel.class);
         // TODO: Use the ViewModel
     }
-
-    ///////////////////////////////////////////////////////
-    @SuppressLint("LongLogTag")
-    private void callToDb() {
-        EvoApp.getInstance().getDbHelper().getAll().observe(this, receiptPrinters -> {
-            for (ReceiptPrinted receipt : receiptPrinters) {
-                Log.d(EvoApp.TAG + "_RoomDb", receipt.toString());
-            }
-        });
-    }
-
-
-    private void addRecord() {
-        ReceiptPrinted data = new ReceiptPrinted();
-        data.setId(++counter);
-        data.setPrice(BigDecimal.valueOf(123).add(BigDecimal.valueOf(counter)));
-        data.setReceived(LocalDateTime.now());
-        EvoApp.getInstance().getDbHelper().insertReceiptToDb(data);
-    }
-    /////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void initRecyclerView() {
@@ -87,20 +56,12 @@ public class ReceiptFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(getContext().getDrawable(R.drawable.line_divider));
         recycler.addItemDecoration(divider);
-        recyclerAdapter = new ReceiptItemAdapter(LayoutInflater.from(getContext()), list, recipientEntity -> {
-            Log.d(EvoApp.TAG+"_Recycler", "click - click " + recipientEntity.getReceiptNumber());
-        });
 
-        EvoApp.getInstance().getDbHelper().getAll().observe(getViewLifecycleOwner(), receiptPrinteds ->
-        {
-            recyclerAdapter.setItems(receiptPrinteds);
-            Log.d(EvoApp.TAG+"_Db", receiptPrinteds.toString());
-        });
-        recycler.setAdapter(recyclerAdapter);
+        recycler.setAdapter(mViewModel.getAdapter());
     }
 
-    public interface itemClickInterface{
-        public void clickClick(ReceiptPrinted recipientEntity);
+    public interface itemClickInterface {
+        void clickClick(ReceiptEntity recipientEntity);
     }
 
 }

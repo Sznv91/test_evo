@@ -18,33 +18,21 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <androidx.appcompat.widget.Toolbar
-                android:background="#FF5722"
-                app:title="qweqwe"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="#FF5722"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:background="#5DFF22"
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                app:tabInlineLabel="true" />
-
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="qweqwe" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
+        <FrameLayout
+            android:id="@+id/fragment_holder"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
-    <!--android:layout_height="?attr/actionBarSize"-->
-<!--    android:background="?attr/colorPrimary"-->
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
