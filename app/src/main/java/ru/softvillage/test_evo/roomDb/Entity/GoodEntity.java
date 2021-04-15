@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
+import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -16,6 +17,7 @@ import ru.softvillage.test_evo.network.entity.Good;
 import ru.softvillage.test_evo.roomDb.BigDecimalConverter;
 
 import static androidx.room.ForeignKey.CASCADE;
+import static androidx.room.ForeignKey.RESTRICT;
 
 @Entity(tableName = "good",
         foreignKeys = @ForeignKey(
@@ -23,13 +25,13 @@ import static androidx.room.ForeignKey.CASCADE;
                 parentColumns = "id",
                 childColumns = "receipt_id",
                 onDelete = CASCADE),
-        indices = @Index("company_id"))
+        indices = @Index("receipt_id"))
 @TypeConverters({BigDecimalConverter.class})
 @Data
 public class GoodEntity {
 
     @PrimaryKey(autoGenerate = true)
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     private long id;
     @ColumnInfo(name = "receipt_id")
     private long receiptId;

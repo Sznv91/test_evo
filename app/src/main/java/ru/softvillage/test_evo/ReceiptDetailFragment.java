@@ -10,8 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.tabs.fragments.recyclerView.PositionGoodsItemAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,9 +79,23 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LiveData<ReceiptEntity> entityLiveData = EvoApp.getInstance().getDbHelper().getById(Long.parseLong(mParam2));
-        TextView textView = view.findViewById(R.id.detail_text_view);
-        entityLiveData.observe(this, receiptEntity -> textView.setText(receiptEntity.toString()));
+        RecyclerView recycler = getView().findViewById(R.id.position_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recycler.setLayoutManager(layoutManager);
+        PositionGoodsItemAdapter adapter = new PositionGoodsItemAdapter(getLayoutInflater());
+        recycler.setAdapter(adapter);
 
+
+        TextView saleNumber = view.findViewById(R.id.sale_number);
+        TextView totalCost = view.findViewById(R.id.total_cost);
+        TextView total = view.findViewById(R.id.total);
+        LiveData<ReceiptWithGoodEntity> data = EvoApp.getInstance().getDbHelper().getReceiptWithGoodEntity(Long.parseLong(mParam2));
+        data.observe(this, receipt -> {
+            saleNumber.setText(String.valueOf(receipt.getReceiptEntity().getReceiptNumber()));
+            totalCost.setText(String.valueOf(receipt.getReceiptEntity().getPrice()));
+            total.setText(String.valueOf(receipt.getReceiptEntity().getPrice()));
+
+            adapter.setItems(receipt.goodEntities);
+        });
     }
 }

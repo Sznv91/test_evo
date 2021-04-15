@@ -1,11 +1,14 @@
 package ru.softvillage.test_evo.roomDb;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Transaction;
 
 import java.util.List;
 
+import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
 
 public class DbHelper {
     LocalDataBase dataBase;
@@ -32,7 +35,21 @@ public class DbHelper {
         return receiptList;
     }
 
-    public LiveData<ReceiptEntity> getById(long receiptId){
+    public LiveData<ReceiptEntity> getById(long receiptId) {
         return dataBase.receiptDao().getById(receiptId);
+    }
+
+    @Transaction
+    public void insertReceiptWithGoods(ReceiptWithGoodEntity receipt){
+        LocalDataBase.databaseWriteExecutor.execute(() -> {
+           dataBase.receiptDao().insert(receipt.getReceiptEntity());
+           for (GoodEntity goods : receipt.goodEntities){
+               dataBase.receiptDao().insertGood(goods);
+           }
+        });
+    }
+
+    public LiveData<ReceiptWithGoodEntity> getReceiptWithGoodEntity(long id){
+        return dataBase.receiptDao().loadReceiptBy(id);
     }
 }
