@@ -1,5 +1,6 @@
 package ru.softvillage.test_evo.tabs.viewModel;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +19,13 @@ import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
 public class ReceiptViewModel extends ViewModel {
     Application app = EvoApp.getInstance();
     ReceiptItemAdapter adapter;
+    @SuppressLint("LongLogTag")
     Observer<List<ReceiptEntity>> observer = receiptEntities -> {
         getAdapter().setItems(receiptEntities);
         Log.d(EvoApp.TAG + "_Db", receiptEntities.toString());
     };
 
+    @SuppressLint("LongLogTag")
     public ReceiptItemAdapter getAdapter() {
         if (adapter == null) {
             adapter = new ReceiptItemAdapter(LayoutInflater.from(app.getApplicationContext()), recipientEntity -> {
@@ -39,6 +42,7 @@ public class ReceiptViewModel extends ViewModel {
         EvoApp.getInstance().getDbHelper().getAll().observeForever(observer);
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     protected void onCleared() {
         Log.d(EvoApp.TAG + "_LifeCycle", "Отписались от LiveData");

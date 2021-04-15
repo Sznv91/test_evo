@@ -28,6 +28,7 @@ import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.liveDataHolder.OrderLiveData;
 import ru.softvillage.test_evo.liveDataHolder.States;
 import ru.softvillage.test_evo.network.OrderInterface;
+import ru.softvillage.test_evo.network.entity.Good;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
 import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
@@ -112,11 +113,12 @@ public class ForegroundServiceDispatcher extends Service {
                                     receiptWithGoodEntity.setReceiptEntity(dataToDb);
 //                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
                                     List<GoodEntity> goodsToDB = new ArrayList<>();
-                                    orderTo.getOrderData().goods.forEach(good -> {
+                                    for (Good good: orderTo.getOrderData().goods){
                                         GoodEntity tGoodEntity = new GoodEntity(good, orderTo.getOrderData().id);
                                         Log.d(EvoApp.TAG+"_good_db", tGoodEntity.toString());
                                         goodsToDB.add(tGoodEntity);
-                                    });
+
+                                    }
                                     receiptWithGoodEntity.setGoodEntities(goodsToDB);
                                     EvoApp.getInstance().getDbHelper().insertReceiptWithGoods(receiptWithGoodEntity);
 //                                    EvoApp.getInstance().getDbHelper().insertAllGood(goodsToDB);

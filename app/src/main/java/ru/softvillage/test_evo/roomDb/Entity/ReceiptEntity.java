@@ -27,6 +27,7 @@ public class ReceiptEntity {
         received = LocalDateTime.now();
         price = orderTo.getSumPrice();
         countOfPosition = orderTo.getPositions().size();
+//        discount = orderTo.getOrderData().checkDiscount;
     }
 
     @PrimaryKey
@@ -38,9 +39,13 @@ public class ReceiptEntity {
     private LocalDateTime received;
     @ColumnInfo(name = "count_position")
     private int countOfPosition;
+    /*@ColumnInfo(name = "discount")
+    private BigDecimal discount;*/
 
     @ColumnInfo(name = "date_time_printed")
     private LocalDateTime printed;
     @ColumnInfo(name = "receipt_number")
     private long receiptNumber;
+    @ColumnInfo(name = "receipt_uuid")
+    private String uuid;
 }

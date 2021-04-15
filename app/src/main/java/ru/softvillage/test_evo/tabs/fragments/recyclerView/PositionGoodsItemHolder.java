@@ -1,5 +1,7 @@
 package ru.softvillage.test_evo.tabs.fragments.recyclerView;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -7,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
+import ru.evotor.framework.receipt.Position;
+import ru.evotor.framework.receipt.Receipt;
+import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
 
 public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
     private final TextView goodName;
@@ -29,14 +34,26 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
         positionCost = itemView.findViewById(R.id.position_cost);
     }
 
-    public void bind(GoodEntity entity) {
-        goodName.setText(entity.name);
-        quantity.setText(String.valueOf(entity.quantity));
-        positionCostPerOne.setText(String.valueOf(entity.price));
-        BigDecimal price = entity.quantity.multiply(entity.price);
-        positionPriceMultipleQuantity.setText(String.valueOf(price));
-        discount.setText(String.valueOf(entity.discount));
-        BigDecimal finalPrice = price.subtract(entity.discount);
-        positionCost.setText(String.valueOf(finalPrice));
+    @SuppressLint("LongLogTag")
+    public void bind(Position position, Receipt receipt) {
+        goodName.setText(position.getName());
+        quantity.setText(String.valueOf(position.getQuantity()));
+        positionCostPerOne.setText(String.valueOf(position.getPriceWithDiscountPosition()));
+
+        BigDecimal totalDigit = BigDecimal.ZERO;
+        BigDecimal totalDiscount = BigDecimal.ZERO;
+
+        for (Position position1 : receipt.getPositions()) {
+            totalDigit = totalDigit.add(position1.getTotalWithoutDiscounts());
+            totalDiscount = totalDiscount.add(position1.getDiscountPositionSum());
+        }
+
+        Log.d(EvoApp.TAG+"_discount_", "receipt.getDiscount() " + receipt.getDiscount().toString());
+        BigDecimal percentDiscount = totalDigit.divide(receipt.getDiscount(), 2, RoundingMode.HALF_UP);
+        BigDecimal onePercentFromPositionTotalPrice = position.getTotal(BigDecimal.ZERO).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+        BigDecimal discountPosition = percentDiscount.multiply(onePercentFromPositionTotalPrice);
+        positionPriceMultipleQuantity.setText(String.valueOf(position.getTotal(discountPosition)));
+        discount.setText(String.valueOf(position.getDiscountPositionSum().add(discountPosition)));
+        positionCost.setText(String.valueOf(position.getTotalWithoutDiscounts()));
     }
 }

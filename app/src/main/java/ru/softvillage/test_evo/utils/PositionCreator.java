@@ -24,11 +24,12 @@ public class PositionCreator {
     @SuppressLint("LongLogTag")
     public static OrderTo makeOrderList(List<Order> orderList) {
         OrderTo result = new OrderTo();
+        BigDecimal receiptCost = BigDecimal.ZERO;
 
         for (Order order : orderList) {
             OrderTo.PositionTo tResult = new OrderTo.PositionTo();
-            BigDecimal receiptCost = BigDecimal.ZERO;
             for (Good good : order.goods) {
+
                 Position.Builder position =
                         Position.Builder.newInstance(
                                 UUID.randomUUID().toString(),
@@ -55,7 +56,12 @@ public class PositionCreator {
                     receiptCost = receiptCost.add(priceAllContWithDiscount);
                     Log.d(EvoApp.TAG + "_GSON", "///////////////////////");
                 } else {
-                    receiptCost = receiptCost.add(good.price).multiply(good.quantity);
+                    Log.d(EvoApp.TAG + "_GSON", "start receiptCost " + receiptCost.toString());
+                    Log.d(EvoApp.TAG + "_GSON", "good.price " + good.price.toString());
+                    Log.d(EvoApp.TAG + "_GSON", "good.quantity " + good.quantity.toString());
+
+                    receiptCost = receiptCost.add(good.price.multiply(good.quantity));
+                    Log.d(EvoApp.TAG + "_GSON", "ReceiptCost " + receiptCost.toString());
                 }
 
                 switch (good.type.number) {

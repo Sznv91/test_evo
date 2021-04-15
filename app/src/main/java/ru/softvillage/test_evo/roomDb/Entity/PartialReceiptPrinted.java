@@ -23,4 +23,7 @@ public class PartialReceiptPrinted {
 
     @ColumnInfo(name = "receipt_number")
     private long receiptNumber;
+
+    @ColumnInfo(name = "receipt_uuid")
+    private String uuid;
 }

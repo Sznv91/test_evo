@@ -1,6 +1,9 @@
 package ru.softvillage.test_evo;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.math.BigDecimal;
 
-import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
-import ru.softvillage.test_evo.tabs.fragments.recyclerView.PositionGoodsItemAdapter;
+import ru.evotor.framework.receipt.Position;
+import ru.evotor.framework.receipt.Receipt;
+import ru.softvillage.test_evo.tabs.viewModel.ReceiptDetailViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +28,7 @@ import ru.softvillage.test_evo.tabs.fragments.recyclerView.PositionGoodsItemAdap
  * create an instance of this fragment.
  */
 public class ReceiptDetailFragment extends Fragment {
+    ReceiptDetailViewModel viewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,26 +79,63 @@ public class ReceiptDetailFragment extends Fragment {
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    @SuppressLint("LongLogTag")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(ReceiptDetailViewModel.class);
+        viewModel.setReceiptCloudId(mParam2);
+
         RecyclerView recycler = getView().findViewById(R.id.position_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(layoutManager);
-        PositionGoodsItemAdapter adapter = new PositionGoodsItemAdapter(getLayoutInflater());
-        recycler.setAdapter(adapter);
+
+        recycler.setAdapter(viewModel.getAdapter());
 
 
-        TextView saleNumber = view.findViewById(R.id.sale_number);
-        TextView totalCost = view.findViewById(R.id.total_cost);
-        TextView total = view.findViewById(R.id.total);
-        LiveData<ReceiptWithGoodEntity> data = EvoApp.getInstance().getDbHelper().getReceiptWithGoodEntity(Long.parseLong(mParam2));
-        data.observe(this, receipt -> {
-            saleNumber.setText(String.valueOf(receipt.getReceiptEntity().getReceiptNumber()));
-            totalCost.setText(String.valueOf(receipt.getReceiptEntity().getPrice()));
-            total.setText(String.valueOf(receipt.getReceiptEntity().getPrice()));
+        new Thread(() -> {
+            while (viewModel.getReceipt() == null) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            BigDecimal totalDigit = BigDecimal.ZERO;
+            BigDecimal totalDiscount = BigDecimal.ZERO;
+            Receipt receipt = viewModel.getReceipt();
 
-            adapter.setItems(receipt.goodEntities);
-        });
+            for (Position position : receipt.getPositions()) {
+                totalDigit = totalDigit.add(position.getTotalWithoutDiscounts());
+                totalDiscount = totalDiscount.add(position.getDiscountPositionSum());
+            }
+            totalDiscount = totalDiscount.add(receipt.getDiscount());
+
+
+            BigDecimal finalTotalDigit = totalDigit;
+            BigDecimal finalTotalDiscount = totalDiscount;
+            getActivity().runOnUiThread(() -> {
+                setDisplayData(
+                        receipt.getHeader().getNumber(),
+                        String.valueOf(finalTotalDigit),
+                        String.valueOf(finalTotalDiscount),
+                        String.valueOf(receipt.getPayments().get(0).getValue())
+                );
+            });
+
+        }).start();
+
+    }
+
+    private void setDisplayData(String dsaleNumber,String dtotalCost,String ddiscount,String dtotal){
+        TextView saleNumber = getView().findViewById(R.id.sale_number);
+        TextView totalCost = getView().findViewById(R.id.total_cost);
+        TextView discount = getView().findViewById(R.id.discount);
+        TextView total = getView().findViewById(R.id.total);
+
+        saleNumber.setText(dsaleNumber);
+        totalCost.setText(dtotalCost);
+        discount.setText(ddiscount);
+        total.setText(dtotal);
     }
 }

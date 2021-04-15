@@ -43,12 +43,18 @@ public class PrintUtil {
         return instance;
     }
 
+    @SuppressLint("LongLogTag")
     public void printOrder(Context context, PositionCreator.OrderTo.PositionTo order, PrintCallback callback) {
 
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
         if (!order.getOrderData().checkDiscount.equals(BigDecimal.ZERO)) {
-            receiptDiscount = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(order.getOrderData().checkDiscount);
+            Log.d(EvoApp.TAG+"_discount_", "Сумма чека без скидок: " +  order.getSumPrice());
+            BigDecimal onePercentFromAllPrice = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+            Log.d(EvoApp.TAG+"_discount_", "Цена одного процента от общей стоимости: " +  onePercentFromAllPrice);
+            Log.d(EvoApp.TAG+"_discount_", "Процент скидки: " +  order.getOrderData().checkDiscount);
+            receiptDiscount = onePercentFromAllPrice.multiply(order.getOrderData().checkDiscount);
+            Log.d(EvoApp.TAG+"_discount_", "Размер скидки: " +  receiptDiscount);
         }
 
         BigDecimal finalCost = order.getSumPrice().subtract(receiptDiscount);
@@ -99,6 +105,7 @@ public class PrintUtil {
                 null,
                 null,
                 order.getOrderData().userUUID).process(context, new IntegrationManagerCallback() {
+            @SuppressLint("LongLogTag")
             @Override
             public void run(IntegrationManagerFuture integrationManagerFuture) {
                 try {
@@ -111,11 +118,13 @@ public class PrintUtil {
                             PartialReceiptPrinted dataToDb = new PartialReceiptPrinted();
                             dataToDb.setPrinted(LocalDateTime.now());
                             dataToDb.setReceiptNumber(Long.parseLong(result.getData().getString("receiptNumber")));
+                            dataToDb.setUuid(result.getData().getString("receiptUuid"));
                             dataToDb.setId(order.getOrderData().id);
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
                             break;
                         case ERROR:
+                            Log.d(EvoApp.TAG+"_print_error", result.getError().getMessage());
                             callback.printFailure(order);
 //                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;

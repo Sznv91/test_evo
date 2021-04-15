@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import ru.evotor.framework.receipt.Position;
+import ru.evotor.framework.receipt.Receipt;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
 
 @RequiredArgsConstructor
 public class PositionGoodsItemAdapter extends RecyclerView.Adapter<PositionGoodsItemHolder> {
     private final LayoutInflater inflater;
-    private List<GoodEntity> itemList = new ArrayList<>();
+    private List<Position> itemList = new ArrayList<>();
+    private Receipt receipt;
 
     @NonNull
     @Override
@@ -26,7 +28,7 @@ public class PositionGoodsItemAdapter extends RecyclerView.Adapter<PositionGoods
 
     @Override
     public void onBindViewHolder(@NonNull PositionGoodsItemHolder holder, int position) {
-        holder.bind(itemList.get(position));
+        holder.bind(itemList.get(position), receipt);
     }
 
     @Override
@@ -34,9 +36,10 @@ public class PositionGoodsItemAdapter extends RecyclerView.Adapter<PositionGoods
         return itemList.size();
     }
 
-    public void setItems(List<GoodEntity> entityList) {
+    public void setItems(Receipt receipt) {
+        this.receipt = receipt;
         itemList.clear();
-        itemList.addAll(entityList);
+        itemList.addAll(receipt.getPositions());
         notifyDataSetChanged();
     }
 }
