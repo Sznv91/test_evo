@@ -86,6 +86,12 @@ public class PositionCreator {
                     case 118:
                         position.setTaxNumber(TaxNumber.VAT_18_118);
                         break;
+                    case 20:
+                        position.setTaxNumber(TaxNumber.VAT_18);
+                        break;
+                    case 10:
+                        position.setTaxNumber(TaxNumber.VAT_10);
+                        break;
                 }
                 tResult.positions.add(position.build());
             }

@@ -2,8 +2,6 @@ package ru.softvillage.test_evo;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.Receipt;
@@ -101,11 +100,13 @@ public class ReceiptDetailFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            BigDecimal totalDigit = BigDecimal.ZERO;
-            BigDecimal totalDiscount = BigDecimal.ZERO;
+            BigDecimal totalDigit = BigDecimal.ZERO; //Общая стоимость
+            BigDecimal totalDiscount = BigDecimal.ZERO; //Скидка
+            BigDecimal totalPricePositionWithDiscount = BigDecimal.ZERO;
             Receipt receipt = viewModel.getReceipt();
 
             for (Position position : receipt.getPositions()) {
+                totalPricePositionWithDiscount = totalPricePositionWithDiscount.add(position.getTotal(BigDecimal.ZERO));
                 totalDigit = totalDigit.add(position.getTotalWithoutDiscounts());
                 totalDiscount = totalDiscount.add(position.getDiscountPositionSum());
             }
@@ -114,28 +115,63 @@ public class ReceiptDetailFragment extends Fragment {
 
             BigDecimal finalTotalDigit = totalDigit;
             BigDecimal finalTotalDiscount = totalDiscount;
+
+            ////////////////////////////////////////
+            StringBuilder ndsToView = new StringBuilder();
+            if (!receipt.getDiscount().equals(BigDecimal.ZERO)) {
+                BigDecimal percent = totalPricePositionWithDiscount
+                        .divide(
+                                totalPricePositionWithDiscount
+                                        .subtract(receipt.getPayments().get(0).getValue())
+                                , 8, RoundingMode.HALF_UP);
+
+
+                for (Position position : receipt.getPositions()) {
+                    if (position.getTaxNumber() != null) {
+                        BigDecimal pricePositionWithTotalDiscount = position.getTotal(BigDecimal.ZERO).subtract(position.getTotal(BigDecimal.ZERO).divide(BigDecimal.valueOf(100), 8, RoundingMode.HALF_UP).multiply(percent));
+                        String nds_20 = pricePositionWithTotalDiscount.divide(BigDecimal.valueOf(1.2), 8, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.2))
+                                .multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toPlainString();
+                        if (ndsToView.length() == 0) {
+                            ndsToView.append(nds_20);
+                        } else {
+                            ndsToView.append("\r\n").append(nds_20);
+                        }
+
+                    }
+                }
+            }
+
+            ////////////////////////////////////////
+
             getActivity().runOnUiThread(() -> {
                 setDisplayData(
                         receipt.getHeader().getNumber(),
                         String.valueOf(finalTotalDigit),
                         String.valueOf(finalTotalDiscount),
-                        String.valueOf(receipt.getPayments().get(0).getValue())
+                        String.valueOf(receipt.getPayments().get(0).getValue()),
+                        ndsToView.toString()
                 );
             });
+
+
+
 
         }).start();
 
     }
 
-    private void setDisplayData(String dsaleNumber,String dtotalCost,String ddiscount,String dtotal){
+    private void setDisplayData(String dsaleNumber, String dtotalCost, String ddiscount, String dtotal, String dnds) {
         TextView saleNumber = getView().findViewById(R.id.sale_number);
         TextView totalCost = getView().findViewById(R.id.total_cost);
         TextView discount = getView().findViewById(R.id.discount);
         TextView total = getView().findViewById(R.id.total);
+        TextView nds = getView().findViewById(R.id.nds);
+
 
         saleNumber.setText(dsaleNumber);
         totalCost.setText(dtotalCost);
         discount.setText(ddiscount);
         total.setText(dtotal);
+        nds.setText(dnds);
     }
 }

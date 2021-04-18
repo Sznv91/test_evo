@@ -40,7 +40,7 @@ public class Good {
 
     @SerializedName("nds")
     @Expose
-    //-1 ; 0; 10; 20
+    //-1 ; 0; 110; 118
     //На каждую позицию
     public Integer nds;
     @SerializedName("type")

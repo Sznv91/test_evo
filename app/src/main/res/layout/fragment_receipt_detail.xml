@@ -132,7 +132,7 @@
                 android:id="@+id/static_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Итого"
+                android:text="Итог"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:textStyle="bold"
                 android:textSize="18sp"
@@ -158,7 +158,7 @@
                 app:layout_constraintTop_toBottomOf="@id/static_total" />
 
             <TextView
-                android:id="@+id/cost_without_nds"
+                android:id="@+id/nds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -180,9 +180,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                tools:text="115"
+                tools:text="114"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cost_without_nds" />
+                app:layout_constraintTop_toBottomOf="@id/nds" />
 
             <View
                 android:id="@+id/divider_cred"
