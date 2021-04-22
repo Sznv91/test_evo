@@ -53,7 +53,7 @@ public class GoodEntity {
     //Количество товара
     public BigDecimal quantity;
     @ColumnInfo(name = "nds")
-    //-1 ; 0; 10; 20
+    //-1 ; 0; 10; 18; 110; 118
     //На каждую позицию
     public Integer nds;
 

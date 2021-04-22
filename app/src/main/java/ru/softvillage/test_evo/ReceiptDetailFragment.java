@@ -16,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.Receipt;
+import ru.evotor.framework.receipt.TaxNumber;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptDetailViewModel;
 
 /**
@@ -117,29 +120,106 @@ public class ReceiptDetailFragment extends Fragment {
             BigDecimal finalTotalDiscount = totalDiscount;
 
             ////////////////////////////////////////
-            StringBuilder ndsToView = new StringBuilder();
+            /**
+             * String - тип НДС: 20%
+             *                   10%
+             *                   20/120
+             *                   10/110
+             * BigDecimal - сумма со всех позиций одинакового типа НДС.
+             */
+            Map<String, BigDecimal> ndsData = new HashMap<>();
+
+            StringBuilder ndsDigit = new StringBuilder();
+            StringBuilder ndsType = new StringBuilder();
+            BigDecimal percent = BigDecimal.ZERO;
             if (!receipt.getDiscount().equals(BigDecimal.ZERO)) {
-                BigDecimal percent = totalPricePositionWithDiscount
-                        .divide(
-                                totalPricePositionWithDiscount
-                                        .subtract(receipt.getPayments().get(0).getValue())
-                                , 8, RoundingMode.HALF_UP);
+                BigDecimal onePercentTotalPrice = totalPricePositionWithDiscount.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                percent = receipt.getDiscount().divide(onePercentTotalPrice, 2, RoundingMode.HALF_UP);
+            }
 
 
-                for (Position position : receipt.getPositions()) {
-                    if (position.getTaxNumber() != null) {
-                        BigDecimal pricePositionWithTotalDiscount = position.getTotal(BigDecimal.ZERO).subtract(position.getTotal(BigDecimal.ZERO).divide(BigDecimal.valueOf(100), 8, RoundingMode.HALF_UP).multiply(percent));
-                        String nds_20 = pricePositionWithTotalDiscount.divide(BigDecimal.valueOf(1.2), 8, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.2))
-                                .multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toPlainString();
-                        if (ndsToView.length() == 0) {
-                            ndsToView.append(nds_20);
+            for (Position position : receipt.getPositions()) {
+
+                if (position.getTaxNumber() != null) {
+                    BigDecimal pricePositionWithTotalDiscount = position.getTotal(BigDecimal.ZERO).subtract(position.getTotal(BigDecimal.ZERO).divide(BigDecimal.valueOf(100), 8, RoundingMode.HALF_UP).multiply(percent));
+                    BigDecimal nds_20 = pricePositionWithTotalDiscount.divide(BigDecimal.valueOf(1.2), 8, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.2))
+                            .multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)/*.toPlainString()*/;
+                    BigDecimal nds_10 = pricePositionWithTotalDiscount.divide(BigDecimal.valueOf(1.1), 8, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.1))
+                            .multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)/*.toPlainString()*/;
+                    BigDecimal nds_0 = pricePositionWithTotalDiscount.multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
+                    if (position.getTaxNumber().equals(TaxNumber.VAT_10)) {
+                        if (ndsData.get(TaxNumber.VAT_10.name()) != null) {
+                            BigDecimal tNds = ndsData.get(TaxNumber.VAT_10.name());
+                            tNds = tNds.add(nds_10);
+                            ndsData.put(TaxNumber.VAT_10.name(), tNds);
                         } else {
-                            ndsToView.append("\r\n").append(nds_20);
+                            ndsData.put(TaxNumber.VAT_10.name(), nds_10);
                         }
-
                     }
+
+                    if (position.getTaxNumber().equals(TaxNumber.VAT_10_110)) {
+                        if (ndsData.get(TaxNumber.VAT_10_110.name()) != null) {
+                            BigDecimal tNds = ndsData.get(TaxNumber.VAT_10_110.name());
+                            tNds = tNds.add(nds_10);
+                            ndsData.put(TaxNumber.VAT_10_110.name(), tNds);
+                        } else {
+                            ndsData.put(TaxNumber.VAT_10_110.name(), nds_10);
+                        }
+                    }
+
+                    if (position.getTaxNumber().equals(TaxNumber.VAT_18)) {
+                        if (ndsData.get(TaxNumber.VAT_18.name()) != null) {
+                            BigDecimal tNds = ndsData.get(TaxNumber.VAT_18.name());
+                            tNds = tNds.add(nds_20);
+                            ndsData.put(TaxNumber.VAT_18.name(), tNds);
+                        } else {
+                            ndsData.put(TaxNumber.VAT_18.name(), nds_20);
+                        }
+                    }
+                    if (position.getTaxNumber().equals(TaxNumber.VAT_18_118)) {
+                        if (ndsData.get(TaxNumber.VAT_18_118.name()) != null) {
+                            BigDecimal tNds = ndsData.get(TaxNumber.VAT_18_118.name());
+                            tNds = tNds.add(nds_20);
+                            ndsData.put(TaxNumber.VAT_18_118.name(), tNds);
+                        } else {
+                            ndsData.put(TaxNumber.VAT_18_118.name(), nds_20);
+                        }
+                    }
+
+                    if (position.getTaxNumber().equals(TaxNumber.VAT_0)) {
+                        if (ndsData.get(TaxNumber.VAT_0.name()) != null) {
+                            BigDecimal tNds = ndsData.get(TaxNumber.VAT_0.name());
+                            tNds = tNds.add(nds_0);
+                            ndsData.put(TaxNumber.VAT_0.name(), tNds);
+                        } else {
+                            ndsData.put(TaxNumber.VAT_0.name(), nds_0);
+                        }
+                    }
+
+                    if (position.getTaxNumber().equals(TaxNumber.NO_VAT)) {
+                        if (ndsData.get(TaxNumber.NO_VAT.name()) != null) {
+                            BigDecimal tNds = ndsData.get(TaxNumber.NO_VAT.name());
+                            tNds = tNds.add(nds_0);
+                            ndsData.put(TaxNumber.NO_VAT.name(), tNds);
+                        } else {
+                            ndsData.put(TaxNumber.NO_VAT.name(), nds_0);
+                        }
+                    }
+
+
                 }
             }
+            for (Map.Entry<String, BigDecimal> entry : ndsData.entrySet()) {
+                if (ndsDigit.length() == 0) {
+                    ndsDigit.append(entry.getValue().toPlainString());
+                    ndsType.append("Сумма").append(ndsTypeChanger(entry.getKey()));
+                } else {
+                    ndsDigit.append("\r\n").append(entry.getValue().toPlainString());
+                    ndsType.append("\r\n").append("Сумма").append(ndsTypeChanger(entry.getKey()));
+                }
+            }
+
 
             ////////////////////////////////////////
 
@@ -149,29 +229,56 @@ public class ReceiptDetailFragment extends Fragment {
                         String.valueOf(finalTotalDigit),
                         String.valueOf(finalTotalDiscount),
                         String.valueOf(receipt.getPayments().get(0).getValue()),
-                        ndsToView.toString()
+                        ndsDigit.toString(),
+                        ndsType.toString()
                 );
             });
-
-
 
 
         }).start();
 
     }
 
-    private void setDisplayData(String dsaleNumber, String dtotalCost, String ddiscount, String dtotal, String dnds) {
+    private void setDisplayData(String dsaleNumber, String dtotalCost, String ddiscount, String dtotal, String dndsDigit, String dndsType) {
         TextView saleNumber = getView().findViewById(R.id.sale_number);
         TextView totalCost = getView().findViewById(R.id.total_cost);
         TextView discount = getView().findViewById(R.id.discount);
         TextView total = getView().findViewById(R.id.total);
-        TextView nds = getView().findViewById(R.id.nds);
+        TextView ndsDigit = getView().findViewById(R.id.nds);
+        TextView ndsType = getView().findViewById(R.id.nds_type);
 
 
         saleNumber.setText(dsaleNumber);
         totalCost.setText(dtotalCost);
         discount.setText(ddiscount);
         total.setText(dtotal);
-        nds.setText(dnds);
+        ndsDigit.setText(dndsDigit);
+        ndsType.setText(dndsType);
+    }
+
+    private String ndsTypeChanger(String ndsType) {
+        String ten = TaxNumber.VAT_10.name();
+        String twenty = TaxNumber.VAT_18.name();
+        String ten_110 = TaxNumber.VAT_10_110.name();
+        String twenty_120 = TaxNumber.VAT_18_118.name();
+        String zero = TaxNumber.VAT_0.name();
+        final String sumNds = " НДС ";
+
+        if (ndsType.equals(ten)) {
+            return sumNds + "10%";
+        }
+        if (ndsType.equals(twenty)) {
+            return sumNds + "20%";
+        }
+        if (ndsType.equals(ten_110)) {
+            return sumNds + "10/110";
+        }
+        if (ndsType.equals(twenty_120)) {
+            return sumNds + "20/120";
+        }
+        if (ndsType.equals(zero)) {
+            return sumNds + "0%";
+        }
+        return " БЕЗ НДС";
     }
 }

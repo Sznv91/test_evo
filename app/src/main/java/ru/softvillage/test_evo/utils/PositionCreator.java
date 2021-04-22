@@ -86,7 +86,7 @@ public class PositionCreator {
                     case 118:
                         position.setTaxNumber(TaxNumber.VAT_18_118);
                         break;
-                    case 20:
+                    case 18:
                         position.setTaxNumber(TaxNumber.VAT_18);
                         break;
                     case 10:

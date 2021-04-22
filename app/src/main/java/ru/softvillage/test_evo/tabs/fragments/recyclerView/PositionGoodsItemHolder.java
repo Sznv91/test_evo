@@ -69,11 +69,16 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
              * вычесть сумму итогового платежа (B) ->
              * цену всех позийи разедлить по получившееся значение (A/B)
              */
-            BigDecimal percent = totalPricePositionWithDiscount
+            Log.d(EvoApp.TAG+"position_discount", "цена всех позиций с учетом скидки на каждую позицию: " + totalPricePositionWithDiscount.toPlainString());
+            BigDecimal onePercentTotalPrice = totalPricePositionWithDiscount.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
+
+            BigDecimal percent = receipt.getDiscount().divide(onePercentTotalPrice, 2, RoundingMode.HALF_UP);/*totalPricePositionWithDiscount
                     .divide(
                             totalPricePositionWithDiscount
                                     .subtract(receipt.getPayments().get(0).getValue())
-                            , 8, RoundingMode.HALF_UP); // A/B
+                            , 8, RoundingMode.HALF_UP)*/; // A/B
+            Log.d(EvoApp.TAG+"position_discount", "процент скидки: " + percent.toPlainString());
 
             /**
              * Для расчета цены одной позици с учетом общей скидки:
@@ -84,6 +89,8 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
             BigDecimal priceTotalPosition = position.getTotal(BigDecimal.ZERO).subtract(position.getTotal(BigDecimal.ZERO).divide(BigDecimal.valueOf(100), 6, RoundingMode.HALF_UP).multiply(percent));
             BigDecimal tPriceTotalPosition = priceTotalPosition.setScale(2, RoundingMode.DOWN);
             positionPriceMultipleQuantity.setText(String.valueOf(tPriceTotalPosition));
+            Log.d(EvoApp.TAG+"position_discount", "цена одной позции с общей скидкой: " + priceTotalPosition.toPlainString());
+
 
             /**
              * Цена одной единицы товара
@@ -107,11 +114,17 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
             String nds_10 = tPriceTotalPosition.divide(BigDecimal.valueOf(1.1), 10, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.1))
                     .multiply(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toPlainString();
 
-            if (position.getTaxNumber() != null) {
+            if (position.getTaxNumber() != null && !position.getTaxNumber().equals(TaxNumber.NO_VAT)) {
                 static_nds.setVisibility(View.VISIBLE);
                 nds_percent.setVisibility(View.VISIBLE);
                 static_nds_equal.setVisibility(View.VISIBLE);
                 nds_digit.setVisibility(View.VISIBLE);
+            }
+
+
+            if (position.getTaxNumber() != null && position.getTaxNumber().equals(TaxNumber.VAT_0)) {
+                nds_percent.setText("0%");
+                nds_digit.setText("0.00");
             }
 
             if (position.getTaxNumber() != null && position.getTaxNumber().equals(TaxNumber.VAT_18)) {
@@ -149,6 +162,11 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
                 nds_percent.setVisibility(View.VISIBLE);
                 static_nds_equal.setVisibility(View.VISIBLE);
                 nds_digit.setVisibility(View.VISIBLE);
+            }
+
+            if (position.getTaxNumber() != null && position.getTaxNumber().equals(TaxNumber.VAT_0)) {
+                nds_percent.setText("0%");
+                nds_digit.setText("0.00");
             }
 
             if (position.getTaxNumber() != null && position.getTaxNumber().equals(TaxNumber.VAT_18)) {

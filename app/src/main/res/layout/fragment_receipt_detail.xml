@@ -150,7 +150,7 @@
                 app:layout_constraintTop_toTopOf="@id/divider" />
 
             <TextView
-                android:id="@+id/static_cost_without_nds"
+                android:id="@+id/nds_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Сумма без НДС"
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:text="НАЛИЧНЫМИ"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/static_cost_without_nds" />
+                app:layout_constraintTop_toBottomOf="@id/nds_type" />
 
             <TextView
                 android:id="@+id/cash"
