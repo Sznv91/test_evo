@@ -23,7 +23,7 @@ public class PositionGoodsItemAdapter extends RecyclerView.Adapter<PositionGoods
     @NonNull
     @Override
     public PositionGoodsItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PositionGoodsItemHolder(inflater.inflate(R.layout.position_item, parent, false));
+        return new PositionGoodsItemHolder(inflater.inflate(R.layout.item_position, parent, false));
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,13 +24,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.network.entity.Order;
+import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.viewModel.StatisticViewModel;
 import ru.softvillage.test_evo.utils.PositionCreator;
@@ -40,6 +46,7 @@ public class StatisticFragment extends Fragment {
     private StatisticViewModel mViewModel;
     private PrintUtil printUtil;
     TextInputEditText editText;
+    private EditText dateField;
 
     public static StatisticFragment newInstance() {
         return new StatisticFragment();
@@ -56,7 +63,11 @@ public class StatisticFragment extends Fragment {
         ((Button) view.findViewById(R.id.button_start_service)).setOnClickListener(v -> startForegroundService());
         ((Button) view.findViewById(R.id.print_example)).setOnClickListener(v -> printExample());
         ((Button) view.findViewById(R.id.print_calculate_recipient)).setOnClickListener(v -> printOrder());
+        ((Button) view.findViewById(R.id.add_fake_receipt)).setOnClickListener(v -> addFakeReceipt());
         editText = view.findViewById(R.id.discount_all_order);
+
+        dateField = getView().findViewById(R.id.edit_text_add_fake_data);
+        dateField.setText(LocalDate.now().toString());
 
 
         super.onViewCreated(view, savedInstanceState);
@@ -139,6 +150,19 @@ public class StatisticFragment extends Fragment {
     /////////////////////////
     private void printExample() {
         printUtil.printDemoOrder(getContext().getApplicationContext());
+    }
+
+    private void addFakeReceipt() {
+        LocalDateTime localDateTime = LocalDateTime.parse(dateField.getText().toString() + "T00:00:00");
+        ReceiptEntity entity = new ReceiptEntity();
+        entity.setId(Long.parseLong(LocalDateTime.now().toString("yyyyMMddHHssSSSS")));
+        entity.setReceived(localDateTime);
+        entity.setPrice(BigDecimal.valueOf(123.45));
+        entity.setCountOfPosition(6);
+        entity.setUuid(UUID.randomUUID().toString());
+
+        EvoApp.getInstance().getDbHelper().insertReceiptToDb(entity);
+
     }
 
 }

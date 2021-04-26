@@ -44,14 +44,35 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/print_calculate_recipient" />
 
+    <EditText
+        android:id="@+id/edit_text_add_fake_data"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:autofillHints="26.04.2021"
+        android:background="#00BCD4"
+        android:hint="Дата добавления заглушки чека"
+        android:inputType="date"
+        app:layout_constraintTop_toBottomOf="@+id/discount_all_order" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_fake_receipt"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:text="Добавить заглушку"
+        android:textSize="8sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_add_fake_data" />
+
     <TextView
-        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="Code version: 2"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textColor="#FFFFFF"/>
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

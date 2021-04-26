@@ -15,12 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptViewModel;
 
 public class ReceiptFragment extends Fragment {
-    private int counter = 0;
-
     private ReceiptViewModel mViewModel;
 
     public static ReceiptFragment newInstance() {
@@ -31,7 +28,14 @@ public class ReceiptFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(ReceiptViewModel.class);
+        mViewModel.setContext(getContext());
         return inflater.inflate(R.layout.receipt_fragment, container, false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.setContext(null);
     }
 
     @Override
@@ -41,11 +45,11 @@ public class ReceiptFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ReceiptViewModel.class);
-        // TODO: Use the ViewModel
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        mViewModel.setContext(getContext());
     }
+
     ///////////////////////////////////////////////////////////////////////////////////
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -53,15 +57,12 @@ public class ReceiptFragment extends Fragment {
         RecyclerView recycler = getView().findViewById(R.id.receipt_list_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(layoutManager);
+        mViewModel.setLinearLayoutManager(layoutManager);
         DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(getContext().getDrawable(R.drawable.line_divider));
         recycler.addItemDecoration(divider);
 
         recycler.setAdapter(mViewModel.getAdapter());
-    }
-
-    public interface itemClickInterface {
-        void clickClick(ReceiptEntity recipientEntity);
     }
 
 }

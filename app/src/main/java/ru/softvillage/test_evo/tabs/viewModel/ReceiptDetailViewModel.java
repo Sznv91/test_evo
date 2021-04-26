@@ -45,18 +45,4 @@ public class ReceiptDetailViewModel extends ViewModel {
         super.onCleared();
         EvoApp.getInstance().getDbHelper().getReceiptWithGoodEntity(Long.parseLong(receiptCloudId)).removeObserver(observer);
     }
-
-
-    private void doSomething() {
-        /*Receipt receipt = ReceiptApi.getReceipt(EvoApp.getInstance().getApplicationContext(), receiptUuid);
-
-        for (Position position : receipt.getPositions()) {
-            position.getPrice(); //цена за все количество товара с скидкой
-            position.getPriceWithDiscountPosition(); // цена с скидкой за позицию
-            position.getQuantity(); // количество на одну позицию
-            position.getTotalWithoutDiscounts(); // цена за все позции без скидки.
-            position.getDiscountPositionSum(); //размер скидки с всего количества товара.
-            position.getTotal(position.getDiscountPositionSum()); // цена за всё количество товара с скидкой
-        }*/
-    }
 }

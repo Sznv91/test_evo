@@ -4,12 +4,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
-public class ReceiptItemViewHolder extends RecyclerView.ViewHolder {
+public class ReceiptItemViewHolder extends AbstractViewHolder {
     private final TextView receiptNumber;
     private final TextView goodCount;
     private final TextView totalCost;
