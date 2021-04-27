@@ -22,7 +22,7 @@ import ru.softvillage.test_evo.tabs.viewModel.ReceiptViewModel;
 
 public class ReceiptFragment extends Fragment {
     private ReceiptViewModel mViewModel;
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
 
     public static ReceiptFragment newInstance() {
         return new ReceiptFragment();
@@ -89,12 +89,7 @@ public class ReceiptFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layoutManager.scrollToPositionWithOffset(0, 0);
-            }
-        });
+        fab.setOnClickListener(view -> layoutManager.scrollToPositionWithOffset(0, 0));
     }
 
 }

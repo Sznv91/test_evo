@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_2">2dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_6">6dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_28">28dp</dimen>
+    <dimen name="padding_32">32dp</dimen>
+    <dimen name="padding_50">50dp</dimen>
+
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_46">44dp</dimen>
+    <dimen name="margin_48">48dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="margin_72">72dp</dimen>
+
+    <dimen name="size_10">10dp</dimen>
+    <dimen name="size_16">16dp</dimen>
+    <dimen name="size_24">24dp</dimen>
+    <dimen name="size_32">32dp</dimen>
+    <dimen name="size_92">92dp</dimen>
+    <dimen name="size_144">144dp</dimen>
+    <dimen name="size_200">200dp</dimen>
+
+    <dimen name="tsize_12">12sp</dimen>
+    <dimen name="tsize_13">13sp</dimen>
+    <dimen name="tsize_14">14sp</dimen>
+    <dimen name="tsize_16">16sp</dimen>
+    <dimen name="tsize_18">18sp</dimen>
+    <dimen name="tsize_20">20sp</dimen>
+    <dimen name="tsize_22">22sp</dimen>
+    <dimen name="tsize_25">25sp</dimen>
+    <dimen name="tsize_26">26sp</dimen>
+    <dimen name="tsize_28">28sp</dimen>
+    <dimen name="tsize_29">29sp</dimen>
+    <dimen name="tsize_30">30sp</dimen>
+    <dimen name="tsize_32">32sp</dimen>
+</resources>

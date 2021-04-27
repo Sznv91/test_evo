@@ -7,4 +7,43 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="color1">#212121</color>
+    <color name="color2">#009e40</color>
+    <color name="color3">#2b3437</color>
+    <color name="color4">#353f41</color>
+    <color name="color5">#434b4d</color>
+    <color name="color6">#9fa3a4</color>
+    <color name="color7">#576062</color>
+    <color name="color8">#828586</color>
+    <color name="color9">#197040</color>
+    <color name="color10">#ff7f7f</color>
+    <color name="color11">#82ff7f</color>
+    <color name="color12">#fffa7f</color>
+    <color name="color13">#595c5c</color>
+    <color name="color14">#757c7d</color>
+    <color name="color15">#e5e5e5</color>
+    <color name="color16">#cc212121</color>
+
+    <color name="color17">#FF7043</color>
+    <color name="color18">#F8F8F8</color>
+    <color name="color19">#3D3D3D</color>
+    <color name="color20">#666666</color>
+    <color name="color21">#170F0F</color>
+    <color name="color22">#161616</color>
+    <color name="color23">#7A7A7A</color>
+    <color name="color24">#707070</color>
+    <color name="color25">#27C78D</color>
+    <color name="color26">#979797</color>
+    <color name="color27">#151414</color>
+    <color name="color28">#1D1D1D</color>
+    <color name="color29">#959595</color>
+    <color name="color30">#121212</color>
+    <color name="color31">#1F1F1F</color>
+    <color name="color32">#383838</color>
+    <color name="color33">#D8D6D6</color>
 </resources>

@@ -1,5 +1,70 @@
 <resources>
-    <string name="app_name">test_evo</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Фискализатор</string>
+
+    <string name="print_report_after_close">Печатать отчет при закрытии смены</string>
+    <string name="auto_close">Закрывать смену автоматически</string>
+    <string name="print_checks">Печать чеков при фискализации</string>
+    <string name="sms_settings">Настройки SMS</string>
+    <string name="send_sms_settings">Настройка отправки SMS</string>
+    <string name="send_email_settings">Настройка отправки Email</string>
+    <string name="send_sms">Отправка SMS</string>
+    <string name="select_sms_server">Выбор сервера SMS</string>
+    <string name="title_dialog_select_sms_server">ВЫБОР СЕРВЕРА SMS</string>
+    <string name="title_dialog_select_email_server">ВЫБОР СЕРВЕРА EMAIL</string>
+    <string name="exit">Выйти</string>
+    <string name="cancel">ОТМЕНА</string>
+    <string name="close">ЗАКРЫТЬ</string>
+    <string name="title_dialog_close">ЗАКРЫТЬ ФИСКАЛИЗАТОР?</string>
+    <string name="print_report">РАСПЕЧАТАТЬ ОТЧЕТ</string>
+    <string name="title_evotor">Отправка SMS через сервис Evotor</string>
+    <string name="title_soft_village">Отправка SMS через сервис Soft-Village</string>
+    <string name="title_email_evotor">Отправка Email через сервис Evotor</string>
+    <string name="title_email_soft_village">Отправка Email через сервис Soft-Village</string>
+    <string name="title_numbers">Номер по умолчанию:</string>
+    <string name="save">СОХРАНИТЬ</string>
+    <string name="understand">ПОНЯТНО</string>
+    <string name="title_dialog_no_active_servers">ОТСУТСТВУЮТ АКТИВНЫЕ SMS СЕРВЕРА</string>
+    <string name="title_dialog_no_active_servers_low">Остуствуют активные SMS сервера</string>
+    <string name="description_dialog_no_active_servers">Установите и активируйте приложение SMS Server Soft-Village</string>
+    <string name="title_dialog_auto_close">Закрытие смены автоматически</string>
+    <string name="every_day">Закрытие каждые 24 часа</string>
+    <string name="every_">Закрытие каждые %d %s</string>
+    <string name="at_">Закрытие в %02d:%02d</string>
+    <string name="title_dialog_close_every">Закрытие смены каждые</string>
+    <string name="title_dialog_close_at">Закрытие смены в</string>
+    <string name="service_title">Сервис фискализатора Soft-Village</string>
+    <string name="service_description">Предназначен для работы приложения в фоне</string>
+    <string name="yes">ДА</string>
+    <string name="no">НЕТ</string>
+
+    <string-array name="time_unit">
+        <item>мин.</item>
+        <item>час.</item>
+    </string-array>
+
+    <string name="stat">СТАТИСТИКА</string>
+    <string name="receipts">ЧЕКИ</string>
+    <string name="info">ИНФОРМАЦИЯ</string>
+    <string name="title_time_to_close">Время до закрытия смены</string>
+    <string name="title_common_sum">Общая сума фискализации</string>
+    <string name="title_receipts_count">Общее количество чеков</string>
+    <string name="title_sms_sends">Отправлено SMS</string>
+    <string name="title_email_sends">Отправлено E-mail</string>
+    <string name="template_count">%d шт.</string>
+    <string name="template_rub_count">%.02f руб.</string>
+    <string name="title_params">Параметры</string>
+    <string name="title_auto_close_session">ЗАКРЫТИЕ СМЕНЫ АВТОМАТИЧЕСКИ</string>
+    <string name="title_send_sms_settings">НАСТРОЙКА ОТПРАВКИ SMS</string>
+    <string name="title_send_email_settings">НАСТРОЙКА ОТПРАВКИ E-MAIL</string>
+    <string name="title_send_from_evotor">Отправка через сервис Evotor</string>
+    <string name="title_send_from_sv">Отправка через сервис Soft-Village</string>
+    <string name="exit_up">ВЫЙТИ</string>
+    <string name="title_dialog_exit">Закрыть фискализатор?</string>
+    <string name="cancel_low">Отмена</string>
+    <string name="close_low">Закрыть</string>
+    <string name="ok">ОК</string>
+    <string name="title_session_time_alert">Время смены превышает выбранный интервал.</string>
+    <string name="title_session_time_alert_description">При сохранении новых настроек текущая смена будет закрыта. Сохранить?</string>
+    <string name="title_session_time_day_alert">Время смены превышает 24 часа.</string>
+    <string name="title_session_time_day_alert_description">При сохранении новых настроек время смены превысит 24 часа, текущая смена будет закрыта. Сохранить?</string>
 </resources>

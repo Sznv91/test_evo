@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/white"
+    android:choiceMode="none"
+    android:clickable="true"
+    android:fillViewport="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingTop="@dimen/margin_46"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingBottom="@dimen/margin_46"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleParams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/title_params"
+            android:textColor="@color/color20"
+            android:textSize="@dimen/tsize_32" />
+
+        <ImageView
+            android:id="@+id/changeTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_moon" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/menu_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/exit"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:id="@+id/menuContent"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/exit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/printReportAfterClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="@dimen/padding_16"
+                android:text="@string/print_report_after_close"
+                android:textColor="@color/color21"
+                android:textSize="@dimen/tsize_20" />
+
+            <View
+                android:id="@+id/dividerPrintAfterClose"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.12"
+                android:background="@color/color22" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/printReceipts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="@dimen/padding_16"
+                android:text="@string/print_checks"
+                android:textColor="@color/color21"
+                android:textSize="@dimen/tsize_20" />
+
+            <View
+                android:id="@+id/dividerPrintReceipts"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.12"
+                android:background="@color/color22" />
+
+            <LinearLayout
+                android:id="@+id/layoutAutoClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_16">
+
+                <TextView
+                    android:id="@+id/titleAutoClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0.3"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/title_auto_close_session"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/tsize_16" />
+
+                <ImageView
+                    android:id="@+id/arrowAutoClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_arrow_up_gray" />
+            </LinearLayout>
+
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/expandableAutoClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:el_duration="150"
+                app:el_expanded="true"
+                app:el_parallax="0.5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                        android:id="@+id/everyDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/padding_16"
+                        android:text="@string/every_day"
+                        android:textColor="@color/color21"
+                        android:textSize="@dimen/tsize_20" />
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ELinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/titleEvery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="@dimen/padding_16"
+                            android:text="@string/every_"
+                            android:textColor="@color/color21"
+                            android:textSize="@dimen/tsize_20" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/every"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="@dimen/padding_16"
+                            android:textColor="@color/color21"
+                            android:textSize="@dimen/tsize_20" />
+
+                    </ru.softvillage.test_evo.tabs.left_menu.ELinearLayout>
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ELinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/titleAt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="@dimen/padding_16"
+                            android:text="@string/at_"
+                            android:textColor="@color/color21"
+                            android:textSize="@dimen/tsize_20"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/at"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/at"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:padding="@dimen/padding_16"
+                            android:textColor="@color/color21"
+                            android:textSize="@dimen/tsize_20"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </ru.softvillage.test_evo.tabs.left_menu.ELinearLayout>
+
+                </LinearLayout>
+
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+            <View
+                android:id="@+id/dividerAutoClose"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.12"
+                android:background="@color/color22" />
+
+            <LinearLayout
+                android:id="@+id/layoutSendSms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_16">
+
+                <TextView
+                    android:id="@+id/titleSendSms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0.3"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/title_send_sms_settings"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/tsize_16" />
+
+                <ImageView
+                    android:id="@+id/arrowSendSms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_arrow_up_gray" />
+            </LinearLayout>
+
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/expandableSendSms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:el_duration="150"
+                app:el_expanded="true"
+                app:el_parallax="0.5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                        android:id="@+id/sendSmsEvotor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/padding_16"
+                        android:text="@string/title_send_from_evotor"
+                        android:textColor="@color/color21"
+                        android:textSize="@dimen/tsize_20" />
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                        android:id="@+id/sendSmsSv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/padding_16"
+                        android:text="@string/title_send_from_sv"
+                        android:textColor="@color/color21"
+                        android:textSize="@dimen/tsize_20" />
+                </LinearLayout>
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+            <View
+                android:id="@+id/dividerSendSms"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.12"
+                android:background="@color/color22" />
+
+            <LinearLayout
+                android:id="@+id/layoutSendEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_16">
+
+                <TextView
+                    android:id="@+id/titleSendEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0.3"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/title_send_email_settings"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/tsize_16" />
+
+                <ImageView
+                    android:id="@+id/arrowSendEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_arrow_up_gray" />
+            </LinearLayout>
+
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/expandableSendEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:el_duration="150"
+                app:el_expanded="true"
+                app:el_parallax="0.5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                        android:id="@+id/sendEmailEvotor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/padding_16"
+                        android:text="@string/title_send_from_evotor"
+                        android:textColor="@color/color21"
+                        android:textSize="@dimen/tsize_20" />
+
+                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                        android:id="@+id/sendEmailSv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/padding_16"
+                        android:text="@string/title_send_from_sv"
+                        android:textColor="@color/color21"
+                        android:textSize="@dimen/tsize_20" />
+                </LinearLayout>
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/iconExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_exit" />
+
+        <TextView
+            android:id="@+id/titleExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/exit_up"
+            android:textColor="@color/color23"
+            android:textSize="@dimen/tsize_20"
+            app:layout_constraintBottom_toBottomOf="@+id/iconExit"
+            app:layout_constraintStart_toEndOf="@+id/iconExit"
+            app:layout_constraintTop_toTopOf="@+id/iconExit" />
+
+        <View
+            android:id="@+id/dividerExit"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.12"
+            android:background="@color/color22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:alpha="0.4"
+            android:fontFamily="@font/roboto_medium"
+            android:text="TextView"
+            android:textColor="@color/color24"
+            android:textSize="@dimen/tsize_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
