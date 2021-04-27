@@ -27,6 +27,7 @@ import ru.evotor.framework.receipt.Payment;
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
+import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 
@@ -49,12 +50,12 @@ public class PrintUtil {
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
         if (!order.getOrderData().checkDiscount.equals(BigDecimal.ZERO)) {
-            Log.d(EvoApp.TAG+"_discount_", "Сумма чека без скидок: " +  order.getSumPrice());
+            Log.d(EvoApp.TAG + "_discount_", "Сумма чека без скидок: " + order.getSumPrice());
             BigDecimal onePercentFromAllPrice = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-            Log.d(EvoApp.TAG+"_discount_", "Цена одного процента от общей стоимости: " +  onePercentFromAllPrice);
-            Log.d(EvoApp.TAG+"_discount_", "Процент скидки: " +  order.getOrderData().checkDiscount);
+            Log.d(EvoApp.TAG + "_discount_", "Цена одного процента от общей стоимости: " + onePercentFromAllPrice);
+            Log.d(EvoApp.TAG + "_discount_", "Процент скидки: " + order.getOrderData().checkDiscount);
             receiptDiscount = onePercentFromAllPrice.multiply(order.getOrderData().checkDiscount);
-            Log.d(EvoApp.TAG+"_discount_", "Размер скидки: " +  receiptDiscount);
+            Log.d(EvoApp.TAG + "_discount_", "Размер скидки: " + receiptDiscount);
         }
 
         BigDecimal finalCost = order.getSumPrice().subtract(receiptDiscount);
@@ -120,11 +121,12 @@ public class PrintUtil {
                             dataToDb.setReceiptNumber(Long.parseLong(result.getData().getString("receiptNumber")));
                             dataToDb.setUuid(result.getData().getString("receiptUuid"));
                             dataToDb.setId(order.getOrderData().id);
+                            dataToDb.setSessionId(SystemStateApi.getLastSessionNumber(context));
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
                             break;
                         case ERROR:
-                            Log.d(EvoApp.TAG+"_print_error", result.getError().getMessage());
+                            Log.d(EvoApp.TAG + "_print_error", result.getError().getMessage());
                             callback.printFailure(order);
 //                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;

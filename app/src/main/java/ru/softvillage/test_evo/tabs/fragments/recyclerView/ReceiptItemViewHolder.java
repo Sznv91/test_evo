@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
-public class ReceiptItemViewHolder extends AbstractViewHolder {
+public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
     private final TextView receiptNumber;
     private final TextView goodCount;
     private final TextView totalCost;

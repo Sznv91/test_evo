@@ -18,7 +18,7 @@ import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
 @RequiredArgsConstructor
-public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
+public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractReceiptViewHolder> {
     public static final String DATE_SPLITTER_NAME = EvoApp.TAG + "_Date_Splitter_NAME";
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_DATA_SPLITTER = 1;
@@ -29,10 +29,10 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractViewHolder>
 
     @NonNull
     @Override
-    public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AbstractReceiptViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_DATA_SPLITTER:
-                return new DateSplitHolder(inflater.inflate(R.layout.item_good_date, parent, false));
+                return new ReceiptDateSplitHolder(inflater.inflate(R.layout.item_good_date, parent, false));
             case TYPE_NORMAL:
                 return new ReceiptItemViewHolder(inflater.inflate(R.layout.item_receipt, parent, false));
         }
@@ -40,7 +40,7 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AbstractViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AbstractReceiptViewHolder holder, int position) {
         holder.bind(itemList.get(holder.getAdapterPosition()));
         if (holder.getItemViewType() == TYPE_DATA_SPLITTER) {
             TextView dateTextView = holder.itemView.findViewById(R.id.item_date_splitter);

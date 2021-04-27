@@ -35,6 +35,9 @@ public interface ReceiptDao {
     @Query("SELECT * FROM receipt WHERE id = :id")
     LiveData<ReceiptWithGoodEntity> loadReceiptBy(long id);
 
-    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertGood(GoodEntity entity);
+
+    @Query("SELECT session_id FROM receipt WHERE id=:receiptId")
+    Long getSessionId(long receiptId);
 }

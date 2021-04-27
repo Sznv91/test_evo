@@ -65,6 +65,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_add_fake_data" />
 
+    <Button
+        android:id="@+id/close_session"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="close session"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_add_fake_data" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

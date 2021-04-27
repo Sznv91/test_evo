@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ru.evotor.framework.core.IntegrationException;
+import ru.evotor.framework.core.action.command.print_z_report_command.PrintZReportCommand;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.network.entity.Order;
@@ -64,13 +66,26 @@ public class StatisticFragment extends Fragment {
         ((Button) view.findViewById(R.id.print_example)).setOnClickListener(v -> printExample());
         ((Button) view.findViewById(R.id.print_calculate_recipient)).setOnClickListener(v -> printOrder());
         ((Button) view.findViewById(R.id.add_fake_receipt)).setOnClickListener(v -> addFakeReceipt());
+        ((Button) view.findViewById(R.id.close_session)).setOnClickListener(v -> closeSession());
         editText = view.findViewById(R.id.discount_all_order);
 
         dateField = getView().findViewById(R.id.edit_text_add_fake_data);
         dateField.setText(LocalDate.now().toString());
 
-
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @SuppressLint("LongLogTag")
+    private void closeSession() {
+        new PrintZReportCommand().process(getContext(), future -> {
+            try {
+                Log.d(EvoApp.TAG + "_z_report", future.getResult().getData().toString());
+            } catch (IntegrationException e) {
+                e.printStackTrace();
+            }
+        });
+        //SessionClosedEvent close = new ru.evotor.framework.core.action.event.session.SessionClosedEvent();
+
     }
 
 
@@ -161,7 +176,9 @@ public class StatisticFragment extends Fragment {
         entity.setCountOfPosition(6);
         entity.setUuid(UUID.randomUUID().toString());
 
-        EvoApp.getInstance().getDbHelper().insertReceiptToDb(entity);
+        new Thread(() -> {
+            EvoApp.getInstance().getDbHelper().insertReceiptToDb(entity);
+        }).start();
 
     }
 

@@ -40,16 +40,26 @@ public class DbHelper {
     }
 
     @Transaction
-    public void insertReceiptWithGoods(ReceiptWithGoodEntity receipt){
+    public void insertReceiptWithGoods(ReceiptWithGoodEntity receipt) {
         LocalDataBase.databaseWriteExecutor.execute(() -> {
-           dataBase.receiptDao().insert(receipt.getReceiptEntity());
-           for (GoodEntity goods : receipt.goodEntities){
-               dataBase.receiptDao().insertGood(goods);
-           }
+            dataBase.receiptDao().insert(receipt.getReceiptEntity());
+            for (GoodEntity goods : receipt.goodEntities) {
+                dataBase.receiptDao().insertGood(goods);
+            }
         });
     }
 
-    public LiveData<ReceiptWithGoodEntity> getReceiptWithGoodEntity(long id){
+    public LiveData<ReceiptWithGoodEntity> getReceiptWithGoodEntity(long id) {
         return dataBase.receiptDao().loadReceiptBy(id);
+    }
+
+    public void getSessionId(long receiptId, SessionCallback callback) {
+        dataBase.getQueryExecutor().execute(() -> {
+            callback.success(dataBase.receiptDao().getSessionId(receiptId));
+        });
+    }
+
+    public interface SessionCallback {
+        void success(long sessionId);
     }
 }

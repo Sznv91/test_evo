@@ -6,10 +6,10 @@ import android.widget.TextView;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
-public class DateSplitHolder extends AbstractViewHolder {
+public class ReceiptDateSplitHolder extends AbstractReceiptViewHolder {
     private final TextView date;
 
-    public DateSplitHolder(View itemView) {
+    public ReceiptDateSplitHolder(View itemView) {
         super(itemView);
         date = itemView.findViewById(R.id.item_date_splitter);
     }

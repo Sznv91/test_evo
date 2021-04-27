@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.softvillage.test_evo.EvoApp;
-import ru.softvillage.test_evo.ReceiptDetailFragment;
+import ru.softvillage.test_evo.tabs.fragments.ReceiptDetailFragment;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
 
@@ -63,7 +63,6 @@ public class ReceiptViewModel extends ViewModel {
                         @Override
                         public void pushOnDate(LocalDateTime date) {
                             Log.d(EvoApp.TAG + "_date_splitter", "Нажали на разделитель даты. Дата: " + date.toString());
-
                             DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 /**

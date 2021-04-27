@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 
-public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
+public abstract class AbstractReceiptViewHolder extends RecyclerView.ViewHolder {
 
-    public AbstractViewHolder(@NonNull View itemView) {
+    public AbstractReceiptViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 

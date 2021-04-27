@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import ru.softvillage.test_evo.R;
+import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptViewModel;
 
 public class ReceiptFragment extends Fragment {
     private ReceiptViewModel mViewModel;
+    FloatingActionButton fab;
 
     public static ReceiptFragment newInstance() {
         return new ReceiptFragment();
@@ -41,6 +45,7 @@ public class ReceiptFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fab = view.findViewById(R.id.fab_up);
         initRecyclerView();
     }
 
@@ -62,7 +67,34 @@ public class ReceiptFragment extends Fragment {
         divider.setDrawable(getContext().getDrawable(R.drawable.line_divider));
         recycler.addItemDecoration(divider);
 
-        recycler.setAdapter(mViewModel.getAdapter());
+        ReceiptItemAdapter adapter = mViewModel.getAdapter();
+        recycler.setAdapter(adapter);
+
+
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            //https://stackoverflow.com/questions/33208613/hide-floatingactionbutton-on-scroll-of-recyclerview
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    fab.show();
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab.isShown()) {
+                    fab.hide();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
     }
 
 }

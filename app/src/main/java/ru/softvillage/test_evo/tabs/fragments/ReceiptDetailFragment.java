@@ -1,4 +1,4 @@
-package ru.softvillage.test_evo;
+package ru.softvillage.test_evo.tabs.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -22,6 +22,8 @@ import java.util.Map;
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.Receipt;
 import ru.evotor.framework.receipt.TaxNumber;
+import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptDetailViewModel;
 
 /**
@@ -39,7 +41,7 @@ public class ReceiptDetailFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
+    private String receiptSoftVillageId;
 
     public ReceiptDetailFragment() {
         // Required empty public constructor
@@ -68,7 +70,7 @@ public class ReceiptDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            receiptSoftVillageId = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -86,7 +88,7 @@ public class ReceiptDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(ReceiptDetailViewModel.class);
-        viewModel.setReceiptCloudId(mParam2);
+        viewModel.setReceiptCloudId(receiptSoftVillageId);
 
         RecyclerView recycler = getView().findViewById(R.id.position_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -94,6 +96,10 @@ public class ReceiptDetailFragment extends Fragment {
 
         recycler.setAdapter(viewModel.getAdapter());
 
+        TextView sessionId = view.findViewById(R.id.session_id);
+        EvoApp.getInstance().getDbHelper().getSessionId(Long.parseLong(receiptSoftVillageId), receivedSessionId -> {
+            getActivity().runOnUiThread(() -> sessionId.setText(String.valueOf(receivedSessionId)));
+        });
 
         new Thread(() -> {
             while (viewModel.getReceipt() == null) {
