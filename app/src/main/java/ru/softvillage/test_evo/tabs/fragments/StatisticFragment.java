@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.network.entity.Order;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.StatisticViewModel;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
@@ -47,8 +49,10 @@ public class StatisticFragment extends Fragment {
 
     private StatisticViewModel mViewModel;
     private PrintUtil printUtil;
-    TextInputEditText editText;
+    private TextInputEditText editText;
     private EditText dateField;
+    private TextView startSession;
+    private TextView endSession;
 
     public static StatisticFragment newInstance() {
         return new StatisticFragment();
@@ -72,7 +76,20 @@ public class StatisticFragment extends Fragment {
         dateField = getView().findViewById(R.id.edit_text_add_fake_data);
         dateField.setText(LocalDate.now().toString());
 
+        startSession = view.findViewById(R.id.start_session);
+        endSession = view.findViewById(R.id.end_session);
+
+        initDateSession();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void initDateSession() {
+        if (SessionPresenter.getInstance().getDateLastOpenSession() != null){
+            startSession.setText(SessionPresenter.getInstance().getDateLastOpenSession().toString());
+        }
+        if (SessionPresenter.getInstance().getDateLastCloseSession() != null){
+            endSession.setText(SessionPresenter.getInstance().getDateLastCloseSession().toString());
+        }
     }
 
     @SuppressLint("LongLogTag")

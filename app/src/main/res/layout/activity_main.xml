@@ -44,5 +44,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-    <include layout="@layout/menu_left" />
+    <include
+        layout="@layout/menu_left"
+        android:fastScrollEnabled="false" />
 </androidx.drawerlayout.widget.DrawerLayout>

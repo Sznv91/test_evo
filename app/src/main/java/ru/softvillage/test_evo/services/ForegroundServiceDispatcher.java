@@ -96,6 +96,11 @@ public class ForegroundServiceDispatcher extends Service {
             }
 
         });*/
+
+        Intent serviceIntent = new Intent(context, SessionCloseWatcher.class);
+//        serviceIntent.setAction("cidadaos.cidade.data.UpdaterServiceManager");
+        context.startService(serviceIntent);
+
         new Thread(() -> {
 
             while (true) {

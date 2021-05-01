@@ -82,5 +82,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/close_session"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/start_session"
+        android:text="StartSession"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/close_session"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/end_session"
+        android:text="EndSession"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

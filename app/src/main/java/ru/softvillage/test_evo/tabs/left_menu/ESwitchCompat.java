@@ -33,6 +33,11 @@ public class ESwitchCompat extends SwitchCompat implements IExpanded {
     @Override
     public void expand(float ratio) {
         this.ratio = ratio;
-        requestLayout();
+//        requestLayout();
+        try {
+            super.requestLayout();
+        } catch (Exception ex){
+
+        }
     }
 }

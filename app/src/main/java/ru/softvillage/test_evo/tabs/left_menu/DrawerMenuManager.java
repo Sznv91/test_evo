@@ -1,59 +1,149 @@
 package ru.softvillage.test_evo.tabs.left_menu;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.util.Calendar;
+import java.util.Locale;
+
+import ru.softvillage.test_evo.BuildConfig;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
+import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
+import ru.softvillage.test_evo.tabs.left_menu.dialogs.AlertDialog;
+import ru.softvillage.test_evo.tabs.left_menu.dialogs.ExitDialog;
+import ru.softvillage.test_evo.tabs.left_menu.dialogs.SetCloseAtDialog;
+import ru.softvillage.test_evo.tabs.left_menu.dialogs.SetCloseEveryDialog;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 import static androidx.core.view.GravityCompat.START;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_AT_;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_DAY;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_UNIT_HOUR;
+//sendSmsEvotor
+//sendEmailSv
+//sendEmailEvotor
+//sendSmsSv
 
-public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnClickListener {
+
+public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnClickListener,
+        CompoundButton.OnCheckedChangeListener,
+        ExitDialog.IExitDialog,
+        IMainView1 {
     //ru.evotor.framework.kkt.api Посмотреть внимательней
     // KktApi
+    public final static String EVOTOR_SERVICE = "Evotor";
+    public final static String SOFT_VILLAGE_SERVICE = "Soft-Village";
+
     private AppCompatActivity activity;
     private DrawerLayout drawer;
     private ConstraintLayout drawerMenu;
 
     private ImageView menu;
     private ImageView changeTheme;
-    private LinearLayout layoutAutoClose;
+
     private TextView titleEvery;
     private TextView titleAt;
-    private LinearLayout layoutSendSms;
-    private LinearLayout layoutSendEmail;
+
     private ImageView iconExit;
     private TextView titleExit;
+    private TextView version;
+
+    /**
+     * Переключатели
+     */
+    private SwitchCompat printReportAfterClose;
+    private SwitchCompat printReceipts;
+    private SwitchCompat everyDay;
+    private SwitchCompat every;
+    private SwitchCompat at;
+    private SwitchCompat sendSmsEvotor;
+    private SwitchCompat sendEmailSv;
+    private SwitchCompat sendEmailEvotor;
+    private SwitchCompat sendSmsSv;
+
+    /**
+     * Сворачивающиеся пункты меню
+     */
+    private LinearLayout layoutAutoClose;
+    private LinearLayout layoutSendSms;
+    private LinearLayout layoutSendEmail;
 
     private ExpandableLayout expandableAutoClose;
     private ImageView arrowAutoClose;
+    private ExpandableLayout expandableSendSms;
+    private ImageView arrowSendSms;
+    private ExpandableLayout expandableSendEmail;
+    private ImageView arrowSendEmail;
 
 
     public DrawerMenuManager(T activity) {
         this.activity = activity;
         initMenu();
+        SessionPresenter.getInstance().setiMainView1(this);
     }
 
     public void setActivity(T activity) {
         this.activity = activity;
         initMenu();
+        SessionPresenter.getInstance().setiMainView1(this);
     }
 
     private void initMenu() {
         drawer = activity.findViewById(R.id.drawer);
         drawerMenu = activity.findViewById(R.id.drawer_menu);
-        ((ImageView) activity.findViewById(R.id.menu)).setOnClickListener(v -> showMenu());
+
+        /**
+         * Бинд сворачивающихся пунктов
+         */
+        expandableAutoClose = activity.findViewById(R.id.expandableAutoClose);
+        arrowAutoClose = activity.findViewById(R.id.arrowAutoClose);
+        expandableSendSms = activity.findViewById(R.id.expandableSendSms);
+        arrowSendSms = activity.findViewById(R.id.arrowSendSms);
+        expandableSendEmail = activity.findViewById(R.id.expandableSendEmail);
+        arrowSendEmail = activity.findViewById(R.id.arrowSendEmail);
+
+        /**
+         * Бинд переключателей
+         */
+        printReportAfterClose = activity.findViewById(R.id.printReportAfterClose);
+        printReceipts = activity.findViewById(R.id.printReceipts);
+        everyDay = activity.findViewById(R.id.everyDay);
+        every = activity.findViewById(R.id.every);
+        at = activity.findViewById(R.id.at);
+        sendSmsEvotor = activity.findViewById(R.id.sendSmsEvotor);
+        sendEmailSv = activity.findViewById(R.id.sendEmailSv);
+        sendEmailEvotor = activity.findViewById(R.id.sendEmailEvotor);
+        sendSmsSv = activity.findViewById(R.id.sendSmsSv);
+
+
+        menu = activity.findViewById(R.id.menu);
+        changeTheme = activity.findViewById(R.id.changeTheme);
+        layoutAutoClose = activity.findViewById(R.id.layoutAutoClose);
+        titleEvery = activity.findViewById(R.id.titleEvery);
+        titleAt = activity.findViewById(R.id.titleAt);
+        layoutSendSms = activity.findViewById(R.id.layoutSendSms);
+        layoutSendEmail = activity.findViewById(R.id.layoutSendEmail);
+        iconExit = activity.findViewById(R.id.iconExit);
+        titleExit = activity.findViewById(R.id.titleExit);
+        version = activity.findViewById(R.id.version);
 
         drawerMenu.post(new Runnable() {
             @Override
@@ -77,9 +167,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-//                closeExpandableAutoClose();
-//                closeExpandableSendSms();
-//                closeExpandableSendEmail();
+                closeAllToggle();
             }
 
             @Override
@@ -87,20 +175,6 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
             }
         });
-        expandableAutoClose = activity.findViewById(R.id.expandableAutoClose);
-        arrowAutoClose = activity.findViewById(R.id.arrowAutoClose);
-
-
-        menu = activity.findViewById(R.id.menu);
-        changeTheme = activity.findViewById(R.id.changeTheme);
-        layoutAutoClose = activity.findViewById(R.id.layoutAutoClose);
-        titleEvery = activity.findViewById(R.id.titleEvery);
-        titleAt = activity.findViewById(R.id.titleAt);
-        layoutSendSms = activity.findViewById(R.id.layoutSendSms);
-        layoutSendEmail = activity.findViewById(R.id.layoutSendEmail);
-        iconExit = activity.findViewById(R.id.iconExit);
-        titleExit = activity.findViewById(R.id.titleExit);
-
 
         menu.setOnClickListener(this);
         menu.setOnClickListener(this);
@@ -112,6 +186,110 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         layoutSendEmail.setOnClickListener(this);
         iconExit.setOnClickListener(this);
         titleExit.setOnClickListener(this);
+
+        closeAllToggle();
+        initSwitch();
+        updateVersion();
+    }
+
+    @SuppressLint("LongLogTag")
+    private void initSwitch() {
+        printReportAfterClose.setOnCheckedChangeListener(null);
+        printReceipts.setOnCheckedChangeListener(null);
+
+        everyDay.setOnCheckedChangeListener(null);
+        every.setOnCheckedChangeListener(null);
+        at.setOnCheckedChangeListener(null);
+
+        sendSmsEvotor.setOnCheckedChangeListener(null);
+        sendSmsSv.setOnCheckedChangeListener(null);
+
+        sendEmailEvotor.setOnCheckedChangeListener(null);
+        sendEmailSv.setOnCheckedChangeListener(null);
+
+        printReportAfterClose.setChecked(SessionPresenter.getInstance().isPrintReportOnClose());
+        printReceipts.setChecked(SessionPresenter.getInstance().isPrintChecks());
+
+        printReportAfterClose.setOnCheckedChangeListener(this);
+        printReceipts.setOnCheckedChangeListener(this);
+
+        if (!SessionPresenter.getInstance().isAutoClose()) {
+            expandableAutoClose.setActiveChildId(-1);
+
+            everyDay.setChecked(false);
+            every.setChecked(false);
+            at.setChecked(false);
+        } else {
+            switch (SessionPresenter.getInstance().getAutoCloseType()) {
+                case AUTO_CLOSE_EVERY_DAY:
+                    expandableAutoClose.setActiveChildId(0);
+                    everyDay.setChecked(true);
+                    break;
+                case AUTO_CLOSE_EVERY_:
+                    expandableAutoClose.setActiveChildId(1);
+                    every.setChecked(true);
+                    break;
+                case AUTO_CLOSE_AT_:
+                    expandableAutoClose.setActiveChildId(2);
+                    at.setChecked(true);
+                    break;
+            }
+        }
+
+        titleEvery.setText(String.format(Locale.getDefault(), activity.getString(R.string.every_),
+                SessionPresenter.getInstance().getAutoCloseEveryValue(),
+                activity.getResources().getStringArray(R.array.time_unit)[SessionPresenter.getInstance().getAutoCloseEveryUnit()]));
+
+        titleAt.setText(String.format(Locale.getDefault(), activity.getString(R.string.at_), SessionPresenter.getInstance().getAutoCloseAtHour(),
+                SessionPresenter.getInstance().getAutoCloseAtMinute()));
+
+        everyDay.setOnCheckedChangeListener(this);
+        every.setOnCheckedChangeListener(this);
+        at.setOnCheckedChangeListener(this);
+
+        if (!SessionPresenter.getInstance().isSendSms()) {
+            expandableSendSms.setActiveChildId(-1);
+            sendSmsEvotor.setChecked(false);
+            sendSmsSv.setChecked(false);
+        } else {
+            if (SessionPresenter.getInstance().getDefaultSmsService().equals(SOFT_VILLAGE_SERVICE)) {
+                expandableSendSms.setActiveChildId(1);
+                sendSmsEvotor.setChecked(false);
+                sendSmsSv.setChecked(true);
+            } else if (SessionPresenter.getInstance().getDefaultSmsService().equals(EVOTOR_SERVICE)) {
+                expandableSendSms.setActiveChildId(0);
+                sendSmsEvotor.setChecked(true);
+                sendSmsSv.setChecked(false);
+            }
+        }
+
+        sendSmsEvotor.setOnCheckedChangeListener(this);
+        sendSmsSv.setOnCheckedChangeListener(this);
+
+        if (!SessionPresenter.getInstance().isSendEmail()) {
+            expandableSendEmail.setActiveChildId(-1);
+            sendEmailEvotor.setChecked(false);
+            sendEmailSv.setChecked(false);
+        } else {
+            if (SessionPresenter.getInstance().getDefaultEmailService().equals(SOFT_VILLAGE_SERVICE)) {
+                Log.d(EvoApp.TAG + "_EmailService", "if");
+                expandableSendEmail.setActiveChildId(1);
+                sendEmailEvotor.setChecked(false);
+                sendEmailSv.setChecked(true);
+            } else if (SessionPresenter.getInstance().getDefaultEmailService().equals(EVOTOR_SERVICE)) {
+                Log.d(EvoApp.TAG + "_EmailService", "else - if");
+                expandableSendEmail.setActiveChildId(0);
+                sendEmailEvotor.setChecked(true);
+                sendEmailSv.setChecked(false);
+            }
+        }
+
+        sendEmailEvotor.setOnCheckedChangeListener(this);
+        sendEmailSv.setOnCheckedChangeListener(this);
+    }
+
+    private void updateVersion() {
+        version.setText(String.format(Locale.getDefault(), "v %s (%d)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
     }
 
 
@@ -121,19 +299,80 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         Log.d(EvoApp.TAG + "_left_menu", "click - click: " + v.getId());
         switch (v.getId()) {
             case R.id.menu:
-                showMenu();
+                if (!drawer.isDrawerOpen(START))
+                    drawer.openDrawer(START);
                 break;
+            /*case R.id.changeTheme:
+                toggleTheme();
+                break;*/
             case R.id.layoutAutoClose:
                 toggleExpandableAutoClose();
+                break;
+            case R.id.titleEvery:
+                SetCloseEveryDialog setCloseEveryDialog = SetCloseEveryDialog.newInstance();
+                setCloseEveryDialog.show(activity.getSupportFragmentManager(), SetCloseEveryDialog.class.getSimpleName());
+                break;
+            case R.id.titleAt:
+                SetCloseAtDialog setCloseAtDialog = SetCloseAtDialog.newInstance();
+                setCloseAtDialog.show(activity.getSupportFragmentManager(), SetCloseAtDialog.class.getSimpleName());
+                break;
+            case R.id.layoutSendSms:
+                toggleExpandableSendSms();
+                break;
+            case R.id.layoutSendEmail:
+                toggleExpandableSendEmail();
+                break;
+            case R.id.iconExit:
+            case R.id.titleExit:
+                ExitDialog exitDialog = ExitDialog.newInstance();
+                exitDialog.setiExitDialog(this);
+                exitDialog.setCancelable(false);
+                exitDialog.show(activity.getSupportFragmentManager(), ExitDialog.class.getSimpleName());
                 break;
         }
     }
 
-    private void showMenu() {
-        if (!drawer.isDrawerOpen(START))
-            drawer.openDrawer(START);
+    @SuppressLint("LongLogTag")
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        Log.d(EvoApp.TAG + "_Check", "onCheckedChanged");
+        switch (buttonView.getId()) {
+            case R.id.printReportAfterClose:
+                SessionPresenter.getInstance().setPrintReportOnClose(isChecked);
+                break;
+            case R.id.printReceipts:
+                SessionPresenter.getInstance().setPrintChecks(isChecked);
+                break;
+            case R.id.everyDay:
+                Log.d(EvoApp.TAG + "_Check", "isChecked");
+                everyDayChecked(isChecked);
+                break;
+            case R.id.every:
+                everyChecked(isChecked);
+                break;
+            case R.id.at:
+                atChecked(isChecked);
+                break;
+            case R.id.sendSmsEvotor:
+                sendSmsEvotorChecked(isChecked);
+                break;
+            case R.id.sendSmsSv:
+                sendSmsSvChecked(isChecked);
+                break;
+            case R.id.sendEmailEvotor:
+                sendEmailEvotorChecked(isChecked);
+                break;
+            case R.id.sendEmailSv:
+                sendEmailSvChecked(isChecked);
+                break;
+        }
     }
 
+    private void closeAllToggle() {
+        closeExpandableAutoClose();
+        closeExpandableSendSms();
+        closeExpandableSendEmail();
+    }
 
     private void toggleExpandableAutoClose() {
         if (expandableAutoClose.isExpanded()) {
@@ -149,4 +388,481 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         arrowAutoClose.animate().rotation(180);
         expandableAutoClose.collapse();
     }
+
+    private void closeExpandableSendSms() {
+        arrowSendSms.animate().rotation(180);
+        expandableSendSms.collapse();
+    }
+
+    private void toggleExpandableSendSms() {
+        if (expandableSendSms.isExpanded()) {
+            arrowSendSms.animate().setDuration(150).rotation(180);
+            expandableSendSms.collapse();
+        } else {
+            arrowSendSms.animate().setDuration(150).rotation(0);
+            expandableSendSms.expand();
+        }
+    }
+
+    private void closeExpandableSendEmail() {
+        arrowSendEmail.animate().rotation(180);
+        expandableSendEmail.collapse();
+    }
+
+    private void toggleExpandableSendEmail() {
+        if (expandableSendEmail.isExpanded()) {
+            arrowSendEmail.animate().setDuration(150).rotation(180);
+            expandableSendEmail.collapse();
+        } else {
+            arrowSendEmail.animate().setDuration(150).rotation(0);
+            expandableSendEmail.expand();
+        }
+    }
+
+
+    @SuppressLint("LongLogTag")
+    private void everyDayChecked(boolean isChecked) {
+        Log.d(EvoApp.TAG + "_Check", "everyDayChecked");
+        if (isChecked) {
+            Log.d(EvoApp.TAG + "_Check", "isChecked");
+            if (SessionPresenter.getInstance().getSessionTime() >= 24 * 60 * 60 * 1000) {
+                AlertDialog dialog = AlertDialog.newInstance(activity.getString(R.string.title_session_time_alert),
+                        activity.getString(R.string.title_session_time_alert_description));
+                dialog.setiAlertDialog(new AlertDialog.IAlertDialog() {
+                    @Override
+                    public void onAlertClickYes() {
+                        expandableAutoClose.setActiveChildId(0);
+
+                        every.setOnCheckedChangeListener(null);
+                        at.setOnCheckedChangeListener(null);
+
+                        every.setChecked(false);
+                        at.setChecked(false);
+
+                        every.setOnCheckedChangeListener(DrawerMenuManager.this);
+                        at.setOnCheckedChangeListener(DrawerMenuManager.this);
+
+                        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_DAY);
+                    }
+
+                    @Override
+                    public void onAlertClickNo() {
+                        everyDay.setOnCheckedChangeListener(null);
+                        everyDay.setChecked(false);
+                        everyDay.setOnCheckedChangeListener(DrawerMenuManager.this);
+                    }
+                });
+                dialog.show(activity.getSupportFragmentManager(), AlertDialog.class.getSimpleName());
+            } else {
+                Log.d(EvoApp.TAG + "_Check", "else");
+                expandableAutoClose.setActiveChildId(0);
+
+                every.setOnCheckedChangeListener(null);
+                at.setOnCheckedChangeListener(null);
+
+                every.setChecked(false);
+                at.setChecked(false);
+
+                every.setOnCheckedChangeListener(DrawerMenuManager.this);
+                at.setOnCheckedChangeListener(DrawerMenuManager.this);
+
+                SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_DAY);
+            }
+        } else {
+            if (!every.isChecked() && !at.isChecked()) {
+                expandableAutoClose.setActiveChildId(-1);
+                SessionPresenter.getInstance().setAutoClose(false);
+            }
+        }
+    }
+
+    private void everyChecked(boolean isChecked) {
+        if (isChecked) {
+            long periodTime = SessionPresenter.getInstance().getAutoCloseEveryValue() * 60 * 1000;
+
+            if (SessionPresenter.getInstance().getAutoCloseEveryUnit() == AUTO_CLOSE_EVERY_UNIT_HOUR)
+                periodTime *= 60;
+
+            if (SessionPresenter.getInstance().getSessionTime() >= periodTime) {
+                AlertDialog dialog = AlertDialog.newInstance(activity.getString(R.string.title_session_time_day_alert),
+                        activity.getString(R.string.title_session_time_day_alert_description));
+                dialog.setiAlertDialog(new AlertDialog.IAlertDialog() {
+                    @Override
+                    public void onAlertClickYes() {
+                        expandableAutoClose.setActiveChildId(1);
+
+                        everyDay.setOnCheckedChangeListener(null);
+                        at.setOnCheckedChangeListener(null);
+
+                        everyDay.setChecked(false);
+                        at.setChecked(false);
+
+                        everyDay.setOnCheckedChangeListener(DrawerMenuManager.this);
+                        at.setOnCheckedChangeListener(DrawerMenuManager.this);
+
+                        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_);
+                    }
+
+                    @Override
+                    public void onAlertClickNo() {
+                        every.setOnCheckedChangeListener(null);
+                        every.setChecked(false);
+                        every.setOnCheckedChangeListener(DrawerMenuManager.this);
+                    }
+                });
+                dialog.show(activity.getSupportFragmentManager(), AlertDialog.class.getSimpleName());
+            } else {
+                expandableAutoClose.setActiveChildId(1);
+
+                everyDay.setOnCheckedChangeListener(null);
+                at.setOnCheckedChangeListener(null);
+
+                everyDay.setChecked(false);
+                at.setChecked(false);
+
+                everyDay.setOnCheckedChangeListener(DrawerMenuManager.this);
+                at.setOnCheckedChangeListener(DrawerMenuManager.this);
+
+                SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_);
+            }
+        } else {
+            if (!everyDay.isChecked() && !at.isChecked()) {
+                expandableAutoClose.setActiveChildId(-1);
+                SessionPresenter.getInstance().setAutoClose(false);
+            }
+        }
+    }
+
+    private void atChecked(boolean isChecked) {
+        if (isChecked) {
+            Calendar closeAt = Calendar.getInstance();
+            closeAt.set(Calendar.HOUR_OF_DAY, SessionPresenter.getInstance().getAutoCloseAtHour());
+            closeAt.set(Calendar.MINUTE, SessionPresenter.getInstance().getAutoCloseAtMinute());
+            closeAt.set(Calendar.SECOND, 0);
+            closeAt.set(Calendar.MILLISECOND, 0);
+
+            if (Calendar.getInstance().getTimeInMillis() > closeAt.getTimeInMillis())
+                closeAt.add(Calendar.DAY_OF_MONTH, 1);
+
+            if (SessionPresenter.getInstance().getSessionTime()
+                    + (closeAt.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())
+                    >= 24 * 60 * 60 * 1000) {
+                AlertDialog dialog = AlertDialog.newInstance(activity.getString(R.string.title_session_time_alert),
+                        activity.getString(R.string.title_session_time_alert_description));
+                dialog.setiAlertDialog(new AlertDialog.IAlertDialog() {
+                    @Override
+                    public void onAlertClickYes() {
+                        expandableAutoClose.setActiveChildId(2);
+
+                        everyDay.setOnCheckedChangeListener(null);
+                        every.setOnCheckedChangeListener(null);
+
+                        everyDay.setChecked(false);
+                        every.setChecked(false);
+
+                        everyDay.setOnCheckedChangeListener(DrawerMenuManager.this);
+                        every.setOnCheckedChangeListener(DrawerMenuManager.this);
+
+                        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_AT_);
+                    }
+
+                    @Override
+                    public void onAlertClickNo() {
+                        at.setOnCheckedChangeListener(null);
+                        at.setChecked(false);
+                        at.setOnCheckedChangeListener(DrawerMenuManager.this);
+                    }
+                });
+                dialog.show(activity.getSupportFragmentManager(), AlertDialog.class.getSimpleName());
+            } else {
+                expandableAutoClose.setActiveChildId(2);
+
+                everyDay.setOnCheckedChangeListener(null);
+                every.setOnCheckedChangeListener(null);
+
+                everyDay.setChecked(false);
+                every.setChecked(false);
+
+                everyDay.setOnCheckedChangeListener(DrawerMenuManager.this);
+                every.setOnCheckedChangeListener(DrawerMenuManager.this);
+
+                SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_AT_);
+            }
+        } else {
+            if (!everyDay.isChecked() && !every.isChecked()) {
+                expandableAutoClose.setActiveChildId(-1);
+                SessionPresenter.getInstance().setAutoClose(false);
+            }
+        }
+    }
+
+    private void sendSmsEvotorChecked(boolean isChecked) {
+        if (isChecked) {
+            expandableSendSms.setActiveChildId(0);
+
+            sendSmsSv.setOnCheckedChangeListener(null);
+            sendSmsSv.setChecked(false);
+            sendSmsSv.setOnCheckedChangeListener(this);
+
+            if (!SessionPresenter.getInstance().getDefaultSmsService().equals(EVOTOR_SERVICE)) {
+                SessionPresenter.getInstance().setDefaultSmsService(EVOTOR_SERVICE);
+                SessionPresenter.getInstance().setSendSms(true);
+            }
+        } else {
+            if (!sendSmsEvotor.isChecked() && !sendSmsSv.isChecked()) {
+                expandableSendSms.setActiveChildId(-1);
+                SessionPresenter.getInstance().setSendSms(false);
+            }
+        }
+    }
+
+    private void sendSmsSvChecked(boolean isChecked) {
+        if (isChecked) {
+//            ApiPresenter.getInstance().connectApp();
+
+            expandableSendSms.setActiveChildId(1);
+            sendSmsEvotor.setOnCheckedChangeListener(null);
+            sendSmsEvotor.setChecked(false);
+            sendSmsEvotor.setOnCheckedChangeListener(this);
+
+            if (!SessionPresenter.getInstance().getDefaultSmsService().equals(SOFT_VILLAGE_SERVICE)) {
+                SessionPresenter.getInstance().setDefaultSmsService(SOFT_VILLAGE_SERVICE);
+                SessionPresenter.getInstance().setSendSms(true);
+            }
+        } else {
+            if (!sendSmsEvotor.isChecked() && !sendSmsSv.isChecked()) {
+                expandableSendSms.setActiveChildId(-1);
+                SessionPresenter.getInstance().setSendSms(false);
+            }
+        }
+    }
+
+    private void sendEmailEvotorChecked(boolean isChecked) {
+        if (isChecked) {
+            expandableSendEmail.setActiveChildId(0);
+            sendEmailSv.setOnCheckedChangeListener(null);
+            sendEmailSv.setChecked(false);
+            sendEmailSv.setOnCheckedChangeListener(this);
+
+            if (!SessionPresenter.getInstance().getDefaultEmailService().equals(EVOTOR_SERVICE)) {
+                SessionPresenter.getInstance().setDefaultEmailService(EVOTOR_SERVICE);
+                SessionPresenter.getInstance().setSendEmail(true);
+            }
+        } else {
+            if (!sendEmailEvotor.isChecked() && !sendEmailSv.isChecked()) {
+                expandableSendEmail.setActiveChildId(-1);
+                SessionPresenter.getInstance().setSendSms(false);
+            }
+        }
+    }
+
+    private void sendEmailSvChecked(boolean isChecked) {
+        if (isChecked) {
+            expandableSendEmail.setActiveChildId(1);
+            sendEmailEvotor.setOnCheckedChangeListener(null);
+            sendEmailEvotor.setChecked(false);
+            sendEmailEvotor.setOnCheckedChangeListener(this);
+
+            if (!SessionPresenter.getInstance().getDefaultEmailService().equals(SOFT_VILLAGE_SERVICE)) {
+                SessionPresenter.getInstance().setDefaultEmailService(SOFT_VILLAGE_SERVICE);
+                SessionPresenter.getInstance().setSendEmail(true);
+            }
+        } else {
+            if (!sendEmailEvotor.isChecked() && !sendEmailSv.isChecked()) {
+                expandableSendEmail.setActiveChildId(-1);
+                SessionPresenter.getInstance().setSendSms(false);
+            }
+        }
+    }
+
+    @Override
+    public void onCloseClick() {
+        stopNotifyService();
+        activity.finish();
+    }
+
+    private void stopNotifyService() {
+//        Logger.getInstance().addLine("MainActivity1; stopNotifyService; NotifyService.isRunning: " + NotifyService.isRunning, false);
+
+        if (isMyServiceRunning(ForegroundServiceDispatcher.class) /*ForegroundServiceDispatcher.isRunning*/)
+            activity.stopService(new Intent(activity, ForegroundServiceDispatcher.class));
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void updateEveryTitle() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                titleEvery.setText(String.format(Locale.getDefault(), activity.getString(R.string.every_),
+                        SessionPresenter.getInstance().getAutoCloseEveryValue(),
+                        activity.getResources().getStringArray(R.array.time_unit)[SessionPresenter.getInstance().getAutoCloseEveryUnit()]));
+            }
+        });
+
+    }
+
+    @Override
+    public void updateAtTitle() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                titleAt.setText(String.format(Locale.getDefault(), activity.getString(R.string.at_), SessionPresenter.getInstance().getAutoCloseAtHour(),
+                        SessionPresenter.getInstance().getAutoCloseAtMinute()));
+            }
+        });
+
+    }
+
+    @Override
+    public void onConnectAppSuccess(boolean connected) {
+
+    }
+
+    @Override
+    public void onConnectAppError(String error) {
+
+    }
+
+    @Override
+    public void onSetErrorError(String error) {
+
+    }
+
+    @Override
+    public void onSetErrorSuccess() {
+
+    }
+
+    @Override
+    public void onSessionTimerTick(long delta) {
+
+    }
+
+    @Override
+    public void showSessionWholeTime(long delta) {
+
+    }
+
+    @Override
+    public void onPrintZReportError(String error) {
+
+    }
+
+    @Override
+    public void onGetReceiptError(String error) {
+
+    }
+
+    @Override
+    public void showNoConnectionIcon() {
+
+    }
+
+
+
+    /*private void toggleTheme() {
+        SessionPresenter.getInstance().toggleTheme();
+
+        updateUITheme();
+    }
+
+    private void updateUITheme() {
+        Log.d(EvoApp.TAG, "CURRENT THEME: " + SessionPresenter.getInstance().getCurrentTheme());
+
+        if (SessionPresenter.getInstance().getCurrentTheme() == 0) {
+            changeTheme.setImageResource(R.drawable.ic_moon);
+
+            drawerMenu.post(new Runnable() {
+                @Override
+                public void run() {
+                    drawerMenu.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), android.R.color.white));
+                }
+            });
+
+            main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color18));
+            toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color17));
+
+            updateTabs(viewPager.getCurrentItem());
+
+            titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color20));
+
+            printReportAfterClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            dividerPrintAfterClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+
+            printReceipts.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            dividerPrintReceipts.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+
+            titleAutoClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), android.R.color.black));
+            titleAutoClose.setAlpha(0.3f);
+            everyDay.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            titleEvery.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            titleAt.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            dividerAutoClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+
+            titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), android.R.color.black));
+            titleSendSms.setAlpha(0.3f);
+            sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+
+            titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), android.R.color.black));
+            titleSendEmail.setAlpha(0.3f);
+            sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+            sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
+        }
+        else {
+            changeTheme.setImageResource(R.drawable.ic_sun);
+
+            drawerMenu.post(new Runnable() {
+                @Override
+                public void run() {
+                    drawerMenu.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color28));
+                }
+            });
+
+            main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color30));
+            toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color31));
+
+            updateTabs(viewPager.getCurrentItem());
+
+            titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+
+            printReportAfterClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            dividerPrintAfterClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+
+            printReceipts.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            dividerPrintReceipts.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+
+            titleAutoClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleAutoClose.setAlpha(1f);
+            everyDay.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleEvery.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleAt.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            dividerAutoClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+
+            titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleSendSms.setAlpha(1f);
+            sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+
+            titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleSendEmail.setAlpha(1f);
+            sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+        }
+
+        if (viewPager.getAdapter() != null) ((MainPagerAdapter)viewPager.getAdapter()).updateUITheme();
+    }*/
+
 }

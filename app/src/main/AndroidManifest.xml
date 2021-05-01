@@ -40,7 +40,7 @@
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />-->
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-<!--                <action android:name="android.intent.action.PACKAGE_REPLACED" />-->
+                <!--                <action android:name="android.intent.action.PACKAGE_REPLACED" />-->
 
                 <!--                <data android:scheme="package" />-->
             </intent-filter>
@@ -53,6 +53,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".services.receiver.SessionCheckerReceiver" />
+
         <service
             android:name=".services.MyService"
             android:enabled="true"
@@ -61,6 +63,9 @@
             android:name=".services.ForegroundServiceDispatcher"
             android:enabled="true"
             android:exported="false" />
+        <service
+            android:name=".services.SessionCloseWatcher"
+            android:enabled="true" />
 
         <meta-data
             android:name="app_uuid"
