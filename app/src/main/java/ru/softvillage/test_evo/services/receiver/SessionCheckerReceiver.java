@@ -19,12 +19,13 @@ import ru.softvillage.test_evo.utils.SessionClose;
  * <p>
  * Продумать как записывать
  */
+//todo: Удалить за ненадобностью
 public class SessionCheckerReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         CheckerRestarter.restartChecker(context, intent);
-        SessionClose.close(context);
+//        SessionClose.close(context);
     }
 
 

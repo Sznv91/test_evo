@@ -1,6 +1,7 @@
 package ru.softvillage.test_evo.services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,6 +34,7 @@ import ru.softvillage.test_evo.network.entity.NetworkAnswer;
 import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
 // Примеры:
@@ -40,6 +42,11 @@ import ru.softvillage.test_evo.utils.PrintUtil;
 
 public class ForegroundServiceDispatcher extends Service {
     OrderInterface orderInterface = EvoApp.getInstance().getOrderInterface();
+    public static Notification notification = null;
+    public static NotificationManager manager;
+    static NotificationCompat.Builder builder;
+    static String info = "foreground Service";
+    static String title = "Фискализатор Soft-Village";
 
     @Nullable
     @Override
@@ -49,15 +56,16 @@ public class ForegroundServiceDispatcher extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String info = "foreground Service";
+       /* String info = "foreground Service";
+        String title = "Фискализатор Soft-Village";*/
         Context context = getApplicationContext();
 
         PendingIntent action = PendingIntent.getActivity(context,
                 0, new Intent(context, MainActivity.class),
                 PendingIntent.FLAG_CANCEL_CURRENT); // Flag indicating that if the described PendingIntent already exists, the current one should be canceled before generating a new one.
 
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder;
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        NotificationCompat.Builder builder;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             //todo запросить разрешение на работу "android.permission.FOREGROUND_SERVICE"
@@ -76,14 +84,16 @@ public class ForegroundServiceDispatcher extends Service {
         }
 
         builder.setContentIntent(action)
-                .setContentTitle(info)
+                .setContentTitle(title/*info*/)
                 .setTicker(info)
-                .setContentText(info)
+                .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentIntent(action)
-                .setOngoing(true).build();
+                .setOngoing(true)/*.build()*/;
 
-        startForeground(1, builder.build());
+        notification = builder.build();
+
+        startForeground(1, notification/*builder.build()*/);
 //        return super.onStartCommand(intent, flags, startId);
 
         /*Логика диспетчерезации*/
@@ -118,9 +128,9 @@ public class ForegroundServiceDispatcher extends Service {
                                     receiptWithGoodEntity.setReceiptEntity(dataToDb);
 //                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
                                     List<GoodEntity> goodsToDB = new ArrayList<>();
-                                    for (Good good: orderTo.getOrderData().goods){
+                                    for (Good good : orderTo.getOrderData().goods) {
                                         GoodEntity tGoodEntity = new GoodEntity(good, orderTo.getOrderData().id);
-                                        Log.d(EvoApp.TAG+"_good_db", tGoodEntity.toString());
+                                        Log.d(EvoApp.TAG + "_good_db", tGoodEntity.toString());
                                         goodsToDB.add(tGoodEntity);
 
                                     }
@@ -146,11 +156,13 @@ public class ForegroundServiceDispatcher extends Service {
                         Log.d(EvoApp.TAG, "Network error: " + t.getMessage());
                     }
                 });
+
                 try {
                     Thread.sleep(60000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
             }
 
 
@@ -158,6 +170,16 @@ public class ForegroundServiceDispatcher extends Service {
         /////////////////////////
 
         return Service.START_STICKY;
+    }
+
+    public static void updateNotificationCounter(/*int count*/){
+        synchronized (notification) {
+            ForegroundServiceDispatcher.notification = builder
+                    .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/).build();
+        }
+        synchronized (manager) {
+            manager.notify(1, notification);
+        }
     }
 
     PrintUtil.PrintCallback printCallback = new PrintUtil.PrintCallback() {

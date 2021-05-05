@@ -83,22 +83,28 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
+        android:id="@+id/start_session"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/close_session"
+        android:text="StartSession"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/start_session"
-        android:text="StartSession"/>
+        app:layout_constraintTop_toBottomOf="@+id/close_session" />
 
     <TextView
+        android:id="@+id/end_session"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/close_session"
+        android:text="EndSession"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/end_session"
-        android:text="EndSession"/>
+        app:layout_constraintTop_toBottomOf="@+id/close_session" />
 
-
+    <TextView
+        android:id="@+id/statistic_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/end_session"
+        tools:text="sessionId: 1488" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

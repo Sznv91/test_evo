@@ -29,7 +29,10 @@ import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
+import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 public class PrintUtil {
     private static PrintUtil instance;
@@ -46,6 +49,8 @@ public class PrintUtil {
 
     @SuppressLint("LongLogTag")
     public void printOrder(Context context, PositionCreator.OrderTo.PositionTo order, PrintCallback callback) {
+        boolean shouldPrintReceipt = SessionPresenter.getInstance().isPrintChecks();
+
 
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
@@ -83,7 +88,7 @@ public class PrintUtil {
                 null,
                 null,
                 null,
-                true, //true
+                shouldPrintReceipt, //true
                 null,
                 null);
         Receipt.PrintReceipt printReceipt = new Receipt.PrintReceipt(
@@ -124,8 +129,24 @@ public class PrintUtil {
                             dataToDb.setSessionId(SystemStateApi.getLastSessionNumber(context));
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
+                            /**
+                             * Обновление блока статистики
+                             */
+                            StatisticConsider.addCountReceipt();
+                            StatisticConsider.addFiscalizedMoney(finalCost);
+                            if (SessionPresenter.getInstance().isSendSms()) {
+                                StatisticConsider.addCountSms();
+                            }
+                            if (SessionPresenter.getInstance().isSendEmail()) {
+                                StatisticConsider.addCountEmail();
+                            }
+                            /**
+                             * Обновление оповещения
+                             */
+                            ForegroundServiceDispatcher.updateNotificationCounter();
                             break;
                         case ERROR:
+                            //todo отловить причину истечения срока сессии -> закрыть сессию по условию.
                             Log.d(EvoApp.TAG + "_print_error", result.getError().getMessage());
                             callback.printFailure(order);
 //                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();

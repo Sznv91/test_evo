@@ -31,6 +31,7 @@ import org.joda.time.LocalDateTime;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import ru.evotor.framework.core.IntegrationException;
@@ -39,13 +40,14 @@ import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.network.entity.Order;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.StatisticViewModel;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
 
-public class StatisticFragment extends Fragment {
+public class StatisticFragment extends Fragment implements StatisticDisplayUpdate {
 
     private StatisticViewModel mViewModel;
     private PrintUtil printUtil;
@@ -53,6 +55,7 @@ public class StatisticFragment extends Fragment {
     private EditText dateField;
     private TextView startSession;
     private TextView endSession;
+    private TextView statisticContainer;
 
     public static StatisticFragment newInstance() {
         return new StatisticFragment();
@@ -66,12 +69,14 @@ public class StatisticFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        SessionPresenter.getInstance().setIstatisticDisplayUpdate(this);
         ((Button) view.findViewById(R.id.button_start_service)).setOnClickListener(v -> startForegroundService());
         ((Button) view.findViewById(R.id.print_example)).setOnClickListener(v -> printExample());
         ((Button) view.findViewById(R.id.print_calculate_recipient)).setOnClickListener(v -> printOrder());
         ((Button) view.findViewById(R.id.add_fake_receipt)).setOnClickListener(v -> addFakeReceipt());
         ((Button) view.findViewById(R.id.close_session)).setOnClickListener(v -> closeSession());
         editText = view.findViewById(R.id.discount_all_order);
+        statisticContainer = view.findViewById(R.id.statistic_container);
 
         dateField = getView().findViewById(R.id.edit_text_add_fake_data);
         dateField.setText(LocalDate.now().toString());
@@ -79,15 +84,24 @@ public class StatisticFragment extends Fragment {
         startSession = view.findViewById(R.id.start_session);
         endSession = view.findViewById(R.id.end_session);
 
+        statisticContainer.setText(SessionPresenter.getInstance().getSessionData().toString());
+
+
         initDateSession();
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onDestroyView() {
+        SessionPresenter.getInstance().setIstatisticDisplayUpdate(null);
+        super.onDestroyView();
+    }
+
     private void initDateSession() {
-        if (SessionPresenter.getInstance().getDateLastOpenSession() != null){
+        if (SessionPresenter.getInstance().getDateLastOpenSession() != null) {
             startSession.setText(SessionPresenter.getInstance().getDateLastOpenSession().toString());
         }
-        if (SessionPresenter.getInstance().getDateLastCloseSession() != null){
+        if (SessionPresenter.getInstance().getDateLastCloseSession() != null) {
             endSession.setText(SessionPresenter.getInstance().getDateLastCloseSession().toString());
         }
     }
@@ -199,4 +213,10 @@ public class StatisticFragment extends Fragment {
 
     }
 
+    @Override
+    public void updateView(SessionStatisticData data) {
+        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            statisticContainer.setText(data.toString());
+        });
+    }
 }

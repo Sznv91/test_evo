@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+
 import org.joda.time.LocalDateTime;
 
 import java.text.SimpleDateFormat;
@@ -17,8 +19,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import ru.evotor.framework.system.SystemStateApi;
+import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
+import ru.softvillage.test_evo.tabs.fragments.StatisticDisplayUpdate;
 import ru.softvillage.test_evo.tabs.left_menu.IMainView1;
 import ru.softvillage.test_evo.tabs.left_menu.util.Prefs;
+import ru.softvillage.test_evo.utils.StatisticConsider;
 
 import static ru.softvillage.test_evo.EvoApp.TAG;
 
@@ -56,6 +63,10 @@ public class SessionPresenter {
     public final static String KEY_LAST_SESSION_NUMBER = "lastSessionNumber";
     public final static String KEY_SESSION_START = "sessionStartDateTime";
     public final static String KEY_SESSION_DATA = "sessionData";
+    public final static long CLOSED_SESSION_ID = -1;
+    public static final String PREVIOUS_SESSION_STATUS = "previousSessionStatus";
+    public boolean previousSessionStatus;
+
 
     public final static String KEY_KKT_SERIAL_NUMBER = "kktSerialNumber";
     public final static String KEY_KKT_REG_NUMBER = "kktRegNumber";
@@ -77,10 +88,12 @@ public class SessionPresenter {
      */
     private final static long SESSION_CHECK_INTERVAL = 2 * 1000;
 
-    private final static SessionPresenter instance = new SessionPresenter();
+    private /*final*/ static SessionPresenter instance;/* = new SessionPresenter();*/
 
     private LocalDateTime dateLastOpenSession;
     private LocalDateTime dateLastCloseSession;
+    private SessionStatisticData data;
+    private StatisticDisplayUpdate IstatisticDisplayUpdate;
 
 
     private boolean init = false;
@@ -1057,6 +1070,19 @@ public class SessionPresenter {
             init = true;
             return;
         }
+
+        previousSessionStatus = Prefs.getInstance().loadBoolean(PREVIOUS_SESSION_STATUS);
+
+        if (!TextUtils.isEmpty(Prefs.getInstance().loadString(KEY_SESSION_DATA))) {
+            Gson gson = new Gson();
+            data = gson.fromJson(Prefs.getInstance().loadString(KEY_SESSION_DATA), SessionStatisticData.class);
+        } else {
+            data = StatisticConsider.getEmptySessionData();
+            if (SystemStateApi.isSessionOpened(EvoApp.getInstance().getApplicationContext())) {
+                data.setSessionId(SystemStateApi.getLastSessionNumber(EvoApp.getInstance()));
+            }
+        }
+
         if (!TextUtils.isEmpty(Prefs.getInstance().loadString(LAST_OPEN_SESSION))) {
             dateLastOpenSession = LocalDateTime.parse(Prefs.getInstance().loadString(LAST_OPEN_SESSION));
         } else {
@@ -1247,6 +1273,9 @@ public class SessionPresenter {
     }*/
 
     public static SessionPresenter getInstance() {
+        if (instance == null) {
+            instance = new SessionPresenter();
+        }
         return instance;
     }
 
@@ -1315,7 +1344,6 @@ public class SessionPresenter {
     }
 
     public boolean isAutoClose() {
-        Log.d(TAG, "autoClose: " + autoClose);
         return autoClose;
     }
 
@@ -1329,7 +1357,7 @@ public class SessionPresenter {
     }
 
     public int getAutoCloseType() {
-        Log.d(TAG, "autoCloseType: " + autoCloseType);
+//        Log.d(TAG, "autoCloseType: " + autoCloseType);
         return autoCloseType;
     }
 
@@ -1452,6 +1480,15 @@ public class SessionPresenter {
         Prefs.getInstance().saveBoolean(EMAIL_SERVICE_INIT, smsServiceInit);
     }*/
 
+    public boolean getPreviousSessionStatus() {
+        return previousSessionStatus;
+    }
+
+    public void setPreviousSessionStatus(Boolean isOpen) {
+        previousSessionStatus = isOpen;
+        Prefs.getInstance().saveBoolean(PREVIOUS_SESSION_STATUS, isOpen);
+    }
+
     public LocalDateTime getDateLastOpenSession() {
         return dateLastOpenSession;
     }
@@ -1468,6 +1505,28 @@ public class SessionPresenter {
     public void setDateLastCloseSession(LocalDateTime dateTimeClose) {
         dateLastCloseSession = dateTimeClose;
         Prefs.getInstance().saveString(LAST_CLOSE_SESSION, dateLastCloseSession.toString());
+    }
+
+    public SessionStatisticData getSessionData() {
+        return data;
+    }
+
+    public void setIstatisticDisplayUpdate(StatisticDisplayUpdate updater) {
+        IstatisticDisplayUpdate = updater;
+    }
+
+    public void setSessionStatisticData(SessionStatisticData data) {
+//        Log.d(TAG+"_update_session_data", data.toString() + "this.data id: " + this.data.getSessionId());
+
+        if (!this.data.equals(data)) {
+            Log.d(TAG + "_update_session_data", "Зашли в If-else");
+            this.data = data;
+            Gson gson = new Gson();
+            Prefs.getInstance().saveString(KEY_SESSION_DATA, gson.toJson(data));
+            if (IstatisticDisplayUpdate != null) {
+                IstatisticDisplayUpdate.updateView(data);
+            }
+        }
     }
 
     /*private boolean getSessionOpen() {

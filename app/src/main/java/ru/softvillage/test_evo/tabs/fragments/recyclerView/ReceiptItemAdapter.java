@@ -65,7 +65,7 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractReceiptView
 
     @Override
     public int getItemViewType(int position) {
-            if (itemList.get(position).getUuid().equals(DATE_SPLITTER_NAME)) {
+            if (itemList.get(position).getUuid() != null && itemList.get(position).getUuid().equals(DATE_SPLITTER_NAME)) {
                 return TYPE_DATA_SPLITTER;
             }
         return TYPE_NORMAL;
