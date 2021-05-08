@@ -56,7 +56,7 @@ public class ReceiptViewModel extends ViewModel {
                         @Override
                         public void clickClick(ReceiptEntity recipientEntity) {
                             Log.d(EvoApp.TAG + "_Recycler", "click - click " + recipientEntity.getReceiptNumber());
-                            Fragment fragment = ReceiptDetailFragment.newInstance(String.valueOf(recipientEntity.getReceiptNumber()), String.valueOf(recipientEntity.getId()));
+                            Fragment fragment = ReceiptDetailFragment.newInstance(String.valueOf(recipientEntity.getId()));
                             EvoApp.getInstance().getFragmentDispatcher().replaceFragment(fragment);
                         }
 

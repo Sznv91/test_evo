@@ -17,7 +17,7 @@ import ru.softvillage.test_evo.R;
 @RequiredArgsConstructor
 public class PositionGoodsItemAdapter extends RecyclerView.Adapter<PositionGoodsItemHolder> {
     private final LayoutInflater inflater;
-    private List<Position> itemList = new ArrayList<>();
+    private final List<Position> itemList = new ArrayList<>();
     private Receipt receipt;
 
     @NonNull

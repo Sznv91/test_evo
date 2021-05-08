@@ -70,26 +70,15 @@ public class SessionCloseWatcher extends Service {
                     if (SessionPresenter.getInstance().getDateLastCloseSession() == null) {
                         SessionPresenter.getInstance().setDateLastCloseSession(LocalDateTime.now()/*.minusSeconds(3)*/);
                         Log.d(EvoApp.TAG + "_print_report", "Отловили закрытие смены в 1");
-                        /*if (SessionPresenter.getInstance().isPrintReportOnClose()) {
-                            Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета");
-                            PrintCustomTextUtil.printStatistic(SessionPresenter.getInstance().getSessionData(), getApplicationContext());
-                        }
-                        SessionPresenter.getInstance().setSessionStatisticData(StatisticConsider.getEmptySessionData());*/
                     }
                 } else {
                     if (SessionPresenter.getInstance().getDateLastCloseSession() == null || SessionPresenter.getInstance().getDateLastCloseSession().isBefore(SessionPresenter.getInstance().getDateLastOpenSession())) {
                         SessionPresenter.getInstance().setDateLastCloseSession(LocalDateTime.now()/*.minusSeconds(1)*/);
                         Log.d(EvoApp.TAG + "_print_report", "Отловили закрытие смены в 2");
-                        /*if (SessionPresenter.getInstance().isPrintReportOnClose()) {
-                            Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета");
-                            PrintCustomTextUtil.printStatistic(SessionPresenter.getInstance().getSessionData(), getApplicationContext());
-                        }
-                        SessionPresenter.getInstance().setSessionStatisticData(StatisticConsider.getEmptySessionData());*/
                     }
                 }
                 SessionPresenter.getInstance().setSessionStatisticData(StatisticConsider.getEmptySessionData());
 
-//                StatisticConsider.setSessionId(CLOSED_SESSION_ID);
             }
             /**
              * Закончили отслеживание
@@ -148,11 +137,7 @@ public class SessionCloseWatcher extends Service {
                         } else {
                             value = value * 60;
                         }
-                        if ((currentStateOpen && deltaSecondsCalculator().getSeconds() /** -1*/ == value) || (currentStateOpen && deltaSecondsCalculator().getSeconds() > (value + 60))) { // >=
-                            /*if (SessionPresenter.getInstance().isPrintReportOnClose()) {
-                                Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета из case AUTO_CLOSE_EVERY_");
-//                                PrintCustomTextUtil.printStatistic(SessionPresenter.getInstance().getSessionData(), getApplicationContext());
-                            }*/
+                        if ((currentStateOpen && deltaSecondsCalculator().getSeconds() /** -1*/ == value) || (currentStateOpen && deltaSecondsCalculator().getSeconds() > (value + 60))) {
                             Log.d(EvoApp.TAG + "_close_session", "AUTO_CLOSE_EVERY_ delta= " + deltaSecondsCalculator().getSeconds() + " value: " + value);
 
                             Log.d(EvoApp.TAG + "_close_session", "Закрываем смену из AUTO_CLOSE_EVERY_");
@@ -209,7 +194,7 @@ public class SessionCloseWatcher extends Service {
      */
     private Seconds deltaSecondsCalculator() {
         Duration deltaFromLastClose = new Duration(
-                SessionPresenter.getInstance().getDateLastOpenSession().toDateTime() //getDateLastCloseSession
+                SessionPresenter.getInstance().getDateLastOpenSession().toDateTime()
                 , LocalDateTime.now().toDateTime());
         return deltaFromLastClose.toStandardSeconds();
 

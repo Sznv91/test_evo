@@ -22,11 +22,6 @@ public class PrintCustomTextUtil {
         pList.add(new PrintableText("Кол-во фискализированных чеков: " + statisticData.getCountReceipt()));
         pList.add(new PrintableText("Отправлено SMS/Email: " + statisticData.getSendSms() + "/" + statisticData.getSendEmail()));
         printText(pList, context);
-        /*final List<IPrintable> pList = new ArrayList<>();
-        for (GoodItemEntity entity : itemEntityList) {
-            pList.add(new PrintableText(entity.getName() + " " + entity.getQuantity().toPlainString()));
-        }
-        printText(pList);*/
     }
 
     public static void printText(List<IPrintable> pList, Context context) {

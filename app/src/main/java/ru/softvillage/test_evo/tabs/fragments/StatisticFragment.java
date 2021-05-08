@@ -42,10 +42,12 @@ import ru.softvillage.test_evo.network.entity.Order;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
-import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.StatisticViewModel;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
+
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.THEME_LIGHT;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.getInstance;
 
 public class StatisticFragment extends Fragment implements StatisticDisplayUpdate {
 
@@ -69,7 +71,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        SessionPresenter.getInstance().setIstatisticDisplayUpdate(this);
+        getInstance().setIstatisticDisplayUpdate(this);
         ((Button) view.findViewById(R.id.button_start_service)).setOnClickListener(v -> startForegroundService());
         ((Button) view.findViewById(R.id.print_example)).setOnClickListener(v -> printExample());
         ((Button) view.findViewById(R.id.print_calculate_recipient)).setOnClickListener(v -> printOrder());
@@ -84,7 +86,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         startSession = view.findViewById(R.id.start_session);
         endSession = view.findViewById(R.id.end_session);
 
-        statisticContainer.setText(SessionPresenter.getInstance().getSessionData().toString());
+        statisticContainer.setText(getInstance().getSessionData().toString());
 
 
         initDateSession();
@@ -93,16 +95,16 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
 
     @Override
     public void onDestroyView() {
-        SessionPresenter.getInstance().setIstatisticDisplayUpdate(null);
+        getInstance().setIstatisticDisplayUpdate(null);
         super.onDestroyView();
     }
 
     private void initDateSession() {
-        if (SessionPresenter.getInstance().getDateLastOpenSession() != null) {
-            startSession.setText(SessionPresenter.getInstance().getDateLastOpenSession().toString());
+        if (getInstance().getDateLastOpenSession() != null) {
+            startSession.setText(getInstance().getDateLastOpenSession().toString());
         }
-        if (SessionPresenter.getInstance().getDateLastCloseSession() != null) {
-            endSession.setText(SessionPresenter.getInstance().getDateLastCloseSession().toString());
+        if (getInstance().getDateLastCloseSession() != null) {
+            endSession.setText(getInstance().getDateLastCloseSession().toString());
         }
     }
 
@@ -218,5 +220,14 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
             statisticContainer.setText(data.toString());
         });
+    }
+
+    @Override
+    public void updateTheme(int currentTheme) {
+        if (currentTheme == THEME_LIGHT) {
+
+        } else {
+
+        }
     }
 }

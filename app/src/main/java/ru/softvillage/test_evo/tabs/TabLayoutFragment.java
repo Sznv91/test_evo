@@ -34,7 +34,6 @@ public class TabLayoutFragment extends Fragment {
     private void initTabs() {
         ViewPager2 viewPager = Objects.requireNonNull(getView()).findViewById(R.id.pager);
         viewPager.setAdapter(
-//                new FragmentAdapter(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), getLifecycle()));
                 new FragmentAdapter(this));
         TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
 

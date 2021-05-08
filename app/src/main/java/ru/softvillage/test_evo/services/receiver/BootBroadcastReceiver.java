@@ -16,7 +16,7 @@ import ru.softvillage.test_evo.utils.PrintUtil;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
+    @SuppressLint({"UnsafeProtectedBroadcastReceiver", "LongLogTag"})
     @Override
     public void onReceive(Context context, Intent intent) {
 

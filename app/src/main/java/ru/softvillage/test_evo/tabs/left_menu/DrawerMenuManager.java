@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -38,11 +39,6 @@ import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_DAY;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_UNIT_HOUR;
-//sendSmsEvotor
-//sendEmailSv
-//sendEmailEvotor
-//sendSmsSv
-
 
 public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener,
@@ -94,6 +90,20 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
     private ExpandableLayout expandableSendEmail;
     private ImageView arrowSendEmail;
 
+    /**
+     * Элементы в которых необходимо только изменить цвет текста при смене темы
+     */
+    private LinearLayout main;
+    private ConstraintLayout toolbar;
+    private TextView titleParams;
+    private View dividerPrintAfterClose;
+    private View dividerPrintReceipts;
+    private TextView titleAutoClose;
+    private View dividerAutoClose;
+    private TextView titleSendSms;
+    private View dividerSendSms;
+    private TextView titleSendEmail;
+    private View dividerExit;
 
     public DrawerMenuManager(T activity) {
         this.activity = activity;
@@ -108,6 +118,21 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
     }
 
     private void initMenu() {
+          /**
+         * Бинд элементов которые ничего не делают, но надо поменять цвет текста при смене темы.
+         */
+        main = activity.findViewById(R.id.main);
+        toolbar = activity.findViewById(R.id.toolbar);
+        titleParams = activity.findViewById(R.id.titleParams);
+        dividerPrintAfterClose = activity.findViewById(R.id.dividerPrintAfterClose);
+        dividerPrintReceipts = activity.findViewById(R.id.dividerPrintReceipts);
+        titleAutoClose = activity.findViewById(R.id.titleAutoClose);
+        dividerAutoClose = activity.findViewById(R.id.dividerAutoClose);
+        titleSendSms = activity.findViewById(R.id.titleSendSms);
+        dividerSendSms = activity.findViewById(R.id.dividerSendSms);
+        titleSendEmail = activity.findViewById(R.id.titleSendEmail);
+        dividerExit = activity.findViewById(R.id.dividerExit);
+
         drawer = activity.findViewById(R.id.drawer);
         drawerMenu = activity.findViewById(R.id.drawer_menu);
 
@@ -152,14 +177,12 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
                 DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) drawerMenu.getLayoutParams();
 
                 DisplayMetrics displaymetrics = activity.getResources().getDisplayMetrics();
-                if (displaymetrics.widthPixels == 1280 && displaymetrics.heightPixels == 740){
+                if (displaymetrics.widthPixels == 1280 && displaymetrics.heightPixels == 740) {
                     params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.3).intValue();
                 } else {
                     params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.87).intValue();
 
                 }
-
-//                params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.87).intValue();
                 drawerMenu.setLayoutParams(params);
             }
         });
@@ -172,7 +195,6 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
-//                ApiPresenter.getInstance().connectApp();
             }
 
             @Override
@@ -200,6 +222,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         closeAllToggle();
         initSwitch();
         updateVersion();
+        updateUITheme();
     }
 
     @SuppressLint("LongLogTag")
@@ -312,9 +335,9 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
                 if (!drawer.isDrawerOpen(START))
                     drawer.openDrawer(START);
                 break;
-            /*case R.id.changeTheme:
+            case R.id.changeTheme:
                 toggleTheme();
-                break;*/
+                break;
             case R.id.layoutAutoClose:
                 toggleExpandableAutoClose();
                 break;
@@ -342,7 +365,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         }
     }
 
-    @SuppressLint("LongLogTag")
+    @SuppressLint({"LongLogTag", "NonConstantResourceId"})
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Log.d(EvoApp.TAG + "_Check", "onCheckedChanged");
@@ -628,8 +651,6 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
     private void sendSmsSvChecked(boolean isChecked) {
         if (isChecked) {
-//            ApiPresenter.getInstance().connectApp();
-
             expandableSendSms.setActiveChildId(1);
             sendSmsEvotor.setOnCheckedChangeListener(null);
             sendSmsEvotor.setChecked(false);
@@ -692,9 +713,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
     }
 
     private void stopNotifyService() {
-//        Logger.getInstance().addLine("MainActivity1; stopNotifyService; NotifyService.isRunning: " + NotifyService.isRunning, false);
-
-        if (isMyServiceRunning(ForegroundServiceDispatcher.class) /*ForegroundServiceDispatcher.isRunning*/)
+        if (isMyServiceRunning(ForegroundServiceDispatcher.class))
             activity.stopService(new Intent(activity, ForegroundServiceDispatcher.class));
     }
 
@@ -733,54 +752,8 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
     }
 
-    @Override
-    public void onConnectAppSuccess(boolean connected) {
 
-    }
-
-    @Override
-    public void onConnectAppError(String error) {
-
-    }
-
-    @Override
-    public void onSetErrorError(String error) {
-
-    }
-
-    @Override
-    public void onSetErrorSuccess() {
-
-    }
-
-    @Override
-    public void onSessionTimerTick(long delta) {
-
-    }
-
-    @Override
-    public void showSessionWholeTime(long delta) {
-
-    }
-
-    @Override
-    public void onPrintZReportError(String error) {
-
-    }
-
-    @Override
-    public void onGetReceiptError(String error) {
-
-    }
-
-    @Override
-    public void showNoConnectionIcon() {
-
-    }
-
-
-
-    /*private void toggleTheme() {
+    private void toggleTheme() {
         SessionPresenter.getInstance().toggleTheme();
 
         updateUITheme();
@@ -802,7 +775,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
             main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color18));
             toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color17));
 
-            updateTabs(viewPager.getCurrentItem());
+//            updateTabs(viewPager.getCurrentItem());
 
             titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color20));
 
@@ -829,8 +802,8 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
             titleSendEmail.setAlpha(0.3f);
             sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
             sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-        }
-        else {
+            dividerExit.setBackgroundColor(ContextCompat.getColor(dividerExit.getContext(), R.color.color22));
+        } else {
             changeTheme.setImageResource(R.drawable.ic_sun);
 
             drawerMenu.post(new Runnable() {
@@ -843,7 +816,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
             main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color30));
             toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color31));
 
-            updateTabs(viewPager.getCurrentItem());
+//            updateTabs(viewPager.getCurrentItem());
 
             titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
 
@@ -870,9 +843,11 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
             titleSendEmail.setAlpha(1f);
             sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
             sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            dividerExit.setBackgroundColor(ContextCompat.getColor(dividerExit.getContext(), R.color.color29));
         }
 
-        if (viewPager.getAdapter() != null) ((MainPagerAdapter)viewPager.getAdapter()).updateUITheme();
-    }*/
+        /*if (viewPager.getAdapter() != null)
+            ((MainPagerAdapter) viewPager.getAdapter()).updateUITheme();*/
+    }
 
 }

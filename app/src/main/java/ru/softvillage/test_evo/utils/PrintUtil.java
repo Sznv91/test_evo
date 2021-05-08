@@ -51,7 +51,6 @@ public class PrintUtil {
     public void printOrder(Context context, PositionCreator.OrderTo.PositionTo order, PrintCallback callback) {
         boolean shouldPrintReceipt = SessionPresenter.getInstance().isPrintChecks();
 
-
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
         if (!order.getOrderData().checkDiscount.equals(BigDecimal.ZERO)) {
