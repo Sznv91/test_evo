@@ -18,10 +18,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/padding_16"
-        android:paddingTop="@dimen/margin_46"
-        android:paddingEnd="@dimen/padding_16"
-        android:paddingBottom="@dimen/margin_46"
+        android:paddingStart="@dimen/padding_8"
+        android:paddingTop="@dimen/margin_16"
+        android:paddingEnd="@dimen/padding_8"
+        android:paddingBottom="@dimen/margin_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -69,10 +69,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
-                android:padding="@dimen/padding_16"
+                android:padding="@dimen/padding_8"
                 android:text="@string/print_report_after_close"
                 android:textColor="@color/color21"
-                android:textSize="@dimen/tsize_20" />
+                android:textSize="@dimen/tsize_14" />
 
             <View
                 android:id="@+id/dividerPrintAfterClose"
@@ -87,10 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
-                android:padding="@dimen/padding_16"
+                android:padding="@dimen/padding_8"
                 android:text="@string/print_checks"
                 android:textColor="@color/color21"
-                android:textSize="@dimen/tsize_20" />
+                android:textSize="@dimen/tsize_14" />
 
             <View
                 android:id="@+id/dividerPrintReceipts"
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_16"
+                android:padding="@dimen/padding_4"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -117,7 +117,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_auto_close_session"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_16" />
+                    android:textSize="@dimen/tsize_14" />
 
                 <ImageView
                     android:id="@+id/arrowAutoClose"
@@ -145,10 +145,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_16"
+                        android:padding="@dimen/padding_8"
                         android:text="@string/every_day"
                         android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_20"
+                        android:textSize="@dimen/tsize_14"
                         android:fastScrollEnabled="false"/>
 
                     <ru.softvillage.test_evo.tabs.left_menu.ELinearLayout
@@ -164,19 +164,19 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_regular"
-                            android:padding="@dimen/padding_16"
+                            android:paddingStart="@dimen/padding_8"
                             android:text="@string/every_"
                             android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_20" />
+                            android:textSize="@dimen/tsize_14" />
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/every"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
-                            android:padding="@dimen/padding_16"
+                            android:padding="@dimen/padding_8"
                             android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_20" />
+                            android:textSize="@dimen/tsize_14" />
 
                     </ru.softvillage.test_evo.tabs.left_menu.ELinearLayout>
 
@@ -193,10 +193,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_regular"
-                            android:padding="@dimen/padding_16"
+                            android:paddingStart="@dimen/padding_8"
                             android:text="@string/at_"
                             android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_20"
+                            android:textSize="@dimen/tsize_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/at"
                             app:layout_constraintStart_toStartOf="parent"
@@ -207,9 +207,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
-                            android:padding="@dimen/padding_16"
+                            android:padding="@dimen/padding_8"
                             android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_20"
+                            android:textSize="@dimen/tsize_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -234,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_16"
+                android:padding="@dimen/padding_4"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -247,7 +247,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_send_sms_settings"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_16" />
+                    android:textSize="@dimen/tsize_14" />
 
                 <ImageView
                     android:id="@+id/arrowSendSms"
@@ -276,10 +276,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_16"
+                        android:padding="@dimen/padding_8"
                         android:text="@string/title_send_from_evotor"
                         android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_20"
+                        android:textSize="@dimen/tsize_14"
                         android:fastScrollEnabled="false"/>
 
                     <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
@@ -287,10 +287,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_16"
+                        android:padding="@dimen/padding_8"
                         android:text="@string/title_send_from_sv"
                         android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_20"
+                        android:textSize="@dimen/tsize_14"
                         android:fastScrollEnabled="false"/>
                 </LinearLayout>
             </net.cachapa.expandablelayout.ExpandableLayout>
@@ -309,7 +309,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_16"
+                android:padding="@dimen/padding_4"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -322,7 +322,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_send_email_settings"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_16" />
+                    android:textSize="@dimen/tsize_14" />
 
                 <ImageView
                     android:id="@+id/arrowSendEmail"
@@ -350,10 +350,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_16"
+                        android:padding="@dimen/padding_8"
                         android:text="@string/title_send_from_evotor"
                         android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_20"
+                        android:textSize="@dimen/tsize_14"
                         android:fastScrollEnabled="false"/>
 
                     <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
@@ -361,10 +361,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_16"
+                        android:padding="@dimen/padding_8"
                         android:text="@string/title_send_from_sv"
                         android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_20"
+                        android:textSize="@dimen/tsize_14"
                         android:fastScrollEnabled="false"/>
                 </LinearLayout>
             </net.cachapa.expandablelayout.ExpandableLayout>
@@ -385,7 +385,7 @@
         <ImageView
             android:id="@+id/iconExit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="18dp"
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_8"
@@ -402,7 +402,7 @@
             android:fontFamily="@font/roboto_medium"
             android:text="@string/exit_up"
             android:textColor="@color/color23"
-            android:textSize="@dimen/tsize_20"
+            android:textSize="@dimen/tsize_14"
             app:layout_constraintBottom_toBottomOf="@+id/iconExit"
             app:layout_constraintStart_toEndOf="@+id/iconExit"
             app:layout_constraintTop_toTopOf="@+id/iconExit" />

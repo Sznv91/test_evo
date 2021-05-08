@@ -31,6 +31,7 @@
     <dimen name="tsize_12">12sp</dimen>
     <dimen name="tsize_13">13sp</dimen>
     <dimen name="tsize_14">14sp</dimen>
+    <dimen name="tsize_15">15sp</dimen>
     <dimen name="tsize_16">16sp</dimen>
     <dimen name="tsize_18">18sp</dimen>
     <dimen name="tsize_20">20sp</dimen>

@@ -2,6 +2,8 @@ package ru.softvillage.test_evo;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -149,7 +150,16 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
             @Override
             public void run() {
                 DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) drawerMenu.getLayoutParams();
-                params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.87).intValue();
+
+                DisplayMetrics displaymetrics = activity.getResources().getDisplayMetrics();
+                if (displaymetrics.widthPixels == 1280 && displaymetrics.heightPixels == 740){
+                    params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.3).intValue();
+                } else {
+                    params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.87).intValue();
+
+                }
+
+//                params.width = Double.valueOf(activity.getResources().getDisplayMetrics().widthPixels * 0.87).intValue();
                 drawerMenu.setLayoutParams(params);
             }
         });

@@ -2,6 +2,7 @@ package ru.softvillage.test_evo.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,7 +30,6 @@ import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
-import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
@@ -134,10 +134,10 @@ public class PrintUtil {
                              */
                             StatisticConsider.addCountReceipt();
                             StatisticConsider.addFiscalizedMoney(finalCost);
-                            if (SessionPresenter.getInstance().isSendSms()) {
+                            if (SessionPresenter.getInstance().isSendSms() && !TextUtils.isEmpty(order.getOrderData().getPhone())) {
                                 StatisticConsider.addCountSms();
                             }
-                            if (SessionPresenter.getInstance().isSendEmail()) {
+                            if (SessionPresenter.getInstance().isSendEmail() && !TextUtils.isEmpty(order.getOrderData().getEmail())) {
                                 StatisticConsider.addCountEmail();
                             }
                             /**
