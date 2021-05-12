@@ -1,14 +1,19 @@
 package ru.softvillage.test_evo;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 
+import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.TabLayoutFragment;
 import ru.softvillage.test_evo.tabs.left_menu.DrawerMenuManager;
 
@@ -20,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startForegroundService();
+
 
         if (savedInstanceState == null) {
             manager = new DrawerMenuManager<>(this);
@@ -28,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
             manager.setActivity(this);
         }
         EvoApp.getInstance().getFragmentDispatcher().setActivity(this);
+
+
 
         /**
          * Узнаем размеры дисплеея
@@ -46,5 +55,27 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 "Ширина: " + metricsB.widthPixels + "\n" +
                 "Высота: " + metricsB.heightPixels);
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    private void startForegroundService() {
+        if (isMyServiceRunning(ForegroundServiceDispatcher.class)) {
+            Toast.makeText(getApplicationContext(), "Service already running", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent startIntent = new Intent(this, ForegroundServiceDispatcher.class);
+        startIntent.setAction("start");
+        startService(startIntent);
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //////////////////////////
 }
 

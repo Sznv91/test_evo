@@ -2,109 +2,304 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/statistic_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#AC1C1C"
+    android:background="@color/color_f8"
     tools:context=".tabs.fragments.StatisticFragment">
 
-    <Button
-        android:id="@+id/button_start_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start service"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/print_example"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:text="print example recipient"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_start_service" />
-
-    <Button
-        android:id="@+id/print_calculate_recipient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:text="print calc recipient"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/print_example" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/discount_all_order"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/session_number_holder"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:background="#99C0C5"
-        android:inputType="number"
-        android:text="3"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/print_calculate_recipient" />
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:padding="@dimen/padding_8"
+        android:paddingStart="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@+id/statistic_information"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/edit_text_add_fake_data"
+        <TextView
+            android:id="@+id/statistic_session_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/title_current_session"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_18"
+            app:layout_constraintBottom_toTopOf="@+id/statistic_current_data"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Текущая смена №1555" />
+
+        <TextView
+            android:id="@+id/statistic_current_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_8"
+            android:textColor="@color/color29"
+            app:drawableStartCompat="@drawable/ic_statistic_calendar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statistic_session_number"
+            tools:text="2020-02-24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/statistic_information"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:autofillHints="26.04.2021"
-        android:background="#00BCD4"
-        android:hint="Дата добавления заглушки чека"
-        android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@+id/discount_all_order" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/add_fake_receipt"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:text="Добавить заглушку"
-        android:textSize="8sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_add_fake_data" />
-
-    <Button
-        android:id="@+id/close_session"
-        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:text="close session"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_add_fake_data" />
+        app:layout_constraintBottom_toTopOf="@id/time_to_close_holder"
+        app:layout_constraintTop_toBottomOf="@+id/session_number_holder">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Code version: 2"
-        android:textColor="#FFFFFF"
+        <TextView
+            android:id="@+id/title_statistic_information"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="@dimen/margin_16"
+            android:text="ИНФОРМАЦИЯ"
+            android:textColor="@color/color29"
+            app:layout_constraintLeft_toLeftOf="parent" />
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/time_to_close_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:padding="@dimen/padding_8"
+        android:paddingStart="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@+id/sum_fiscalization_holder"
+        app:layout_constraintTop_toBottomOf="@id/statistic_information">
+
+        <ImageView
+            android:id="@+id/iv_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_time_to_close" />
+
+        <TextView
+            android:id="@+id/time_to_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/title_time_to_close"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_18"
+            app:layout_constraintBottom_toTopOf="@+id/time_ticker_holder"
+            app:layout_constraintLeft_toRightOf="@id/iv_clock"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Время до закрытия смены" />
+
+        <TextView
+            android:id="@+id/time_ticker_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_8"
+            android:textColor="@color/color29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/time_to_close"
+            app:layout_constraintTop_toBottomOf="@+id/time_to_close"
+            tools:text="21:01:14" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sum_fiscalization_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_2"
+        android:background="@color/white"
+        android:padding="@dimen/padding_8"
+        android:paddingStart="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@id/count_receipt_holder"
+        app:layout_constraintTop_toBottomOf="@id/time_to_close_holder">
+
+        <ImageView
+            android:id="@+id/wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_wallet" />
+
+        <TextView
+            android:id="@+id/sum_fiscalization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/title_common_sum"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_18"
+            app:layout_constraintBottom_toTopOf="@+id/sum"
+            app:layout_constraintLeft_toRightOf="@id/wallet"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Общая сумма фискализации" />
+
+        <TextView
+            android:id="@+id/sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_8"
+            android:text="@string/template_rub_count"
+            android:textColor="@color/color29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/sum_fiscalization"
+            app:layout_constraintTop_toBottomOf="@+id/sum_fiscalization"
+            tools:text="0 руб." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/count_receipt_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_2"
+        android:background="@color/white"
+        android:padding="@dimen/padding_8"
+        android:paddingStart="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@id/send_sms_holder"
+        app:layout_constraintTop_toBottomOf="@id/sum_fiscalization_holder">
+
+        <ImageView
+            android:id="@+id/receipt_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_receipt_green" />
+
+        <TextView
+            android:id="@+id/sum_receipt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/title_receipts_count"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_18"
+            app:layout_constraintBottom_toTopOf="@+id/receipt_count"
+            app:layout_constraintLeft_toRightOf="@id/receipt_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Общее количество чеков" />
+
+        <TextView
+            android:id="@+id/receipt_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_8"
+            android:text="@string/template_count"
+            android:textColor="@color/color29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/sum_receipt"
+            app:layout_constraintTop_toBottomOf="@+id/sum_receipt"
+            tools:text="0 шт." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/send_sms_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_2"
+        android:background="@color/white"
+        android:padding="@dimen/padding_8"
+        android:paddingStart="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@id/send_email_holder"
+        app:layout_constraintTop_toBottomOf="@id/count_receipt_holder">
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cover" />
+
+        <TextView
+            android:id="@+id/send_sms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/title_sms_sends"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_18"
+            app:layout_constraintBottom_toTopOf="@+id/sms_count"
+            app:layout_constraintLeft_toRightOf="@+id/cover"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Отправлено SMS" />
+
+        <TextView
+            android:id="@+id/sms_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_8"
+            android:text="@string/template_count"
+            android:textColor="@color/color29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/send_sms"
+            app:layout_constraintTop_toBottomOf="@+id/send_sms"
+            tools:text="0 шт." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/send_email_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_2"
+        android:background="@color/white"
+        android:padding="@dimen/padding_8"
+        android:paddingStart="@dimen/margin_16"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/send_sms_holder">
 
-    <TextView
-        android:id="@+id/start_session"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="StartSession"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/close_session" />
+        <ImageView
+            android:id="@+id/cover_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cover" />
 
-    <TextView
-        android:id="@+id/end_session"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EndSession"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/close_session" />
+        <TextView
+            android:id="@+id/send_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/title_email_sends"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tsize_18"
+            app:layout_constraintBottom_toTopOf="@id/email_count"
+            app:layout_constraintLeft_toRightOf="@+id/cover_mail"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Отправлено E-mail" />
 
-    <TextView
-        android:id="@+id/statistic_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_session"
-        tools:text="sessionId: 1488" />
+        <TextView
+            android:id="@+id/email_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/padding_8"
+            android:text="@string/template_count"
+            android:textColor="@color/color29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/send_email"
+            app:layout_constraintTop_toBottomOf="@+id/send_email"
+            tools:text="0 шт." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

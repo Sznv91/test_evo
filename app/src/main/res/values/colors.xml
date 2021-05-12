@@ -46,4 +46,9 @@
     <color name="color31">#1F1F1F</color>
     <color name="color32">#383838</color>
     <color name="color33">#D8D6D6</color>
+
+    <!--Определение цветов для разных тем-->
+    <!--Светлая-->
+    <color name="color_f8">#F8F8F8</color>
+
 </resources>

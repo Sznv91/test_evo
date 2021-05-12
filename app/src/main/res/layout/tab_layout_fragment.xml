@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
+        app:fontFamily="@font/roboto_regular"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:background="#5DFF22"
-        app:tabIconTint="@android:color/holo_blue_bright"
-        app:tabIndicatorColor="@android:color/holo_orange_light"
+        android:background="@color/color_f8"
+        app:tabIconTint="@color/color29"
+        app:tabIndicatorColor="@color/color17"
         app:tabInlineLabel="true"
-        app:tabSelectedTextColor="#FF5722" />
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/color29" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
 
     </androidx.viewpager2.widget.ViewPager2>
     <!--android:layout_height="?attr/actionBarSize"-->

@@ -1,3 +1,4 @@
+
 package ru.softvillage.test_evo.tabs.left_menu.presenter;
 
 import android.animation.AnimatorSet;
@@ -566,7 +567,7 @@ public class SessionPresenter {
 
         Prefs.getInstance().saveInt(CURRENT_THEME, currentTheme);
         if (IstatisticDisplayUpdate != null) {
-            IstatisticDisplayUpdate.updateTheme(currentTheme);
+            IstatisticDisplayUpdate.updateTheme();
         }
     }
 

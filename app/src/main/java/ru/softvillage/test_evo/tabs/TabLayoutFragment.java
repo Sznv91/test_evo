@@ -1,5 +1,6 @@
 package ru.softvillage.test_evo.tabs;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -38,12 +40,36 @@ public class TabLayoutFragment extends Fragment {
         TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText("Object " + (position + 1));
-            if (position == 1) {
+            if (position == 0){
+                tab.setText("Статистика");
+                tab.setIcon(R.drawable.ic_component_1statistic);
+                int tabIconColor = ContextCompat.getColor(getContext(), R.color.color17);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            } else {
+                tab.setText("Чеки");
                 tab.setIcon(R.drawable.ic_baseline_receipt_24);
             }
             viewPager.setCurrentItem(tab.getPosition(), true);
         }).attach();
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int tabIconColor = ContextCompat.getColor(getContext(), R.color.color17);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                int tabIconColor = ContextCompat.getColor(getContext(), R.color.color29);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 }
