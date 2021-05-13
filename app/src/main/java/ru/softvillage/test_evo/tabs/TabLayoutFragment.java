@@ -18,8 +18,10 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 
 import ru.softvillage.test_evo.R;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 public class TabLayoutFragment extends Fragment {
+    TabLayout tabLayout;
 
     @Nullable
     @Override
@@ -30,6 +32,21 @@ public class TabLayoutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tabLayout = view.findViewById(R.id.tab_layout);
+
+        SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
+            if (currentTheme == SessionPresenter.THEME_LIGHT) {
+                tabLayout.setBackgroundColor(ContextCompat.getColor(tabLayout.getContext(), R.color.color_f8));
+                tabLayout.setTabTextColors(ContextCompat.getColor(
+                        tabLayout.getContext(), R.color.color29),
+                        ContextCompat.getColor(tabLayout.getContext(), R.color.black));
+            } else {
+                tabLayout.setBackgroundColor(ContextCompat.getColor(tabLayout.getContext(), R.color.black));
+                tabLayout.setTabTextColors(ContextCompat.getColor(
+                        tabLayout.getContext(), R.color.color29),
+                        ContextCompat.getColor(tabLayout.getContext(), R.color.white));
+            }
+        });
         initTabs();
     }
 
@@ -37,10 +54,10 @@ public class TabLayoutFragment extends Fragment {
         ViewPager2 viewPager = Objects.requireNonNull(getView()).findViewById(R.id.pager);
         viewPager.setAdapter(
                 new FragmentAdapter(this));
-        TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
+
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            if (position == 0){
+            if (position == 0) {
                 tab.setText("Статистика");
                 tab.setIcon(R.drawable.ic_component_1statistic);
                 int tabIconColor = ContextCompat.getColor(getContext(), R.color.color17);

@@ -24,6 +24,7 @@ import ru.evotor.framework.receipt.Receipt;
 import ru.evotor.framework.receipt.TaxNumber;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptDetailViewModel;
 
 /**
@@ -39,6 +40,7 @@ public class ReceiptDetailFragment extends Fragment {
     private String receiptSoftVillageId;
 
     public ReceiptDetailFragment() {
+        SessionPresenter.getInstance().getDrawerManager().showUpButton(true);
         // Required empty public constructor
     }
     public static ReceiptDetailFragment newInstance(String param2) {

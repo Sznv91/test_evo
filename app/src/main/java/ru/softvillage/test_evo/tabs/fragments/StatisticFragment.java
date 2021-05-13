@@ -279,6 +279,5 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
                 statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color20));
             }
         }
-
     }
 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,11 +20,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptViewModel;
 
 public class ReceiptFragment extends Fragment {
     private ReceiptViewModel mViewModel;
     private FloatingActionButton fab;
+    private ConstraintLayout receipt_layout_fragment;
 
     public static ReceiptFragment newInstance() {
         return new ReceiptFragment();
@@ -33,6 +37,7 @@ public class ReceiptFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(ReceiptViewModel.class);
         mViewModel.setContext(getContext());
+
         return inflater.inflate(R.layout.receipt_fragment, container, false);
     }
 
@@ -45,7 +50,16 @@ public class ReceiptFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
+        receipt_layout_fragment = view.findViewById(R.id.receipt_layout_fragment);
         fab = view.findViewById(R.id.fab_up);
+        SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
+            if (currentTheme == SessionPresenter.THEME_LIGHT){
+                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color_f8));
+            } else {
+                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.black));
+            }
+        });
         initRecyclerView();
     }
 
@@ -53,6 +67,7 @@ public class ReceiptFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         mViewModel.setContext(getContext());
+        SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////

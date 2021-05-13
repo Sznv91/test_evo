@@ -13,8 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -34,7 +37,6 @@ import ru.softvillage.test_evo.tabs.left_menu.dialogs.SetCloseAtDialog;
 import ru.softvillage.test_evo.tabs.left_menu.dialogs.SetCloseEveryDialog;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
-import static androidx.core.view.GravityCompat.START;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_AT_;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_DAY;
@@ -53,7 +55,11 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
     private DrawerLayout drawer;
     private ConstraintLayout drawerMenu;
 
-    private ImageView menu;
+    private ActionBarDrawerToggle toggle;
+    private ActionBar mActionBar;
+    private boolean mToolBarNavigationListenerIsRegistered = false;
+
+    /*private ImageView menu;*/
     private ImageView changeTheme;
 
     private TextView titleEvery;
@@ -94,7 +100,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
      * Элементы в которых необходимо только изменить цвет текста при смене темы
      */
     private LinearLayout main;
-    private ConstraintLayout toolbar;
+    private /*ConstraintLayout*/ Toolbar toolbar;
     private TextView titleParams;
     private View dividerPrintAfterClose;
     private View dividerPrintReceipts;
@@ -109,16 +115,18 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         this.activity = activity;
         initMenu();
         SessionPresenter.getInstance().setiMainView1(this);
+        SessionPresenter.getInstance().setDrawerMenuManager(this);
     }
 
     public void setActivity(T activity) {
         this.activity = activity;
         initMenu();
         SessionPresenter.getInstance().setiMainView1(this);
+        SessionPresenter.getInstance().setDrawerMenuManager(this);
     }
 
     private void initMenu() {
-          /**
+        /**
          * Бинд элементов которые ничего не делают, но надо поменять цвет текста при смене темы.
          */
         main = activity.findViewById(R.id.main);
@@ -160,7 +168,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         sendSmsSv = activity.findViewById(R.id.sendSmsSv);
 
 
-        menu = activity.findViewById(R.id.menu);
+        /*menu = activity.findViewById(R.id.menu);*/
         changeTheme = activity.findViewById(R.id.changeTheme);
         layoutAutoClose = activity.findViewById(R.id.layoutAutoClose);
         titleEvery = activity.findViewById(R.id.titleEvery);
@@ -208,8 +216,8 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
             }
         });
 
-        menu.setOnClickListener(this);
-        menu.setOnClickListener(this);
+ /*       menu.setOnClickListener(this);
+        menu.setOnClickListener(this);*/
         changeTheme.setOnClickListener(this);
         layoutAutoClose.setOnClickListener(this);
         titleEvery.setOnClickListener(this);
@@ -223,6 +231,13 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         initSwitch();
         updateVersion();
         updateUITheme();
+
+        toolbar.setTitle(activity.getString(R.string.app_name));
+        activity.setSupportActionBar(toolbar);
+        toggle = new ActionBarDrawerToggle(activity/*this*/, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mActionBar = activity.getSupportActionBar();
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     @SuppressLint("LongLogTag")
@@ -331,10 +346,10 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
     public void onClick(View v) {
         Log.d(EvoApp.TAG + "_left_menu", "click - click: " + v.getId());
         switch (v.getId()) {
-            case R.id.menu:
+            /*case R.id.menu:
                 if (!drawer.isDrawerOpen(START))
                     drawer.openDrawer(START);
-                break;
+                break;*/
             case R.id.changeTheme:
                 toggleTheme();
                 break;
@@ -848,6 +863,52 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
         /*if (viewPager.getAdapter() != null)
             ((MainPagerAdapter) viewPager.getAdapter()).updateUITheme();*/
+    }
+
+    public void showUpButton(boolean show) {
+        // To keep states of ActionBar and ActionBarDrawerToggle synchronized,
+        // when you enable on one, you disable on the other.
+        // And as you may notice, the order for this operation is disable first, then enable - VERY VERY IMPORTANT.
+        if (show) {
+            //Запрещаяем выезжание меню справа
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            // Remove hamburger
+            toggle.setDrawerIndicatorEnabled(false);
+            // Show back button
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            // when DrawerToggle is disabled i.e. setDrawerIndicatorEnabled(false), navigation icon
+            // clicks are disabled i.e. the UP button will not work.
+            // We need to add a listener, as in below, so DrawerToggle will forward
+            // click events to this listener.
+            if (!mToolBarNavigationListenerIsRegistered) {
+                toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.onBackPressed();
+                    }
+                });
+
+                mToolBarNavigationListenerIsRegistered = true;
+            }
+
+        } else {
+            //Разрешаем выезжание меню справа
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            // Remove back button
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+            // Show hamburger
+            toggle.setDrawerIndicatorEnabled(true);
+            // Remove the/any drawer toggle listener
+            toggle.setToolbarNavigationClickListener(null);
+            mToolBarNavigationListenerIsRegistered = false;
+        }
+
+        // So, one may think "Hmm why not simplify to:
+        // .....
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
+        // mDrawer.setDrawerIndicatorEnabled(!enable);
+        // ......
+        // To re-iterate, the order in which you enable and disable views IS important #dontSimplify.
     }
 
 }

@@ -41,6 +41,7 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractReceiptView
 
     @Override
     public void onBindViewHolder(@NonNull AbstractReceiptViewHolder holder, int position) {
+
         holder.bind(itemList.get(holder.getAdapterPosition()));
         if (holder.getItemViewType() == TYPE_DATA_SPLITTER) {
             TextView dateTextView = holder.itemView.findViewById(R.id.item_date_splitter);
@@ -65,9 +66,9 @@ public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractReceiptView
 
     @Override
     public int getItemViewType(int position) {
-            if (itemList.get(position).getUuid() != null && itemList.get(position).getUuid().equals(DATE_SPLITTER_NAME)) {
-                return TYPE_DATA_SPLITTER;
-            }
+        if (itemList.get(position).getUuid() != null && itemList.get(position).getUuid().equals(DATE_SPLITTER_NAME)) {
+            return TYPE_DATA_SPLITTER;
+        }
         return TYPE_NORMAL;
     }
 

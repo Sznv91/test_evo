@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_receipt_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -11,84 +12,43 @@
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:src="@drawable/ic_recipient_list"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:fontFamily="@font/roboto_bold"
-        android:id="@+id/tv_static_sale"
+        android:id="@+id/title_receipt_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Чек продажи № "
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/title_receipt_sale"
+        android:textColor="@color/color8"
         app:layout_constraintStart_toEndOf="@+id/iv_static_check_list"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:fontFamily="@font/roboto_bold"
-        android:id="@+id/text_view_receipt_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" "
-        app:layout_constraintStart_toEndOf="@+id/tv_static_sale"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="3143" />
+        tools:text="Чек продажи № 3143 на 32 позиции" />
 
     <TextView
-        android:fontFamily="@font/roboto_bold"
-        android:id="@+id/tv_static_on"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" на "
-        app:layout_constraintStart_toEndOf="@+id/text_view_receipt_number"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:fontFamily="@font/roboto_bold"
-        android:id="@+id/text_view_good_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" "
-        app:layout_constraintStart_toEndOf="@+id/tv_static_on"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="32" />
-
-    <TextView
-        android:fontFamily="@font/roboto_bold"
-        android:id="@+id/tv_static_position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" позиции"
-        app:layout_constraintStart_toEndOf="@+id/text_view_good_count"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-
         android:id="@+id/tv_static_summ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сумма "
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/tv_static_summ"
+        android:textColor="@color/color6"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@id/iv_static_check_list"
-        app:layout_constraintTop_toBottomOf="@id/tv_static_sale" />
+        app:layout_constraintTop_toBottomOf="@id/title_receipt_sale" />
 
     <TextView
-        android:textSize="10sp"
-        android:id="@+id/text_view_total_cost"
+        android:id="@+id/title_receipt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" "
-        app:layout_constraintStart_toEndOf="@+id/tv_static_summ"
-        app:layout_constraintTop_toBottomOf="@id/tv_static_sale"
-        tools:text="313131" />
+        android:paddingEnd="@dimen/padding_16"
+        android:textColor="@color/color6"
+        android:textSize="10sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_static_summ"
+        tools:text="14:58" />
 
-    <TextView
-        android:id="@+id/tv_static_rub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" руб."
-        android:textSize="10sp"
-        app:layout_constraintStart_toEndOf="@id/text_view_total_cost"
-        app:layout_constraintTop_toBottomOf="@id/tv_static_sale" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

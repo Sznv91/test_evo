@@ -8,6 +8,8 @@ import android.os.HandlerThread;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
@@ -24,6 +26,7 @@ import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.test_evo.tabs.fragments.StatisticDisplayUpdate;
+import ru.softvillage.test_evo.tabs.left_menu.DrawerMenuManager;
 import ru.softvillage.test_evo.tabs.left_menu.IMainView;
 import ru.softvillage.test_evo.tabs.left_menu.IMainView1;
 import ru.softvillage.test_evo.tabs.left_menu.util.Prefs;
@@ -156,6 +159,9 @@ public class SessionPresenter {
     public static int THEME_LIGHT = 0;
     public static int THEME_DARK = 1;
     private int currentTheme = 0;
+    private MutableLiveData<Integer> currentThemeLiveData = new MutableLiveData<>();
+
+    private DrawerMenuManager manager;
 
     private String formatSessionDateTime(long millis) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy\\HH:mm:ss", Locale.getDefault());
@@ -296,6 +302,7 @@ public class SessionPresenter {
         lastSessionNumber = Prefs.getInstance().loadLong(KEY_LAST_SESSION_NUMBER);
         startDateTime = Prefs.getInstance().loadLong(KEY_SESSION_START);
 
+        currentThemeLiveData.postValue(currentTheme);
     }
 
     /*public MutableLiveData<Integer> getNotifyCount() {
@@ -562,8 +569,12 @@ public class SessionPresenter {
     public void toggleTheme() {
         currentTheme++;
 
-        if (currentTheme > 1)
+        if (currentTheme > 1) {
             currentTheme = 0;
+            currentThemeLiveData.postValue(0);
+        } else {
+            currentThemeLiveData.postValue(1);
+        }
 
         Prefs.getInstance().saveInt(CURRENT_THEME, currentTheme);
         if (IstatisticDisplayUpdate != null) {
@@ -573,5 +584,17 @@ public class SessionPresenter {
 
     public int getCurrentTheme() {
         return currentTheme;
+    }
+
+    public LiveData<Integer> getCurrentThemeLiveData() {
+        return currentThemeLiveData;
+    }
+
+    public <T extends AppCompatActivity> void setDrawerMenuManager(DrawerMenuManager<T> tDrawerMenuManager) {
+        manager = tDrawerMenuManager;
+    }
+
+    public DrawerMenuManager getDrawerManager() {
+        return manager;
     }
 }

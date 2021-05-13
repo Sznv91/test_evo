@@ -68,4 +68,9 @@
     <string name="title_session_time_alert_description">При сохранении новых настроек текущая смена будет закрыта. Сохранить?</string>
     <string name="title_session_time_day_alert">Время смены превышает 24 часа.</string>
     <string name="title_session_time_day_alert_description">При сохранении новых настроек время смены превысит 24 часа, текущая смена будет закрыта. Сохранить?</string>
+    <string name="title_receipt_sale">Чек продажи № %d на %d позиции</string>
+    <string name="tv_static_summ">Сумма %.02f руб.</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
