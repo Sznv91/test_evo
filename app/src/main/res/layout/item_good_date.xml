@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#3F51B5">
+    android:background="@android:color/transparent">
 
     <TextView
         android:id="@+id/item_date_splitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:drawablePadding="@dimen/padding_8"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/color29"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_statistic_calendar"
         tools:text="10.01.2021" />
 
 </FrameLayout>

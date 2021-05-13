@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#B4B4B4">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_static_check_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_checklist_ok_24"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_recipient_list"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
+        android:fontFamily="@font/roboto_bold"
         android:id="@+id/tv_static_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,6 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:fontFamily="@font/roboto_bold"
         android:id="@+id/text_view_receipt_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,6 +35,7 @@
         tools:text="3143" />
 
     <TextView
+        android:fontFamily="@font/roboto_bold"
         android:id="@+id/tv_static_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:fontFamily="@font/roboto_bold"
         android:id="@+id/text_view_good_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,6 +54,7 @@
         tools:text="32" />
 
     <TextView
+        android:fontFamily="@font/roboto_bold"
         android:id="@+id/tv_static_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,6 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+
         android:id="@+id/tv_static_summ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
