@@ -29,7 +29,7 @@ public interface ReceiptDao {
     void update(PartialReceiptPrinted receipt);
 
     @Query("SELECT * FROM receipt WHERE id = :id")
-    LiveData<ReceiptEntity> getById(long id);
+    ReceiptEntity getById(long id);
 
     @Transaction
     @Query("SELECT * FROM receipt WHERE id = :id")

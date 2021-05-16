@@ -51,5 +51,7 @@ public class ReceiptEntity {
     //Смена
     @ColumnInfo(name = "session_id")
     private Long sessionId;
+    @ColumnInfo(name = "user_uuid")
+    private String userUuid;
 
 }

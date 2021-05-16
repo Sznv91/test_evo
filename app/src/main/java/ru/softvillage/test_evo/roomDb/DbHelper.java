@@ -35,8 +35,11 @@ public class DbHelper {
         return receiptList;
     }
 
-    public LiveData<ReceiptEntity> getById(long receiptId) {
-        return dataBase.receiptDao().getById(receiptId);
+    @Transaction
+    public void getById(long receiptId, AsyncCallback callback) {
+        dataBase.getQueryExecutor().execute(() -> {
+            callback.receiptRequest(dataBase.receiptDao().getById(receiptId));
+        });
     }
 
     @Transaction
@@ -53,13 +56,14 @@ public class DbHelper {
         return dataBase.receiptDao().loadReceiptBy(id);
     }
 
-    public void getSessionId(long receiptId, SessionCallback callback) {
+    public void getSessionId(long receiptId, AsyncCallback callback) {
         dataBase.getQueryExecutor().execute(() -> {
-            callback.success(dataBase.receiptDao().getSessionId(receiptId));
+            callback.sessionRequest(dataBase.receiptDao().getSessionId(receiptId));
         });
     }
 
-    public interface SessionCallback {
-        void success(long sessionId);
+    public interface AsyncCallback {
+        void sessionRequest(long sessionId);
+        void receiptRequest(ReceiptEntity entity);
     }
 }

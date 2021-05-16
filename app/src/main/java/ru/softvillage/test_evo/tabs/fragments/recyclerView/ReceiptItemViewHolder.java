@@ -29,7 +29,7 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
         public void onChanged(Integer integer) {
             if (integer == SessionPresenter.THEME_LIGHT){
                 item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.white));
-                title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.black));
+                title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.color20));
             } else {
                 item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.color31));
                 title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.white));

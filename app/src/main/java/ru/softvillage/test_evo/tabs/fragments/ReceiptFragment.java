@@ -1,6 +1,7 @@
 package ru.softvillage.test_evo.tabs.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,10 +55,12 @@ public class ReceiptFragment extends Fragment {
         receipt_layout_fragment = view.findViewById(R.id.receipt_layout_fragment);
         fab = view.findViewById(R.id.fab_up);
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
-            if (currentTheme == SessionPresenter.THEME_LIGHT){
+            if (currentTheme == SessionPresenter.THEME_LIGHT) {
                 receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color_f8));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color17)));
             } else {
                 receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.black));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color32)));
             }
         });
         initRecyclerView();

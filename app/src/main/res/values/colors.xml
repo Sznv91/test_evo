@@ -50,5 +50,12 @@
     <!--Определение цветов для разных тем-->
     <!--Светлая-->
     <color name="color_f8">#F8F8F8</color>
+    <color name="color_c0">#C0C0C0</color>
+    <color name="color_20_alpha">#99666666</color>
+    <color name="light_divider">#14212121</color>
+    <color name="dark_divider">#707070</color>
+    <color name="color_c4">#C4C4C4</color>
+
+
 
 </resources>

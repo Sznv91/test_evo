@@ -117,7 +117,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_auto_close_session"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_14" />
+                    android:textSize="@dimen/tsize_12" />
 
                 <ImageView
                     android:id="@+id/arrowAutoClose"
@@ -247,7 +247,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_send_sms_settings"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_14" />
+                    android:textSize="@dimen/tsize_12" />
 
                 <ImageView
                     android:id="@+id/arrowSendSms"
@@ -322,7 +322,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_send_email_settings"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_14" />
+                    android:textSize="@dimen/tsize_12" />
 
                 <ImageView
                     android:id="@+id/arrowSendEmail"

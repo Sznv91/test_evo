@@ -73,4 +73,14 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="receipt_detail_sale_num">Продажа №%s</string>
+    <string name="receipt_detail_session_id">Смена № %d</string>
+    <string name="receipt_item_single_position">%.003f X %.02f = %.02f</string>
+    <string name="receipt_item_nds">НДС %s = %.02f</string>
+    <string name="receipt_item_position_discount">СКИДКА = %.02f</string>
+    <string name="receipt_item_position_cost">ЦЕНА = %.02f</string>
+
+
+
+
 </resources>

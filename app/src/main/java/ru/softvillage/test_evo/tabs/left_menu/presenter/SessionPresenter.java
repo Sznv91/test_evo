@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import lombok.Getter;
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
@@ -58,6 +59,12 @@ public class SessionPresenter {
     public final static long CLOSED_SESSION_ID = -1;
     public static final String PREVIOUS_SESSION_STATUS = "previousSessionStatus";
     public boolean previousSessionStatus;
+
+    public final static String SHOP_NAME = "shop_name";
+    public final static String SHOP_ADDRESS_CITY = "shop_address_city";
+    public final static String SHOP_ADDRESS_STREET = "shop_address_street";
+    public final static String PAYMENT_LOCATION_ADDRESS_CITY = "payment_location_address_city";
+    public final static String PAYMENT_LOCATION_ADDRESS_STREET = "payment_location_address_street";
 
 
     public final static String KEY_KKT_SERIAL_NUMBER = "kktSerialNumber";
@@ -152,6 +159,13 @@ public class SessionPresenter {
 
     private boolean undefinedSession = false;
 
+    @Getter
+    private String shop_name,
+            shop_address_city,
+            shop_address_street,
+            payment_location_address_city,
+            payment_location_address_street;
+
     /**
      * 0 - светаля тема
      * 1 - темная тема
@@ -204,6 +218,12 @@ public class SessionPresenter {
             init = true;
             return;
         }
+
+        shop_name = Prefs.getInstance().loadString(SHOP_NAME);
+        shop_address_city = Prefs.getInstance().loadString(SHOP_ADDRESS_CITY);
+        shop_address_street = Prefs.getInstance().loadString(SHOP_ADDRESS_STREET);
+        payment_location_address_city = Prefs.getInstance().loadString(PAYMENT_LOCATION_ADDRESS_CITY);
+        payment_location_address_street = Prefs.getInstance().loadString(PAYMENT_LOCATION_ADDRESS_STREET);
 
         previousSessionStatus = Prefs.getInstance().loadBoolean(PREVIOUS_SESSION_STATUS);
 
@@ -596,5 +616,28 @@ public class SessionPresenter {
 
     public DrawerMenuManager getDrawerManager() {
         return manager;
+    }
+
+    public void setShopInfo(String shop_name, String shop_address_city, String shop_address_street, String payment_location_address_city, String payment_location_address_street) {
+        if (!this.shop_name.equals(shop_name)) {
+            this.shop_name = shop_name;
+            Prefs.getInstance().saveString(SHOP_NAME, shop_name);
+        }
+        if (!this.shop_address_city.equals(shop_address_city)) {
+            this.shop_address_city = shop_address_city;
+            Prefs.getInstance().saveString(SHOP_ADDRESS_CITY, shop_address_city);
+        }
+        if (!this.shop_address_street.equals(shop_address_street)) {
+            this.shop_address_street = shop_address_street;
+            Prefs.getInstance().saveString(SHOP_ADDRESS_STREET, shop_address_street);
+        }
+        if (!this.payment_location_address_city.equals(payment_location_address_city)) {
+            this.payment_location_address_city = payment_location_address_city;
+            Prefs.getInstance().saveString(PAYMENT_LOCATION_ADDRESS_CITY, payment_location_address_city);
+        }
+        if (!this.payment_location_address_street.equals(payment_location_address_street)) {
+            this.payment_location_address_street = payment_location_address_street;
+            Prefs.getInstance().saveString(PAYMENT_LOCATION_ADDRESS_STREET, payment_location_address_street);
+        }
     }
 }

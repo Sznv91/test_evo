@@ -29,6 +29,7 @@ import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
 import ru.evotor.framework.system.SystemStateApi;
+import ru.evotor.framework.users.UserApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
@@ -126,6 +127,7 @@ public class PrintUtil {
                             dataToDb.setUuid(result.getData().getString("receiptUuid"));
                             dataToDb.setId(order.getOrderData().id);
                             dataToDb.setSessionId(SystemStateApi.getLastSessionNumber(context));
+                            dataToDb.setUserUuid(UserApi.getAuthenticatedUser(EvoApp.getInstance()).getUuid());
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
                             /**

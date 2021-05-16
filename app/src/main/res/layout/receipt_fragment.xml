@@ -15,6 +15,9 @@
         tools:listitem="@layout/item_receipt" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:backgroundTint="@color/color17"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
         android:visibility="visible"
         android:id="@+id/fab_up"
         android:layout_width="wrap_content"
