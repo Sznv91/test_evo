@@ -1,6 +1,7 @@
 package ru.softvillage.test_evo.tabs.fragments.recyclerView;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
     }
 
     public void bind(ReceiptEntity entity) {
-        title_receipt_sale.setText(String.format(EvoApp.getInstance().getString(R.string.title_receipt_sale), entity.getSessionId(), entity.getCountOfPosition()));
+        title_receipt_sale.setText(String.format(EvoApp.getInstance().getString(R.string.title_receipt_sale), entity.getReceiptNumber(), entity.getCountOfPosition()));
         tv_static_summ.setText(String.format(EvoApp.getInstance().getString(R.string.tv_static_summ), entity.getPrice()));
         title_receipt_time.setText(entity.getReceived().toString("HH:mm"));
     }

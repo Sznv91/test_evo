@@ -300,6 +300,116 @@
                 android:layout_height="1dp"
                 app:layout_constraintTop_toBottomOf="@+id/payment_location_address_street" />
 
+            <TextView
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_sno"
+                android:text="СНО:"
+                tools:text="СНО:"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/divider_shop_info" />
+
+            <TextView
+                android:text="Смена "
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_session_fm"
+                tools:text="Смена 26"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_sno" />
+
+            <TextView
+                android:text="ФД №"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_fd_num"
+                tools:text="ФД № 889"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_session_fm" />
+
+            <TextView
+                android:text="ФП:"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_fp_num"
+                tools:text="ФП: 0124198634"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_fd_num" />
+
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_fm_date"
+                tools:text="16.05.21 21:27"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_fp_num" />
+
+
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/content_sno"
+                tools:text="УСН доход"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toTopOf="@+id/title_sno" />
+
+            <TextView
+                android:text="РН ККТ:"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_rn_kkt"
+                tools:text="РН ККТ: 0000000006053185"
+                app:layout_constraintRight_toRightOf="@+id/content_sno"
+                app:layout_constraintTop_toBottomOf="@+id/content_sno" />
+
+            <TextView
+                android:text="ЗН ККТ:"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_zn_kkt"
+                tools:text="ЗН ККТ: ↑00307901752904↑"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_rn_kkt" />
+
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_site_fns"
+                android:text="@string/title_site_fns"
+                tools:text="Сайт ФНС: www.nalog.ru"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_zn_kkt" />
+
+            <TextView
+                android:text="ФН №"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_fn_num"
+                tools:text="ФН № 99990789902007958"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_site_fns" />
+
+            <TextView
+                android:text="ИНН:"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_inn_num"
+                tools:text="ИНН: 6155089066"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_fn_num" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

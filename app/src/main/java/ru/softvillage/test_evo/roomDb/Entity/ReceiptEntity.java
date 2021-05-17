@@ -54,4 +54,23 @@ public class ReceiptEntity {
     @ColumnInfo(name = "user_uuid")
     private String userUuid;
 
+    @ColumnInfo(name = "rn_kkt")
+    private String rn_kkt;
+    @ColumnInfo(name = "zn_kkt")
+    private String zn_kkt;
+    @ColumnInfo(name = "org_inn")
+    private long inn;
+    @ColumnInfo(name = "sno_type")
+    private String sno_type;
+
+    @ColumnInfo(name = "shop_name")
+    String shop_name;
+    @ColumnInfo(name = "shop_address_city")
+    String shop_address_city;
+    @ColumnInfo(name = "shop_address_street")
+    String shop_address_street;
+    @ColumnInfo(name = "payment_location_address_city")
+    String payment_location_address_city;
+    @ColumnInfo(name = "payment_location_address_street")
+    String payment_location_address_street;
 }

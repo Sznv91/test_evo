@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleOwner;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.TabLayoutFragment;
 import ru.softvillage.test_evo.tabs.left_menu.DrawerMenuManager;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     DrawerMenuManager<MainActivity> manager;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         EvoApp.getInstance().getFragmentDispatcher().setActivity(this);
 
 
-
         /**
          * Узнаем размеры дисплеея
          */
@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 "[Используя Display] \n" +
                 "Ширина: " + metricsB.widthPixels + "\n" +
                 "Высота: " + metricsB.heightPixels);
+
+        SessionPresenter.getInstance().initOrgInfo();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

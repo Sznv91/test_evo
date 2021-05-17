@@ -80,7 +80,13 @@
     <string name="receipt_item_position_discount">СКИДКА = %.02f</string>
     <string name="receipt_item_position_cost">ЦЕНА = %.02f</string>
 
-
-
+    <string name="title_session_fm">Смена %d</string>
+    <string name="title_fd_num">ФД № %d</string>
+    <string name="title_fp_num">ФП: %d</string>
+    <string name="title_rn_kkt">РН ККТ: %s</string>
+    <string name="title_zn_kkt">ЗН ККТ: ↑%s↑</string>
+    <string name="title_site_fns">Сайт ФНС: www.nalog.ru</string>
+    <string name="title_fn_num">ФН № %d</string>
+    <string name="title_inn_num">ИНН: %d</string>
 
 </resources>

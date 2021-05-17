@@ -26,6 +26,7 @@ import ru.softvillage.test_evo.roomDb.LocalDataBase;
 
 public class EvoApp extends Application {
     public static final String TAG = "ru.softvillage.test_evo";
+    public static final String SHOP_INFO_ENDPOINT = "https://kkt-evotor.ru/test_app/firm_info.php";
 
     @Getter
     private static EvoApp instance;

@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.joda.time.LocalDateTime;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -87,6 +89,20 @@ public class ReceiptDetailFragment extends Fragment {
             payment_location_address_city,
             payment_location_address_street;
 
+    private TextView
+            title_sno,
+            title_session_fm,
+            title_fd_num,
+            title_fp_num,
+            title_fm_date,
+            content_sno,
+            title_rn_kkt,
+            title_zn_kkt,
+            title_site_fns,
+            title_fn_num,
+            title_inn_num;
+
+
     private String firstName, secondName = "";
 
     private static final String ARG_PARAM2 = "param2";
@@ -138,6 +154,7 @@ public class ReceiptDetailFragment extends Fragment {
         receipt_detail_layout = view.findViewById(R.id.receipt_detail_layout);
         divider = view.findViewById(R.id.divider);
         divider_cred = view.findViewById(R.id.divider_cred);
+        divider_shop_info = view.findViewById(R.id.divider_shop_info);
         receipt_detail_title = view.findViewById(R.id.receipt_detail_title);
         receipt_type = view.findViewById(R.id.receipt_type);
         title_total_cost = view.findViewById(R.id.title_total_cost);
@@ -156,13 +173,25 @@ public class ReceiptDetailFragment extends Fragment {
         title_payment_location = view.findViewById(R.id.title_payment_location);
         payment_location_address_city = view.findViewById(R.id.payment_location_address_city);
         payment_location_address_street = view.findViewById(R.id.payment_location_address_street);
+
+        title_sno = view.findViewById(R.id.title_sno);
+        title_session_fm = view.findViewById(R.id.title_session_fm);
+        title_fd_num = view.findViewById(R.id.title_fd_num);
+        title_fp_num = view.findViewById(R.id.title_fp_num);
+        title_fm_date = view.findViewById(R.id.title_fm_date);
+        content_sno = view.findViewById(R.id.content_sno);
+        title_rn_kkt = view.findViewById(R.id.title_rn_kkt);
+        title_zn_kkt = view.findViewById(R.id.title_zn_kkt);
+        title_site_fns = view.findViewById(R.id.title_site_fns);
+        title_fn_num = view.findViewById(R.id.title_fn_num);
+        title_inn_num = view.findViewById(R.id.title_inn_num);
         initColour(SessionPresenter.getInstance().getCurrentTheme());
 
         viewModel = new ViewModelProvider(this).get(ReceiptDetailViewModel.class);
         viewModel.setReceiptCloudId(receiptSoftVillageId);
 
-        //todo удалить фейковый добавлятель адреса точки продаж
-        addFakeShopAddress();
+        /*//todo удалить фейковый добавлятель адреса точки продаж
+        addFakeShopAddress();*/
         RecyclerView recycler = getView().findViewById(R.id.position_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(layoutManager);
@@ -201,17 +230,7 @@ public class ReceiptDetailFragment extends Fragment {
                 @Override
                 public void receiptRequest(ReceiptEntity entity) {
                     for (User user : users) {
-                        Cursor<FiscalReceipt> fiscalReceiptCursor = ReceiptApi.getFiscalReceipts(getContext(), receipt.getHeader().getUuid());
-                        while (fiscalReceiptCursor.moveToNext()){
-                            Log.d(EvoApp.TAG + "_receipt_detail_just_receipt", fiscalReceiptCursor.getValue().toString());
-                        }
-                        fiscalReceiptCursor.close();
-
-
-                        Log.d(EvoApp.TAG + "_receipt_detail", user.toString());
-                        Log.d(EvoApp.TAG + "_receipt_detail_just_receipt", receipt.toString());
                         if (entity.getUserUuid().equals(user.getUuid())) {
-
                             if (!TextUtils.isEmpty(user.getFirstName())) {
                                 firstName = user.getFirstName();
                             }
@@ -220,6 +239,33 @@ public class ReceiptDetailFragment extends Fragment {
                             }
                         }
                     }
+                    getActivity().runOnUiThread(() -> {
+                        if (TextUtils.isEmpty(firstName)) {
+                            firstName = "Кассир";
+                        }
+                        user_name.setText(String.format("%s %s", firstName, secondName));
+                        shop_name.setText(entity.getShop_name());
+                        shop_address_city.setText(entity.getShop_address_city());
+                        shop_address_street.setText(entity.getShop_address_street());
+                        payment_location_address_city.setText(entity.getPayment_location_address_city());
+                        payment_location_address_street.setText(entity.getPayment_location_address_street());
+
+                        content_sno.setText(entity.getSno_type());
+                        String rn = "";
+                        if (entity.getRn_kkt().length() > 1) {
+                            for (int i = 0; i < entity.getRn_kkt().length(); i++) {
+                                if (!entity.getRn_kkt().substring(i, i + 1).equals(" ")) {
+                                    rn += entity.getRn_kkt().substring(i, i + 1);
+                                }
+                            }
+                        } else {
+                            rn = "0000000000000000";
+                        }
+
+                        title_rn_kkt.setText(String.format(getActivity().getString(R.string.title_rn_kkt), rn));
+                        title_zn_kkt.setText(String.format(getActivity().getString(R.string.title_zn_kkt), entity.getZn_kkt()));
+                        title_inn_num.setText(String.format(getActivity().getString(R.string.title_inn_num), entity.getInn()));
+                    });
                 }
             });
 //            user_name.setText( receipt.getPayments().get(0).getAccountId() + " + " +receipt.getPayments().get(0).getUuid());
@@ -357,12 +403,17 @@ public class ReceiptDetailFragment extends Fragment {
                         ndsType.toString()
                 );
 
-                user_name.setText(String.format("%s %s", firstName, secondName));
-                shop_name.setText(SessionPresenter.getInstance().getShop_name());
-                shop_address_city.setText(SessionPresenter.getInstance().getShop_address_city());
-                shop_address_street.setText(SessionPresenter.getInstance().getShop_address_street());
-                payment_location_address_city.setText(SessionPresenter.getInstance().getPayment_location_address_city());
-                payment_location_address_street.setText(SessionPresenter.getInstance().getPayment_location_address_street());
+                Cursor<FiscalReceipt> fiscalReceiptCursor = ReceiptApi.getFiscalReceipts(getContext(), receipt.getHeader().getUuid());
+                while (fiscalReceiptCursor.moveToNext()) {
+                    title_session_fm.setText(String.format(getActivity().getString(R.string.title_session_fm), fiscalReceiptCursor.getValue().getSessionNumber() + 1));
+                    title_fd_num.setText(String.format(getActivity().getString(R.string.title_fd_num), fiscalReceiptCursor.getValue().getDocumentNumber()));
+                    title_fp_num.setText(String.format(getActivity().getString(R.string.title_fp_num), fiscalReceiptCursor.getValue().getFiscalIdentifier()));
+                    LocalDateTime localDateTime = LocalDateTime.fromDateFields(fiscalReceiptCursor.getValue().getCreationDate());
+                    title_fm_date.setText(localDateTime.toString("dd.MM.YY HH:mm"));
+                    title_fn_num.setText(String.format(getActivity().getString(R.string.title_fn_num), fiscalReceiptCursor.getValue().getFiscalStorageNumber()));
+                    Log.d(EvoApp.TAG + "_receipt_detail_just_receipt", fiscalReceiptCursor.getValue().toString());
+                }
+                fiscalReceiptCursor.close();
             });
 
 
@@ -411,7 +462,7 @@ public class ReceiptDetailFragment extends Fragment {
             receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.white));
             divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.light_divider));
             divider_cred.setBackgroundColor(ContextCompat.getColor(divider_cred.getContext(), R.color.light_divider));
-//            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.light_divider));
+            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.light_divider));
 
             saleNumber.setTextColor(ContextCompat.getColor(saleNumber.getContext(), R.color.black));
             saleNumber.setAlpha(Float.parseFloat("0.3"));
@@ -443,7 +494,7 @@ public class ReceiptDetailFragment extends Fragment {
             receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.color31));
             divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.dark_divider));
             divider_cred.setBackgroundColor(ContextCompat.getColor(divider_cred.getContext(), R.color.dark_divider));
-//            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.dark_divider));
+            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.dark_divider));
 
 
             saleNumber.setTextColor(ContextCompat.getColor(saleNumber.getContext(), R.color.color29));
@@ -475,9 +526,21 @@ public class ReceiptDetailFragment extends Fragment {
         payment_location_address_city.setTextColor(ContextCompat.getColor(payment_location_address_city.getContext(), R.color.color29));
         payment_location_address_street.setTextColor(ContextCompat.getColor(payment_location_address_street.getContext(), R.color.color29));
         title_payment.setTextColor(ContextCompat.getColor(title_payment.getContext(), R.color.color29));
+
+        title_sno.setTextColor(ContextCompat.getColor(title_sno.getContext(), R.color.color29));
+        title_session_fm.setTextColor(ContextCompat.getColor(title_session_fm.getContext(), R.color.color29));
+        title_fd_num.setTextColor(ContextCompat.getColor(title_fd_num.getContext(), R.color.color29));
+        title_fp_num.setTextColor(ContextCompat.getColor(title_fp_num.getContext(), R.color.color29));
+        title_fm_date.setTextColor(ContextCompat.getColor(title_fm_date.getContext(), R.color.color29));
+        content_sno.setTextColor(ContextCompat.getColor(content_sno.getContext(), R.color.color29));
+        title_rn_kkt.setTextColor(ContextCompat.getColor(title_rn_kkt.getContext(), R.color.color29));
+        title_zn_kkt.setTextColor(ContextCompat.getColor(title_zn_kkt.getContext(), R.color.color29));
+        title_site_fns.setTextColor(ContextCompat.getColor(title_site_fns.getContext(), R.color.color29));
+        title_fn_num.setTextColor(ContextCompat.getColor(title_fn_num.getContext(), R.color.color29));
+        title_inn_num.setTextColor(ContextCompat.getColor(title_inn_num.getContext(), R.color.color29));
     }
 
-    private void addFakeShopAddress() {
+    /*private void addFakeShopAddress() {
         SessionPresenter.getInstance().setShopInfo(
                 "Софт-Вилладж",
                 "346500, Ростовская обл. г. Шахты",
@@ -485,5 +548,5 @@ public class ReceiptDetailFragment extends Fragment {
                 "190000, г. Санкт-Петербург",
                 "Большая Морская улица, 30"
         );
-    }
+    }*/
 }

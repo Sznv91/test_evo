@@ -23,8 +23,12 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import lombok.Getter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.network.entity.OrgInfo;
 import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.test_evo.tabs.fragments.StatisticDisplayUpdate;
 import ru.softvillage.test_evo.tabs.left_menu.DrawerMenuManager;
@@ -65,6 +69,8 @@ public class SessionPresenter {
     public final static String SHOP_ADDRESS_STREET = "shop_address_street";
     public final static String PAYMENT_LOCATION_ADDRESS_CITY = "payment_location_address_city";
     public final static String PAYMENT_LOCATION_ADDRESS_STREET = "payment_location_address_street";
+    public final static String SNO_TYPE = "sno_type";
+    public final static String ORG_INN = "org_inn";
 
 
     public final static String KEY_KKT_SERIAL_NUMBER = "kktSerialNumber";
@@ -164,7 +170,11 @@ public class SessionPresenter {
             shop_address_city,
             shop_address_street,
             payment_location_address_city,
-            payment_location_address_street;
+            payment_location_address_street,
+            sno_type;
+    @Getter
+    private long org_inn;
+    ;
 
     /**
      * 0 - светаля тема
@@ -224,6 +234,9 @@ public class SessionPresenter {
         shop_address_street = Prefs.getInstance().loadString(SHOP_ADDRESS_STREET);
         payment_location_address_city = Prefs.getInstance().loadString(PAYMENT_LOCATION_ADDRESS_CITY);
         payment_location_address_street = Prefs.getInstance().loadString(PAYMENT_LOCATION_ADDRESS_STREET);
+        sno_type = Prefs.getInstance().loadString(SNO_TYPE);
+        org_inn = Prefs.getInstance().loadLong(ORG_INN);
+        initOrgInfo();
 
         previousSessionStatus = Prefs.getInstance().loadBoolean(PREVIOUS_SESSION_STATUS);
 
@@ -618,7 +631,7 @@ public class SessionPresenter {
         return manager;
     }
 
-    public void setShopInfo(String shop_name, String shop_address_city, String shop_address_street, String payment_location_address_city, String payment_location_address_street) {
+    public void setShopInfo(String shop_name, String shop_address_city, String shop_address_street, String payment_location_address_city, String payment_location_address_street, String sno_type, long org_inn) {
         if (!this.shop_name.equals(shop_name)) {
             this.shop_name = shop_name;
             Prefs.getInstance().saveString(SHOP_NAME, shop_name);
@@ -639,5 +652,38 @@ public class SessionPresenter {
             this.payment_location_address_street = payment_location_address_street;
             Prefs.getInstance().saveString(PAYMENT_LOCATION_ADDRESS_STREET, payment_location_address_street);
         }
+        if (!this.sno_type.equals(sno_type)) {
+            this.sno_type = sno_type;
+            Prefs.getInstance().saveString(SNO_TYPE, sno_type);
+        }
+        if (this.org_inn != org_inn) {
+            this.org_inn = org_inn;
+            Prefs.getInstance().saveLong(ORG_INN, org_inn);
+        }
+    }
+
+    public void initOrgInfo() {
+        Log.d(TAG + "_org_info", "initOrgInfo");
+        EvoApp.getInstance().getOrderInterface().getOrgInfo().enqueue(new Callback<OrgInfo>() {
+            @Override
+            public void onResponse(Call<OrgInfo> call, Response<OrgInfo> response) {
+                OrgInfo info = response.body();
+                Log.d(TAG + "_org_info", info.toString());
+
+                setShopInfo(info.getName(),
+                        info.getShop_address_city(),
+                        info.getShop_address_street(),
+                        info.getPayment_location_address_city(),
+                        info.getPayment_location_address_street(),
+                        info.getSno(),
+                        info.getInn());
+            }
+
+            @Override
+            public void onFailure(Call<OrgInfo> call, Throwable t) {
+                Log.d(TAG + "_org_info", t.getMessage());
+
+            }
+        });
     }
 }

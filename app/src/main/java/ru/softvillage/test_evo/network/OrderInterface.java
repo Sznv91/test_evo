@@ -3,6 +3,7 @@ package ru.softvillage.test_evo.network;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
+import ru.softvillage.test_evo.network.entity.OrgInfo;
 
 public interface OrderInterface {
 
@@ -14,4 +15,7 @@ public interface OrderInterface {
 
     @GET("test_app/index.php")
     Call<NetworkAnswer> getMainRequest();
+
+    @GET("test_app/firm_info.php")
+    Call<OrgInfo> getOrgInfo();
 }

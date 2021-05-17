@@ -22,6 +22,7 @@ import ru.evotor.framework.core.IntegrationManagerCallback;
 import ru.evotor.framework.core.IntegrationManagerFuture;
 import ru.evotor.framework.core.action.command.print_receipt_command.PrintReceiptCommandResult;
 import ru.evotor.framework.core.action.command.print_receipt_command.PrintSellReceiptCommand;
+import ru.evotor.framework.kkt.api.KktApi;
 import ru.evotor.framework.payment.PaymentSystem;
 import ru.evotor.framework.payment.PaymentType;
 import ru.evotor.framework.receipt.Payment;
@@ -128,6 +129,16 @@ public class PrintUtil {
                             dataToDb.setId(order.getOrderData().id);
                             dataToDb.setSessionId(SystemStateApi.getLastSessionNumber(context));
                             dataToDb.setUserUuid(UserApi.getAuthenticatedUser(EvoApp.getInstance()).getUuid());
+
+                            dataToDb.setRn_kkt(KktApi.receiveKktRegNumber(context));
+                            dataToDb.setZn_kkt(KktApi.receiveKktSerialNumber(context));
+                            dataToDb.setInn(SessionPresenter.getInstance().getOrg_inn());
+                            dataToDb.setSno_type(SessionPresenter.getInstance().getSno_type());
+                            dataToDb.setShop_name(SessionPresenter.getInstance().getShop_name());
+                            dataToDb.setShop_address_city(SessionPresenter.getInstance().getShop_address_city());
+                            dataToDb.setShop_address_street(SessionPresenter.getInstance().getShop_address_street());
+                            dataToDb.setPayment_location_address_city(SessionPresenter.getInstance().getPayment_location_address_city());
+                            dataToDb.setPayment_location_address_street(SessionPresenter.getInstance().getPayment_location_address_street());
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
                             /**
