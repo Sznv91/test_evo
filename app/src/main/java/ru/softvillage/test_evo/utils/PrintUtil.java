@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.evotor.framework.component.PaymentPerformer;
 import ru.evotor.framework.core.IntegrationException;
 import ru.evotor.framework.core.IntegrationManagerCallback;
@@ -25,13 +28,18 @@ import ru.evotor.framework.core.action.command.print_receipt_command.PrintSellRe
 import ru.evotor.framework.kkt.api.KktApi;
 import ru.evotor.framework.payment.PaymentSystem;
 import ru.evotor.framework.payment.PaymentType;
+import ru.evotor.framework.receipt.FiscalReceipt;
 import ru.evotor.framework.receipt.Payment;
 import ru.evotor.framework.receipt.Position;
 import ru.evotor.framework.receipt.PrintGroup;
 import ru.evotor.framework.receipt.Receipt;
+import ru.evotor.framework.receipt.ReceiptApi;
 import ru.evotor.framework.system.SystemStateApi;
 import ru.evotor.framework.users.UserApi;
+import ru.evotor.query.Cursor;
 import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.network.entity.FiscalizedAnswer;
+import ru.softvillage.test_evo.network.entity.NetworkAnswer;
 import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
@@ -140,6 +148,39 @@ public class PrintUtil {
                             dataToDb.setPayment_location_address_city(SessionPresenter.getInstance().getPayment_location_address_city());
                             dataToDb.setPayment_location_address_street(SessionPresenter.getInstance().getPayment_location_address_street());
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
+
+                            /**
+                             * Отправка ответа на сервер
+                             */
+                            FiscalizedAnswer answer = new FiscalizedAnswer();
+                            answer.setEmailFlag(SessionPresenter.getInstance().isSendEmail());
+                            answer.setSmsFlag(SessionPresenter.getInstance().isSendSms());
+                            answer.setId(order.getOrderData().id);
+                            answer.setNumber(Long.parseLong(result.getData().getString("receiptNumber")));
+                            answer.setUuid(result.getData().getString("receiptUuid"));
+                            answer.setStatus(1);
+
+                            Cursor<FiscalReceipt> fiscalReceiptCursor = ReceiptApi.getFiscalReceipts(EvoApp.getInstance(), result.getData().getString("receiptUuid"));
+                            while (fiscalReceiptCursor.moveToNext()) {
+                                FiscalReceipt fiscalReceipt = fiscalReceiptCursor.getValue();
+                                answer.setDocumentNumber(fiscalReceipt.getDocumentNumber());
+                                answer.setFiscalIdentifier(fiscalReceipt.getFiscalIdentifier());
+                                answer.setFsSerialNumber(fiscalReceipt.getFiscalStorageNumber());
+                            }
+                            fiscalReceiptCursor.close();
+
+                            EvoApp.getInstance().getOrderInterface().postUpdateReceipt(answer).enqueue(new Callback<NetworkAnswer>() {
+                                @Override
+                                public void onResponse(Call<NetworkAnswer> call, Response<NetworkAnswer> response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<NetworkAnswer> call, Throwable t) {
+
+                                }
+                            });
+
 
                             /**
                              * Обновление блока статистики
