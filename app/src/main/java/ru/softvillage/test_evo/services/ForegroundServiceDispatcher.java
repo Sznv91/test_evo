@@ -23,6 +23,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.MainActivity;
 import ru.softvillage.test_evo.R;
@@ -83,13 +84,19 @@ public class ForegroundServiceDispatcher extends Service {
             builder = new NotificationCompat.Builder(getApplicationContext());
         }
 
+
         builder.setContentIntent(action)
                 .setContentTitle(title/*info*/)
                 .setTicker(info)
-                .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/)
+//                .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentIntent(action)
                 .setOngoing(true)/*.build()*/;
+        if (SystemStateApi.isSessionOpened(EvoApp.getInstance())) {
+            builder.setContentIntent(action).setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/);
+        } else {
+            builder.setContentIntent(action).setContentText("Смена закрыта");
+        }
 
         notification = builder.build();
 
@@ -172,10 +179,16 @@ public class ForegroundServiceDispatcher extends Service {
         return Service.START_STICKY;
     }
 
-    public static void updateNotificationCounter(/*int count*/){
+    public static void updateNotificationCounter(/*int count*/) {
         synchronized (notification) {
-            ForegroundServiceDispatcher.notification = builder
-                    .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/).build();
+            if (SystemStateApi.isSessionOpened(EvoApp.getInstance())) {
+                ForegroundServiceDispatcher.notification = builder
+                        .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/).build();
+            } else {
+                ForegroundServiceDispatcher.notification = builder
+                        .setContentText("Смена закрыта").build();
+            }
+
         }
         synchronized (manager) {
             manager.notify(1, notification);
