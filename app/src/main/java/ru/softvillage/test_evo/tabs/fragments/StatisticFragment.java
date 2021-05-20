@@ -3,6 +3,7 @@ package ru.softvillage.test_evo.tabs.fragments;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +16,26 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
+
 import java.util.Objects;
 
+import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.StatisticViewModel;
 
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_AT_;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_;
+import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.AUTO_CLOSE_EVERY_DAY;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.THEME_LIGHT;
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.getInstance;
 
 public class StatisticFragment extends Fragment implements StatisticDisplayUpdate {
+    private Handler handler;
+    private Runnable r;
     private StatisticViewModel mViewModel;
 
     private ConstraintLayout statisticFragment;
@@ -97,12 +107,28 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         initDateSession();
         updateView(SessionPresenter.getInstance().getSessionData());
         updateTheme();
+
+        r = new Runnable() {
+            @Override
+            public void run() {
+                if (r != null && handler != null) {
+                    timeTicker();
+                    handler.postDelayed(r, 1000);
+                }
+
+            }
+        };
+        handler = new Handler();
+        handler.postDelayed(r, 1000);
+
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onDestroyView() {
         getInstance().setIstatisticDisplayUpdate(null);
+        r = null;
+        handler = null;
         super.onDestroyView();
     }
 
@@ -191,6 +217,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
             if (data.getSessionId() == -1) {
                 statistic_session_number.setText("Смена закрыта");
+                time_ticker_holder.setText("00:00:00");
             } else {
                 statistic_session_number.setText(String.format(getActivity().getString(R.string.title_current_session), data.getSessionId()));
             }
@@ -235,7 +262,6 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             int tabIconColor = ContextCompat.getColor(getContext(), R.color.color29);
             calendar_icon.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             statistic_current_data.setCompoundDrawablesRelativeWithIntrinsicBounds(calendar_icon, null, null, null);
-            time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color29));
             sum.setTextColor(ContextCompat.getColor(sum.getContext(), R.color.color29));
             receipt_count.setTextColor(ContextCompat.getColor(receipt_count.getContext(), R.color.color29));
             sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.color29));
@@ -261,7 +287,6 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             int tabIconColor = ContextCompat.getColor(getContext(), R.color.color20);
             calendar_icon.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             statistic_current_data.setCompoundDrawablesRelativeWithIntrinsicBounds(calendar_icon, null, null, null);
-            time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color20));
             sum.setTextColor(ContextCompat.getColor(sum.getContext(), R.color.color20));
             receipt_count.setTextColor(ContextCompat.getColor(receipt_count.getContext(), R.color.color20));
             sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.color20));
@@ -272,11 +297,67 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     private void changeDateTimeColour() {
         if (getInstance().getSessionData().getSessionId() == -1) {
             statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color17));
+            time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color17));
         } else {
             if (getInstance().getCurrentTheme() == THEME_LIGHT) {
                 statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color29));
+                time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color29));
             } else {
                 statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color20));
+                time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color20));
+            }
+        }
+    }
+
+    private void timeTicker() {
+        if (SessionPresenter.getInstance().isAutoClose() && SystemStateApi.isSessionOpened(getContext())) {
+            int autoCloseType = SessionPresenter.getInstance().getAutoCloseType();
+            LocalDateTime calcCloseTime;
+            Duration deltaFromLastClose = null;
+            int minutes = 0;
+            int seconds = 0;
+            int hours = 0;
+            switch (autoCloseType) {
+                case AUTO_CLOSE_EVERY_DAY:
+                    calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusHours(24);
+                    deltaFromLastClose = new Duration(
+                            LocalDateTime.now().toDateTime(),
+                            calcCloseTime.toDateTime());
+
+                    break;
+                case AUTO_CLOSE_EVERY_:
+                    int value = SessionPresenter.getInstance().getAutoCloseEveryValue();
+                    int unit = SessionPresenter.getInstance().getAutoCloseEveryUnit();
+                    if (unit == SessionPresenter.AUTO_CLOSE_EVERY_UNIT_HOUR) {
+                        calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusHours(value);
+                    } else {
+                        calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusMinutes(value);
+                    }
+                    deltaFromLastClose = new Duration(
+                            LocalDateTime.now().toDateTime(),
+                            calcCloseTime.toDateTime());
+
+                    break;
+                case AUTO_CLOSE_AT_:
+                    break;
+            }
+            hours = deltaFromLastClose.toStandardHours().getHours();
+            minutes = deltaFromLastClose.toStandardMinutes().getMinutes() - (hours * 60);
+            seconds = deltaFromLastClose.toStandardSeconds().getSeconds() - ((hours * 60) + minutes * 60);
+            if (hours < 0) {
+                hours = 0;
+            }
+            if (minutes < 0) {
+                minutes = 0;
+            }
+            if (seconds < 0) {
+                seconds = 0;
+            }
+            if (handler != null && r != null) {
+                time_ticker_holder.setText(String.format("%02d:%02d:%02d",
+                        hours,
+                        minutes,
+                        seconds));
             }
         }
     }

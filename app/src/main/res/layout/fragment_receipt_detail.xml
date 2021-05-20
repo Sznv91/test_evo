@@ -410,6 +410,16 @@
                 app:layout_constraintRight_toRightOf="@+id/total_cost"
                 app:layout_constraintTop_toBottomOf="@+id/title_fn_num" />
 
+            <ImageView
+                android:id="@+id/qr_holder"
+                android:layout_marginTop="10dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_inn_num"
+                tools:src="@drawable/ic_qr_demo"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

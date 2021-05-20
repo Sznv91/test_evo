@@ -26,6 +26,7 @@ import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.
 
 public class SessionCloseWatcher extends Service {
     private static final int UPDATE_TIME_MILLIS = 1000;
+    private static final int DELAY_TIME_MILLIS = 20 * UPDATE_TIME_MILLIS;
 
     @SuppressLint("LongLogTag")
     @Override
@@ -116,12 +117,21 @@ public class SessionCloseWatcher extends Service {
                      */
                     case AUTO_CLOSE_EVERY_DAY:
                         int hours24InSeconds = 60 * 24 * 60;
-                        if (currentStateOpen && deltaSecondsCalculator().getSeconds() /** -1*/ == hours24InSeconds) { //>=
-                            if (SessionPresenter.getInstance().isPrintReportOnClose()) {
+                        if (currentStateOpen && SessionPresenter.getInstance().getDateLastOpenSession().plusSeconds(hours24InSeconds).isBefore(now)
+                                /*deltaSecondsCalculator().getSeconds() *//** -1*//* *//*==*//* >= hours24InSeconds*/) { //>=
+                           /* if (SessionPresenter.getInstance().isPrintReportOnClose()) {
                                 Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета из case AUTO_CLOSE_EVERY_DAY");
                                 PrintCustomTextUtil.printStatistic(SessionPresenter.getInstance().getSessionData(), getApplicationContext());
-                            }
+                            }*/
+
                             SessionClose.close(getApplicationContext());
+
+                            try {
+                                Thread.sleep(DELAY_TIME_MILLIS);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                         break;
                     /**
@@ -137,11 +147,19 @@ public class SessionCloseWatcher extends Service {
                         } else {
                             value = value * 60;
                         }
-                        if ((currentStateOpen && deltaSecondsCalculator().getSeconds() /** -1*/ == value) || (currentStateOpen && deltaSecondsCalculator().getSeconds() > (value + 60))) {
+                        if (currentStateOpen && SessionPresenter.getInstance().getDateLastOpenSession().plusSeconds(value).isBefore(now)
+                                /*(currentStateOpen && deltaSecondsCalculator().getSeconds() *//** -1*//* *//*==*//* >= value) || (currentStateOpen && deltaSecondsCalculator().getSeconds() > (value + 60))*/) {
                             Log.d(EvoApp.TAG + "_close_session", "AUTO_CLOSE_EVERY_ delta= " + deltaSecondsCalculator().getSeconds() + " value: " + value);
 
                             Log.d(EvoApp.TAG + "_close_session", "Закрываем смену из AUTO_CLOSE_EVERY_");
+
                             SessionClose.close(getApplicationContext());
+                            try {
+                                Thread.sleep(DELAY_TIME_MILLIS);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                         break;
                     /**
@@ -158,11 +176,18 @@ public class SessionCloseWatcher extends Service {
                         if (closeTime.toString().equals(tNow.toString())) {
                             lastDateTimeClose = lastDateTimeClose.withSecondOfMinute(0).withMillisOfSecond(0);
                             if (!lastDateTimeClose.toString().equals(tNow.toString())) {
-                                if (SessionPresenter.getInstance().isPrintReportOnClose()) {
+                                /*if (SessionPresenter.getInstance().isPrintReportOnClose()) {
                                     Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета из case AUTO_CLOSE_AT_");
                                     PrintCustomTextUtil.printStatistic(SessionPresenter.getInstance().getSessionData(), getApplicationContext());
-                                }
+                                }*/
+                                Log.d(EvoApp.TAG + "_close_session", "Закрываем смену из AUTO_CLOSE_AT_");
                                 SessionClose.close(getApplicationContext());
+                                /*try {
+                                    Thread.sleep(DELAY_TIME_MILLIS);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }*/
+
                             }
                         }
                         break;

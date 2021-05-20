@@ -1,6 +1,7 @@
 package ru.softvillage.test_evo.tabs.fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,10 +22,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
 import org.joda.time.LocalDateTime;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +51,8 @@ import ru.softvillage.test_evo.roomDb.DbHelper;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptDetailViewModel;
+
+import static android.graphics.Color.WHITE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +75,8 @@ public class ReceiptDetailFragment extends Fragment {
 
     private ImageView diplomat_icon,
             user_icon,
-            location_icon;
+            location_icon,
+            qr_holder;
 
     private ScrollView receipt_detail_layout;
     FrameLayout receipt_detail_title_holder;
@@ -165,6 +176,7 @@ public class ReceiptDetailFragment extends Fragment {
         diplomat_icon = view.findViewById(R.id.diplomat_icon);
         user_icon = view.findViewById(R.id.user_icon);
         location_icon = view.findViewById(R.id.location_icon);
+        qr_holder = view.findViewById(R.id.qr_holder);
         shop_name = view.findViewById(R.id.shop_name);
         shop_address_city = view.findViewById(R.id.shop_address_city);
         shop_address_street = view.findViewById(R.id.shop_address_street);
@@ -404,6 +416,7 @@ public class ReceiptDetailFragment extends Fragment {
                 );
 
                 Cursor<FiscalReceipt> fiscalReceiptCursor = ReceiptApi.getFiscalReceipts(getContext(), receipt.getHeader().getUuid());
+                String toQrData;
                 while (fiscalReceiptCursor.moveToNext()) {
                     title_session_fm.setText(String.format(getActivity().getString(R.string.title_session_fm), fiscalReceiptCursor.getValue().getSessionNumber() + 1));
                     title_fd_num.setText(String.format(getActivity().getString(R.string.title_fd_num), fiscalReceiptCursor.getValue().getDocumentNumber()));
@@ -411,9 +424,24 @@ public class ReceiptDetailFragment extends Fragment {
                     LocalDateTime localDateTime = LocalDateTime.fromDateFields(fiscalReceiptCursor.getValue().getCreationDate());
                     title_fm_date.setText(localDateTime.toString("dd.MM.YY HH:mm"));
                     title_fn_num.setText(String.format(getActivity().getString(R.string.title_fn_num), fiscalReceiptCursor.getValue().getFiscalStorageNumber()));
+
+                    toQrData = "t=" + localDateTime.toString("YYYYMMdd") + "T" + localDateTime.toString("HHmm") +
+                            "&s=" + String.format("%.02f", receipt.getPayments().get(0).getValue()).replace(",", ".") +
+                            "&fn=" + fiscalReceiptCursor.getValue().getFiscalStorageNumber() +
+                            "&i=" + fiscalReceiptCursor.getValue().getDocumentNumber() +
+                            "&fp=" + fiscalReceiptCursor.getValue().getFiscalIdentifier();
+                    Bitmap barcode_bitmap = null;
+                    try {
+                        barcode_bitmap = encodeAsBitmap(toQrData, BarcodeFormat.QR_CODE, 150, 150);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                    qr_holder.setImageBitmap(barcode_bitmap);
                     Log.d(EvoApp.TAG + "_receipt_detail_just_receipt", fiscalReceiptCursor.getValue().toString());
                 }
                 fiscalReceiptCursor.close();
+
+
             });
 
 
@@ -549,4 +577,53 @@ public class ReceiptDetailFragment extends Fragment {
                 "Большая Морская улица, 30"
         );
     }*/
+
+    private static Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height)
+            throws WriterException {
+        String contentsToEncode = contents;
+        if (contentsToEncode == null) {
+            return null;
+        }
+        Map<EncodeHintType, Object> hints = null;
+        String encoding = guessAppropriateEncoding(contentsToEncode);
+        if (encoding != null) {
+            hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            hints.put(EncodeHintType.CHARACTER_SET, encoding);
+        }
+        MultiFormatWriter writer = new MultiFormatWriter();
+        BitMatrix result;
+        try {
+            result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
+        } catch (IllegalArgumentException iae) {
+            // Unsupported format
+            return null;
+        }
+        int width = result.getWidth();
+        int height = result.getHeight();
+        int[] pixels = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            int offset = y * width;
+            for (int x = 0; x < width; x++) {
+                if (SessionPresenter.getInstance().getCurrentTheme() == SessionPresenter.THEME_LIGHT) {
+                    pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(EvoApp.getInstance(), R.color.color20) : WHITE;
+                } else {
+                    pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(EvoApp.getInstance(), R.color.color_da) : ContextCompat.getColor(EvoApp.getInstance(), R.color.color31);
+                }
+            }
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
+    }
+
+    private static String guessAppropriateEncoding(CharSequence contents) {
+        // Very crude at the moment
+        for (int i = 0; i < contents.length(); i++) {
+            if (contents.charAt(i) > 0xFF) {
+                return "UTF-8";
+            }
+        }
+        return null;
+    }
 }
