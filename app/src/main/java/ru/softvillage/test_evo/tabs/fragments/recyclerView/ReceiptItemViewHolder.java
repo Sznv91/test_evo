@@ -1,9 +1,9 @@
 package ru.softvillage.test_evo.tabs.fragments.recyclerView;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
-import android.util.Log;
+import android.graphics.PorterDuff;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +20,7 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
     private final TextView title_receipt_sale;
     private final TextView tv_static_summ;
     private final TextView title_receipt_time;
+    private final ImageView iv_static_check_list;
 
     private final ConstraintLayout item_receipt_layout;
 
@@ -28,7 +29,7 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
         @SuppressLint("LongLogTag")
         @Override
         public void onChanged(Integer integer) {
-            if (integer == SessionPresenter.THEME_LIGHT){
+            if (integer == SessionPresenter.THEME_LIGHT) {
                 item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.white));
                 title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.color20));
             } else {
@@ -44,11 +45,18 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
         title_receipt_sale = itemView.findViewById(R.id.title_receipt_sale);
         tv_static_summ = itemView.findViewById(R.id.tv_static_summ);
         title_receipt_time = itemView.findViewById(R.id.title_receipt_time);
+        iv_static_check_list = itemView.findViewById(R.id.iv_static_check_list);
         SessionPresenter.getInstance().getCurrentThemeLiveData().observeForever(observer);
     }
 
     public void bind(ReceiptEntity entity) {
-        title_receipt_sale.setText(String.format(EvoApp.getInstance().getString(R.string.title_receipt_sale), entity.getReceiptNumber(), entity.getCountOfPosition()));
+        if (entity.getReceiptNumber() == 0) {
+            title_receipt_sale.setText(String.format("Чек продажи на %d позиции", entity.getCountOfPosition()));
+            int tabIconColor = ContextCompat.getColor(EvoApp.getInstance(), R.color.color17);
+            iv_static_check_list.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+        } else {
+            title_receipt_sale.setText(String.format(EvoApp.getInstance().getString(R.string.title_receipt_sale), entity.getReceiptNumber(), entity.getCountOfPosition()));
+        }
         tv_static_summ.setText(String.format(EvoApp.getInstance().getString(R.string.tv_static_summ), entity.getPrice()));
         title_receipt_time.setText(entity.getReceived().toString("HH:mm"));
     }

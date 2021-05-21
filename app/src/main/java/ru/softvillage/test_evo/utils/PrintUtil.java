@@ -136,7 +136,11 @@ public class PrintUtil {
                             dataToDb.setUuid(result.getData().getString("receiptUuid"));
                             dataToDb.setId(order.getOrderData().id);
                             dataToDb.setSessionId(SystemStateApi.getLastSessionNumber(context));
-                            dataToDb.setUserUuid(UserApi.getAuthenticatedUser(EvoApp.getInstance()).getUuid());
+                            if (order.getOrderData().getUserUUID() != null) {
+                                dataToDb.setUserUuid(order.getOrderData().getUserUUID());
+                            } else {
+                                dataToDb.setUserUuid(UserApi.getAuthenticatedUser(EvoApp.getInstance()).getUuid());
+                            }
 
                             dataToDb.setRn_kkt(KktApi.receiveKktRegNumber(context));
                             dataToDb.setZn_kkt(KktApi.receiveKktSerialNumber(context));

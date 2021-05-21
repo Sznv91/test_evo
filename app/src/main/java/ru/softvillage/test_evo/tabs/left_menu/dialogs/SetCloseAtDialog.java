@@ -187,7 +187,7 @@ public class SetCloseAtDialog extends DialogFragment implements View.OnClickList
     private void save() {
         SessionPresenter.getInstance().setAutoCloseAtHour(hours.getCurrentItemPosition());
         SessionPresenter.getInstance().setAutoCloseAtMinute(minutes.getCurrentItemPosition());
-        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_AT_);
+        /*SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_AT_);*/
 
         dismiss();
     }

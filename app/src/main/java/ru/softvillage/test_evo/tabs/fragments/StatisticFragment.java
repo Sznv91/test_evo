@@ -22,6 +22,7 @@ import org.joda.time.LocalDateTime;
 import java.util.Objects;
 
 import ru.evotor.framework.system.SystemStateApi;
+import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
@@ -216,7 +217,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     public void updateView(SessionStatisticData data) {
         Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
             if (data.getSessionId() == -1) {
-                statistic_session_number.setText("Смена закрыта");
+                statistic_session_number.setText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance())));
                 time_ticker_holder.setText("00:00:00");
             } else {
                 statistic_session_number.setText(String.format(getActivity().getString(R.string.title_current_session), data.getSessionId()));

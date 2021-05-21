@@ -20,6 +20,8 @@ import java.util.Objects;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
+import static com.google.android.material.tabs.TabLayout.GRAVITY_CENTER;
+
 public class TabLayoutFragment extends Fragment {
     TabLayout tabLayout;
 
@@ -68,6 +70,7 @@ public class TabLayoutFragment extends Fragment {
             }
             viewPager.setCurrentItem(tab.getPosition(), true);
         }).attach();
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

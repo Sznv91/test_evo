@@ -118,7 +118,7 @@ public class SessionCloseWatcher extends Service {
                     case AUTO_CLOSE_EVERY_DAY:
                         int hours24InSeconds = 60 * 24 * 60;
                         if (currentStateOpen && SessionPresenter.getInstance().getDateLastOpenSession().plusSeconds(hours24InSeconds).isBefore(now)
-                                /*deltaSecondsCalculator().getSeconds() *//** -1*//* *//*==*//* >= hours24InSeconds*/) { //>=
+                            /*deltaSecondsCalculator().getSeconds() *//** -1*//* *//*==*//* >= hours24InSeconds*/) { //>=
                            /* if (SessionPresenter.getInstance().isPrintReportOnClose()) {
                                 Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета из case AUTO_CLOSE_EVERY_DAY");
                                 PrintCustomTextUtil.printStatistic(SessionPresenter.getInstance().getSessionData(), getApplicationContext());
@@ -148,7 +148,7 @@ public class SessionCloseWatcher extends Service {
                             value = value * 60;
                         }
                         if (currentStateOpen && SessionPresenter.getInstance().getDateLastOpenSession().plusSeconds(value).isBefore(now)
-                                /*(currentStateOpen && deltaSecondsCalculator().getSeconds() *//** -1*//* *//*==*//* >= value) || (currentStateOpen && deltaSecondsCalculator().getSeconds() > (value + 60))*/) {
+                            /*(currentStateOpen && deltaSecondsCalculator().getSeconds() *//** -1*//* *//*==*//* >= value) || (currentStateOpen && deltaSecondsCalculator().getSeconds() > (value + 60))*/) {
                             Log.d(EvoApp.TAG + "_close_session", "AUTO_CLOSE_EVERY_ delta= " + deltaSecondsCalculator().getSeconds() + " value: " + value);
 
                             Log.d(EvoApp.TAG + "_close_session", "Закрываем смену из AUTO_CLOSE_EVERY_");

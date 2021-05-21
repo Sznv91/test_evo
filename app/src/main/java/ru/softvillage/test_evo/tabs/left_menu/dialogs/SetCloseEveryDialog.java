@@ -175,7 +175,7 @@ public class SetCloseEveryDialog extends DialogFragment implements View.OnClickL
     private void save() {
         SessionPresenter.getInstance().setAutoCloseEveryValue(value.getCurrentItemPosition() + 1);
         SessionPresenter.getInstance().setAutoCloseEveryUnit(unit.getSelectedItemPosition());
-        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_);
+//        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_);
 
         dismiss();
     }

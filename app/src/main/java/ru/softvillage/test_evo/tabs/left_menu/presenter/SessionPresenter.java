@@ -686,4 +686,15 @@ public class SessionPresenter {
             }
         });
     }
+
+    public long getLastSessionNumber() {
+        return lastSessionNumber;
+    }
+
+    public void setLastSessionNumber(Long lastSessionNumber) {
+        if (!this.lastSessionNumber.equals(lastSessionNumber)) {
+            this.lastSessionNumber = lastSessionNumber;
+            Prefs.getInstance().saveLong(KEY_LAST_SESSION_NUMBER, this.lastSessionNumber);
+        }
+    }
 }

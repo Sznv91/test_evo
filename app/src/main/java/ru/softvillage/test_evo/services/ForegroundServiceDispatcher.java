@@ -95,7 +95,7 @@ public class ForegroundServiceDispatcher extends Service {
         if (SystemStateApi.isSessionOpened(EvoApp.getInstance())) {
             builder.setContentIntent(action).setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/);
         } else {
-            builder.setContentIntent(action).setContentText("Смена закрыта");
+            builder.setContentIntent(action).setContentText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance())));
         }
 
         notification = builder.build();
@@ -186,7 +186,7 @@ public class ForegroundServiceDispatcher extends Service {
                         .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/).build();
             } else {
                 ForegroundServiceDispatcher.notification = builder
-                        .setContentText("Смена закрыта").build();
+                        .setContentText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance()))).build();
             }
 
         }
