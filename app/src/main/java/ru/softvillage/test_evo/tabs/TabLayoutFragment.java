@@ -52,6 +52,12 @@ public class TabLayoutFragment extends Fragment {
         initTabs();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SessionPresenter.getInstance().getCurrentThemeLiveData().removeObservers(this);
+    }
+
     private void initTabs() {
         ViewPager2 viewPager = Objects.requireNonNull(getView()).findViewById(R.id.pager);
         viewPager.setAdapter(

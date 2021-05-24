@@ -1,12 +1,15 @@
 package ru.softvillage.test_evo.tabs.fragments;
 
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +42,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     private Runnable r;
     private StatisticViewModel mViewModel;
 
+    private FrameLayout statistic_information;
     private ConstraintLayout statisticFragment;
     private ConstraintLayout sessionNumberHolder;
     private ConstraintLayout timeToCloseHolder;
@@ -47,6 +51,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     private ConstraintLayout sendSmsHolder;
     private ConstraintLayout sendEmailHolder;
 
+    private TextView tab_title_statistic_information;
     private TextView statistic_session_number;
     private TextView title_statistic_information;
     private TextView time_to_close;
@@ -73,9 +78,43 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        getInstance().setIstatisticDisplayUpdate(this);
+    public void onResume() {
+        super.onResume();
+        SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            float landscape_text_size = Float.parseFloat("14.4");
+            tab_title_statistic_information.setText("Статистика");
+            statistic_session_number.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            title_statistic_information.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            time_to_close.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            sum_fiscalization.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            sum_receipt.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            send_sms.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            send_email.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            statistic_current_data.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            time_ticker_holder.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            sum.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            receipt_count.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            sms_count.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
+            email_count.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
 
+
+            if (SessionPresenter.getInstance().getCurrentTheme() == THEME_LIGHT) {
+                title_statistic_information.setTextColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.black));
+            } else {
+                title_statistic_information.setTextColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.white));
+            }
+
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
+
+        getInstance().setIstatisticDisplayUpdate(this);
+        statistic_information = view.findViewById(R.id.statistic_information);
+        tab_title_statistic_information = getActivity().findViewById(R.id.tab_title_statistic_information);
         statisticFragment = view.findViewById(R.id.statistic_fragment);
         sessionNumberHolder = view.findViewById(R.id.session_number_holder);
         timeToCloseHolder = view.findViewById(R.id.time_to_close_holder);
@@ -243,7 +282,8 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         Drawable calendar_icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_statistic_calendar);
 
         if (currentTheme == THEME_LIGHT) {
-            statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.color_f8));
+            statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.color_f8));
+            statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.color_e7));
             sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.white));
             timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.white));
             sumFiscalizationHolder.setBackgroundColor(ContextCompat.getColor(sumFiscalizationHolder.getContext(), R.color.white));
@@ -251,13 +291,14 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             sendSmsHolder.setBackgroundColor(ContextCompat.getColor(sendSmsHolder.getContext(), R.color.white));
             sendEmailHolder.setBackgroundColor(ContextCompat.getColor(sendEmailHolder.getContext(), R.color.white));
 
-            statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.black));
+            statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.color20));
             title_statistic_information.setTextColor(ContextCompat.getColor(title_statistic_information.getContext(), R.color.color29));
-            time_to_close.setTextColor(ContextCompat.getColor(time_to_close.getContext(), R.color.black));
-            sum_fiscalization.setTextColor(ContextCompat.getColor(sum_fiscalization.getContext(), R.color.black));
-            sum_receipt.setTextColor(ContextCompat.getColor(sum_receipt.getContext(), R.color.black));
-            send_sms.setTextColor(ContextCompat.getColor(send_sms.getContext(), R.color.black));
-            send_email.setTextColor(ContextCompat.getColor(send_email.getContext(), R.color.black));
+            time_to_close.setTextColor(ContextCompat.getColor(time_to_close.getContext(), R.color.color20));
+            sum_fiscalization.setTextColor(ContextCompat.getColor(sum_fiscalization.getContext(), R.color.color20));
+            sum_receipt.setTextColor(ContextCompat.getColor(sum_receipt.getContext(), R.color.color20));
+            send_sms.setTextColor(ContextCompat.getColor(send_sms.getContext(), R.color.color20));
+            send_email.setTextColor(ContextCompat.getColor(send_email.getContext(), R.color.color20));
+
 
             changeDateTimeColour();
             int tabIconColor = ContextCompat.getColor(getContext(), R.color.color29);
@@ -268,6 +309,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.color29));
             email_count.setTextColor(ContextCompat.getColor(email_count.getContext(), R.color.color29));
         } else {
+            statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.black));
             statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.black));
             sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.color31));
             timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.color31));

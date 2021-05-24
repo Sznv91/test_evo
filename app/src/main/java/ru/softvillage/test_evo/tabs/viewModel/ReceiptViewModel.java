@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.DatePicker;
@@ -20,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.softvillage.test_evo.EvoApp;
-import ru.softvillage.test_evo.tabs.fragments.ReceiptDetailFragment;
+import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.tabs.fragments.ReceiptDetailFragment;
 import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
 
 public class ReceiptViewModel extends ViewModel {
@@ -57,7 +59,17 @@ public class ReceiptViewModel extends ViewModel {
                         public void clickClick(ReceiptEntity recipientEntity) {
                             Log.d(EvoApp.TAG + "_Recycler", "click - click " + recipientEntity.getReceiptNumber());
                             Fragment fragment = ReceiptDetailFragment.newInstance(String.valueOf(recipientEntity.getId()));
-                            EvoApp.getInstance().getFragmentDispatcher().replaceFragment(fragment);
+                            if (EvoApp.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                                EvoApp.getInstance().getFragmentDispatcher().replaceFragment(fragment);
+                            } else if (EvoApp.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                int count = EvoApp.getInstance().getFragmentDispatcher().getActivity().getSupportFragmentManager().getBackStackEntryCount();
+                                Log.d(EvoApp.TAG + "_backStack", "Count back stack is: " + count);
+                                if (count == 0) {
+                                    EvoApp.getInstance().getFragmentDispatcher().getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.holder_statistic_fragment, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
+                                } else {
+                                    EvoApp.getInstance().getFragmentDispatcher().getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.holder_statistic_fragment, fragment).commit();
+                                }
+                            }
                         }
 
                         @Override

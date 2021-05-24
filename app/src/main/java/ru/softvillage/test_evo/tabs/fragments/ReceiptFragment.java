@@ -56,7 +56,7 @@ public class ReceiptFragment extends Fragment {
         fab = view.findViewById(R.id.fab_up);
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
             if (currentTheme == SessionPresenter.THEME_LIGHT) {
-                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color_f8));
+                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color_e7));
                 fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color17)));
             } else {
                 receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.black));

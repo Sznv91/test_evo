@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
+import ru.softvillage.test_evo.tabs.LandscapeTabLayoutFragment;
 import ru.softvillage.test_evo.tabs.TabLayoutFragment;
 import ru.softvillage.test_evo.tabs.left_menu.DrawerMenuManager;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
@@ -31,7 +33,15 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
         if (savedInstanceState == null) {
             manager = new DrawerMenuManager<>(this);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, new TabLayoutFragment()).commit();
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, new TabLayoutFragment()).commit();
+//                return "Портретная ориентация";
+            else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, new LandscapeTabLayoutFragment()).commit();
+            }
+
+                /*return "Альбомная ориентация";*/
+
         } else {
             manager.setActivity(this);
         }

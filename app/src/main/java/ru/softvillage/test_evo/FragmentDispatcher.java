@@ -3,9 +3,11 @@ package ru.softvillage.test_evo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import lombok.Getter;
 import lombok.Setter;
 
 public class FragmentDispatcher {
+    @Getter
     @Setter
     private AppCompatActivity activity;
 

@@ -5,7 +5,7 @@
     android:id="@+id/statistic_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f8"
+    android:background="@color/color_e7"
     tools:context=".tabs.fragments.StatisticFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,6 +46,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
+        android:background="@color/color_f8"
         android:id="@+id/statistic_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
