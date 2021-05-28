@@ -24,9 +24,10 @@ public class PositionCreator {
     @SuppressLint("LongLogTag")
     public static OrderTo makeOrderList(List<Order> orderList) {
         OrderTo result = new OrderTo();
-        BigDecimal receiptCost = BigDecimal.ZERO;
 
         for (Order order : orderList) {
+            BigDecimal receiptCost = BigDecimal.ZERO;
+
             OrderTo.PositionTo tResult = new OrderTo.PositionTo();
             for (Good good : order.goods) {
 
