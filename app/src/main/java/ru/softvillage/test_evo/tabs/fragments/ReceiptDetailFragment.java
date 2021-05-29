@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,7 +84,8 @@ public class ReceiptDetailFragment extends Fragment {
             qr_holder;
 
     private ScrollView receipt_detail_layout;
-    FrameLayout receipt_detail_title_holder;
+    private FrameLayout receipt_detail_title_holder,
+            fragment_receipt_loader;
     private View divider,
             divider_cred,
             divider_shop_info;
@@ -163,6 +166,7 @@ public class ReceiptDetailFragment extends Fragment {
         ndsType = getView().findViewById(R.id.nds_type);
 
         receipt_detail_title_holder = view.findViewById(R.id.receipt_detail_title_holder);
+        fragment_receipt_loader = view.findViewById(R.id.fragment_receipt_loader);
         receipt_detail_layout = view.findViewById(R.id.receipt_detail_layout);
         divider = view.findViewById(R.id.divider);
         divider_cred = view.findViewById(R.id.divider_cred);
@@ -203,6 +207,15 @@ public class ReceiptDetailFragment extends Fragment {
 
         /*//todo удалить фейковый добавлятель адреса точки продаж
         addFakeShopAddress();*/
+        /**
+         * Экран загрузки
+         */
+        fragment_receipt_loader.setVisibility(View.VISIBLE);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            fragment_receipt_loader.setVisibility(View.GONE);
+        }, 2000);
+
         RecyclerView recycler = getView().findViewById(R.id.position_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(layoutManager);
@@ -445,7 +458,7 @@ public class ReceiptDetailFragment extends Fragment {
         }).start();
 
         tab_title_statistic_information = getActivity().findViewById(R.id.tab_title_statistic_information);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             tab_title_statistic_information.setText("Детали чека");
         }
 
@@ -488,6 +501,7 @@ public class ReceiptDetailFragment extends Fragment {
 
     private void initColour(int themeType) {
         if (themeType == SessionPresenter.THEME_LIGHT) {
+            fragment_receipt_loader.setBackgroundColor(ContextCompat.getColor(fragment_receipt_loader.getContext(), R.color.white));
             receipt_detail_title_holder.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.white));
             receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.white));
             divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.light_divider));
@@ -519,7 +533,7 @@ public class ReceiptDetailFragment extends Fragment {
             title_payment_location.setTextColor(ContextCompat.getColor(title_payment_location.getContext(), R.color.color20));
 
         } else {
-
+            fragment_receipt_loader.setBackgroundColor(ContextCompat.getColor(fragment_receipt_loader.getContext(), R.color.black));
             receipt_detail_title_holder.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.black));
             receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.color31));
             divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.dark_divider));

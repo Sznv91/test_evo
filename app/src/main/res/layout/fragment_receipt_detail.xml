@@ -1,413 +1,436 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/receipt_detail_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+
     tools:context=".tabs.fragments.ReceiptDetailFragment">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/receipt_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:id="@+id/receipt_detail_title_holder"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/color_f8">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/receipt_detail_title"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:id="@+id/receipt_detail_title_holder"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/roboto_regular"
-                android:text="КАССОВЫЙ ЧЕК"
-                android:textColor="@color/color19"
-                android:textSize="20sp" />
-        </FrameLayout>
+                android:background="@color/color_f8">
 
-        <TextView
-            android:id="@+id/receipt_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:fontFamily="@font/roboto_medium"
-            android:paddingStart="10dp"
-            android:text="приход"
-            android:textColor="@color/color_c0" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/receipt_detail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="КАССОВЫЙ ЧЕК"
+                    android:textColor="@color/color19"
+                    android:textSize="20sp" />
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/sale_number"
+                android:id="@+id/receipt_type"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:fontFamily="@font/roboto_medium"
                 android:paddingStart="10dp"
-                android:text="@string/receipt_detail_sale_num"
-                android:textColor="@color/black"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Продажа №12345" />
+                android:text="приход"
+                android:textColor="@color/color_c0" />
 
-            <TextView
-                android:id="@+id/session_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:paddingEnd="10dp"
-                android:text="@string/receipt_detail_session_id"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Смена № 55" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <FrameLayout
-            android:id="@+id/position_holder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/position_recycler_view"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_position" />
-        </FrameLayout>
+                android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sale_number"
+                    android:layout_width="wrap_content"
 
-            <TextView
-                android:id="@+id/title_total_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Общая стоимость"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingStart="10dp"
+                    android:text="@string/receipt_detail_sale_num"
+                    android:textColor="@color/black"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Продажа №12345" />
 
-            <TextView
-                android:id="@+id/total_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="@font/roboto_regular"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="20000" />
+                <TextView
+                    android:id="@+id/session_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingEnd="10dp"
+                    android:text="@string/receipt_detail_session_id"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Смена № 55" />
 
-            <TextView
-                android:id="@+id/title_discount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Скидка"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@id/title_total_cost" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/discount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                app:layout_constraintRight_toRightOf="@id/total_cost"
-                app:layout_constraintTop_toBottomOf="@id/total_cost"
-                tools:text="20000" />
-
-            <View
-                android:id="@+id/divider"
+            <FrameLayout
+                android:id="@+id/position_holder"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                app:layout_constraintTop_toBottomOf="@+id/title_discount" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/title_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Итог"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toTopOf="@id/divider" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/position_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_position" />
+            </FrameLayout>
 
-            <TextView
-                android:id="@+id/total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toTopOf="@id/divider"
-                tools:text="2220" />
-
-            <TextView
-                android:id="@+id/nds_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Сумма без НДС"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@id/title_total" />
-
-            <TextView
-                android:id="@+id/nds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@id/title_total"
-                tools:text="115" />
-
-            <TextView
-                android:id="@+id/title_payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="НАЛИЧНЫМИ"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@id/nds_type" />
-
-            <TextView
-                android:id="@+id/cash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@id/nds"
-                tools:text="114" />
-
-            <View
-                android:id="@+id/divider_cred"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                app:layout_constraintTop_toBottomOf="@+id/title_payment" />
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/diplomat_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_diplomat_receipt_detail"
-                app:layout_constraintLeft_toLeftOf="@id/title_payment"
-                app:layout_constraintTop_toTopOf="@id/divider_cred" />
+                <TextView
+                    android:id="@+id/title_total_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Общая стоимость"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/shop_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_16"
-                android:fontFamily="@font/roboto_medium"
-                app:layout_constraintLeft_toRightOf="@id/diplomat_icon"
-                app:layout_constraintTop_toTopOf="@id/diplomat_icon"
-                tools:text="OOO ''Астория''" />
+                <TextView
+                    android:id="@+id/total_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="20000" />
 
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/shop_name"
-                app:layout_constraintRight_toRightOf="@+id/total"
-                app:layout_constraintTop_toBottomOf="@+id/shop_name"
-                tools:text="346500, Ростовская область, г.Шахты, ул.Шевченко 141" />
+                <TextView
+                    android:id="@+id/title_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Скидка"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@id/title_total_cost" />
 
-            <ImageView
-                android:id="@+id/user_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_user_icon"
-                app:layout_constraintLeft_toLeftOf="@id/title_payment"
-                app:layout_constraintTop_toBottomOf="@+id/address" />
+                <TextView
+                    android:id="@+id/discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintRight_toRightOf="@id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@id/total_cost"
+                    tools:text="20000" />
 
-            <TextView
-                android:id="@+id/title_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Кассир"
-                app:layout_constraintLeft_toLeftOf="@id/shop_name"
-                app:layout_constraintTop_toTopOf="@id/user_icon"
-                tools:text="Кассир" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintTop_toBottomOf="@+id/title_discount" />
 
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toTopOf="@+id/title_user_name"
-                tools:text="Чупахина Оксана" />
+                <TextView
+                    android:id="@+id/title_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Итог"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toTopOf="@id/divider" />
 
-            <ImageView
-                android:id="@+id/location_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_place_icon"
-                app:layout_constraintLeft_toLeftOf="@id/title_payment"
-                app:layout_constraintTop_toBottomOf="@id/title_user_name" />
+                <TextView
+                    android:id="@+id/total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toTopOf="@id/divider"
+                    tools:text="2220" />
 
-            <TextView
-                android:id="@+id/title_payment_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Место расчетов"
-                app:layout_constraintLeft_toLeftOf="@id/shop_name"
-                app:layout_constraintTop_toTopOf="@id/location_icon"
-                tools:text="Место расчетов" />
+                <TextView
+                    android:id="@+id/nds_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Сумма без НДС"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@id/title_total" />
 
-            <TextView
-                android:id="@+id/payment_place"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/title_payment_location"
-                app:layout_constraintRight_toRightOf="@+id/total"
-                app:layout_constraintTop_toBottomOf="@+id/title_payment_location"
-                tools:text="346500, Ростовская область, г.Шахты, ул.Шевченко 141" />
+                <TextView
+                    android:id="@+id/nds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@id/title_total"
+                    tools:text="115" />
 
-            <View
-                android:id="@+id/divider_shop_info"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                app:layout_constraintTop_toBottomOf="@+id/payment_place" />
+                <TextView
+                    android:id="@+id/title_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="НАЛИЧНЫМИ"
+                    android:textSize="13sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@id/nds_type" />
 
-            <TextView
-                android:id="@+id/title_sno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/roboto_regular"
-                android:text="СНО:"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/divider_shop_info"
-                tools:text="СНО:" />
+                <TextView
+                    android:id="@+id/cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@id/nds"
+                    tools:text="114" />
 
-            <TextView
-                android:id="@+id/title_session_fm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="Смена "
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_sno"
-                tools:text="Смена 26" />
+                <View
+                    android:id="@+id/divider_cred"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintTop_toBottomOf="@+id/title_payment" />
 
-            <TextView
-                android:id="@+id/title_fd_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="ФД №"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_session_fm"
-                tools:text="ФД № 889" />
+                <ImageView
+                    android:id="@+id/diplomat_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:src="@drawable/ic_diplomat_receipt_detail"
+                    app:layout_constraintLeft_toLeftOf="@id/title_payment"
+                    app:layout_constraintTop_toTopOf="@id/divider_cred" />
 
-            <TextView
-                android:id="@+id/title_fp_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="ФП:"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_fd_num"
-                tools:text="ФП: 0124198634" />
+                <TextView
+                    android:id="@+id/shop_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16"
+                    android:fontFamily="@font/roboto_medium"
+                    app:layout_constraintLeft_toRightOf="@id/diplomat_icon"
+                    app:layout_constraintTop_toTopOf="@id/diplomat_icon"
+                    tools:text="OOO ''Астория''" />
 
-            <TextView
-                android:id="@+id/title_fm_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_fp_num"
-                tools:text="16.05.21 21:27" />
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/shop_name"
+                    app:layout_constraintRight_toRightOf="@+id/total"
+                    app:layout_constraintTop_toBottomOf="@+id/shop_name"
+                    tools:text="346500, Ростовская область, г.Шахты, ул.Шевченко 141" />
+
+                <ImageView
+                    android:id="@+id/user_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:src="@drawable/ic_user_icon"
+                    app:layout_constraintLeft_toLeftOf="@id/title_payment"
+                    app:layout_constraintTop_toBottomOf="@+id/address" />
+
+                <TextView
+                    android:id="@+id/title_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Кассир"
+                    app:layout_constraintLeft_toLeftOf="@id/shop_name"
+                    app:layout_constraintTop_toTopOf="@id/user_icon"
+                    tools:text="Кассир" />
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toTopOf="@+id/title_user_name"
+                    tools:text="Чупахина Оксана" />
+
+                <ImageView
+                    android:id="@+id/location_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:src="@drawable/ic_place_icon"
+                    app:layout_constraintLeft_toLeftOf="@id/title_payment"
+                    app:layout_constraintTop_toBottomOf="@id/title_user_name" />
+
+                <TextView
+                    android:id="@+id/title_payment_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Место расчетов"
+                    app:layout_constraintLeft_toLeftOf="@id/shop_name"
+                    app:layout_constraintTop_toTopOf="@id/location_icon"
+                    tools:text="Место расчетов" />
+
+                <TextView
+                    android:id="@+id/payment_place"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/title_payment_location"
+                    app:layout_constraintRight_toRightOf="@+id/total"
+                    app:layout_constraintTop_toBottomOf="@+id/title_payment_location"
+                    tools:text="346500, Ростовская область, г.Шахты, ул.Шевченко 141" />
+
+                <View
+                    android:id="@+id/divider_shop_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintTop_toBottomOf="@+id/payment_place" />
+
+                <TextView
+                    android:id="@+id/title_sno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="СНО:"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_shop_info"
+                    tools:text="СНО:" />
+
+                <TextView
+                    android:id="@+id/title_session_fm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Смена "
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_sno"
+                    tools:text="Смена 26" />
+
+                <TextView
+                    android:id="@+id/title_fd_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="ФД №"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_session_fm"
+                    tools:text="ФД № 889" />
+
+                <TextView
+                    android:id="@+id/title_fp_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="ФП:"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_fd_num"
+                    tools:text="ФП: 0124198634" />
+
+                <TextView
+                    android:id="@+id/title_fm_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_fp_num"
+                    tools:text="16.05.21 21:27" />
 
 
-            <TextView
-                android:id="@+id/content_sno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toTopOf="@+id/title_sno"
-                tools:text="УСН доход" />
+                <TextView
+                    android:id="@+id/content_sno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toTopOf="@+id/title_sno"
+                    tools:text="УСН доход" />
 
-            <TextView
-                android:id="@+id/title_rn_kkt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="РН ККТ:"
-                app:layout_constraintRight_toRightOf="@+id/content_sno"
-                app:layout_constraintTop_toBottomOf="@+id/content_sno"
-                tools:text="РН ККТ: 0000000006053185" />
+                <TextView
+                    android:id="@+id/title_rn_kkt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="РН ККТ:"
+                    app:layout_constraintRight_toRightOf="@+id/content_sno"
+                    app:layout_constraintTop_toBottomOf="@+id/content_sno"
+                    tools:text="РН ККТ: 0000000006053185" />
 
-            <TextView
-                android:id="@+id/title_zn_kkt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="ЗН ККТ:"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_rn_kkt"
-                tools:text="ЗН ККТ: ↑00307901752904↑" />
+                <TextView
+                    android:id="@+id/title_zn_kkt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="ЗН ККТ:"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_rn_kkt"
+                    tools:text="ЗН ККТ: ↑00307901752904↑" />
 
-            <TextView
-                android:id="@+id/title_site_fns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="@string/title_site_fns"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_zn_kkt"
-                tools:text="Сайт ФНС: www.nalog.ru" />
+                <TextView
+                    android:id="@+id/title_site_fns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/title_site_fns"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_zn_kkt"
+                    tools:text="Сайт ФНС: www.nalog.ru" />
 
-            <TextView
-                android:id="@+id/title_fn_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="ФН №"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_site_fns"
-                tools:text="ФН № 99990789902007958" />
+                <TextView
+                    android:id="@+id/title_fn_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="ФН №"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_site_fns"
+                    tools:text="ФН № 99990789902007958" />
 
-            <TextView
-                android:id="@+id/title_inn_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:text="ИНН:"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_fn_num"
-                tools:text="ИНН: 6155089066" />
+                <TextView
+                    android:id="@+id/title_inn_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="ИНН:"
+                    app:layout_constraintRight_toRightOf="@+id/total_cost"
+                    app:layout_constraintTop_toBottomOf="@+id/title_fn_num"
+                    tools:text="ИНН: 6155089066" />
 
-            <ImageView
-                android:id="@+id/qr_holder"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_inn_num"
-                tools:src="@drawable/ic_qr_demo" />
+                <ImageView
+                    android:id="@+id/qr_holder"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_inn_num"
+                    tools:src="@drawable/ic_qr_demo" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/fragment_receipt_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="visible"
+        tools:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
