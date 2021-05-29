@@ -147,10 +147,8 @@ public class PrintUtil {
                             dataToDb.setInn(SessionPresenter.getInstance().getOrg_inn());
                             dataToDb.setSno_type(SessionPresenter.getInstance().getSno_type());
                             dataToDb.setShop_name(SessionPresenter.getInstance().getShop_name());
-                            dataToDb.setShop_address_city(SessionPresenter.getInstance().getShop_address_city());
-                            dataToDb.setShop_address_street(SessionPresenter.getInstance().getShop_address_street());
-                            dataToDb.setPayment_location_address_city(SessionPresenter.getInstance().getPayment_location_address_city());
-                            dataToDb.setPayment_location_address_street(SessionPresenter.getInstance().getPayment_location_address_street());
+                            dataToDb.setAddress(SessionPresenter.getInstance().getAddress());
+                            dataToDb.setPayment_place(SessionPresenter.getInstance().getPayment_place());
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
                             /**

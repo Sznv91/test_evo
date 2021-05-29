@@ -217,20 +217,13 @@
                 tools:text="OOO ''Астория''" />
 
             <TextView
-                android:id="@+id/shop_address_city"
-                android:layout_width="wrap_content"
+                android:id="@+id/address"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="@id/shop_name"
+                app:layout_constraintRight_toRightOf="@+id/total"
                 app:layout_constraintTop_toBottomOf="@+id/shop_name"
-                tools:text="346500, Ростовская область, г.Шахты," />
-
-            <TextView
-                android:id="@+id/shop_address_street"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/shop_name"
-                app:layout_constraintTop_toBottomOf="@+id/shop_address_city"
-                tools:text="ул.Шевченко 141" />
+                tools:text="346500, Ростовская область, г.Шахты, ул.Шевченко 141" />
 
             <ImageView
                 android:id="@+id/user_icon"
@@ -239,7 +232,7 @@
                 android:layout_marginTop="@dimen/margin_16"
                 android:src="@drawable/ic_user_icon"
                 app:layout_constraintLeft_toLeftOf="@id/title_payment"
-                app:layout_constraintTop_toBottomOf="@id/shop_address_street" />
+                app:layout_constraintTop_toBottomOf="@+id/address" />
 
             <TextView
                 android:id="@+id/title_user_name"
@@ -279,146 +272,139 @@
                 tools:text="Место расчетов" />
 
             <TextView
-                android:id="@+id/payment_location_address_city"
-                android:layout_width="wrap_content"
+                android:id="@+id/payment_place"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="@id/title_payment_location"
+                app:layout_constraintRight_toRightOf="@+id/total"
                 app:layout_constraintTop_toBottomOf="@+id/title_payment_location"
-                tools:text="346500, Ростовская область, г.Шахты," />
-
-            <TextView
-                android:id="@+id/payment_location_address_street"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/shop_name"
-                app:layout_constraintTop_toBottomOf="@+id/payment_location_address_city"
-                tools:text="ул.Шевченко 141" />
+                tools:text="346500, Ростовская область, г.Шахты, ул.Шевченко 141" />
 
             <View
                 android:id="@+id/divider_shop_info"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                app:layout_constraintTop_toBottomOf="@+id/payment_location_address_street" />
+                app:layout_constraintTop_toBottomOf="@+id/payment_place" />
 
             <TextView
+                android:id="@+id/title_sno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:fontFamily="@font/roboto_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/title_sno"
                 android:text="СНО:"
-                tools:text="СНО:"
                 app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/divider_shop_info" />
+                app:layout_constraintTop_toBottomOf="@+id/divider_shop_info"
+                tools:text="СНО:" />
 
             <TextView
-                android:text="Смена "
-                android:fontFamily="@font/roboto_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/title_session_fm"
-                tools:text="Смена 26"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_sno" />
-
-            <TextView
-                android:text="ФД №"
-                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Смена "
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_sno"
+                tools:text="Смена 26" />
+
+            <TextView
                 android:id="@+id/title_fd_num"
-                tools:text="ФД № 889"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_session_fm" />
-
-            <TextView
-                android:text="ФП:"
-                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="ФД №"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_session_fm"
+                tools:text="ФД № 889" />
+
+            <TextView
                 android:id="@+id/title_fp_num"
-                tools:text="ФП: 0124198634"
-                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_fd_num" />
-
-            <TextView
-                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="ФП:"
+                app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_fd_num"
+                tools:text="ФП: 0124198634" />
+
+            <TextView
                 android:id="@+id/title_fm_date"
-                tools:text="16.05.21 21:27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
                 app:layout_constraintLeft_toLeftOf="@+id/title_total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_fp_num" />
+                app:layout_constraintTop_toBottomOf="@+id/title_fp_num"
+                tools:text="16.05.21 21:27" />
 
 
             <TextView
-                android:fontFamily="@font/roboto_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/content_sno"
-                tools:text="УСН доход"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toTopOf="@+id/title_sno" />
-
-            <TextView
-                android:text="РН ККТ:"
-                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toTopOf="@+id/title_sno"
+                tools:text="УСН доход" />
+
+            <TextView
                 android:id="@+id/title_rn_kkt"
-                tools:text="РН ККТ: 0000000006053185"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="РН ККТ:"
                 app:layout_constraintRight_toRightOf="@+id/content_sno"
-                app:layout_constraintTop_toBottomOf="@+id/content_sno" />
+                app:layout_constraintTop_toBottomOf="@+id/content_sno"
+                tools:text="РН ККТ: 0000000006053185" />
 
             <TextView
-                android:text="ЗН ККТ:"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/title_zn_kkt"
-                tools:text="ЗН ККТ: ↑00307901752904↑"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_rn_kkt" />
-
-            <TextView
-                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="ЗН ККТ:"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_rn_kkt"
+                tools:text="ЗН ККТ: ↑00307901752904↑" />
+
+            <TextView
                 android:id="@+id/title_site_fns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/title_site_fns"
-                tools:text="Сайт ФНС: www.nalog.ru"
                 app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_zn_kkt" />
+                app:layout_constraintTop_toBottomOf="@+id/title_zn_kkt"
+                tools:text="Сайт ФНС: www.nalog.ru" />
 
             <TextView
-                android:text="ФН №"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/title_fn_num"
-                tools:text="ФН № 99990789902007958"
-                app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_site_fns" />
-
-            <TextView
-                android:text="ИНН:"
-                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/title_inn_num"
-                tools:text="ИНН: 6155089066"
+                android:fontFamily="@font/roboto_regular"
+                android:text="ФН №"
                 app:layout_constraintRight_toRightOf="@+id/total_cost"
-                app:layout_constraintTop_toBottomOf="@+id/title_fn_num" />
+                app:layout_constraintTop_toBottomOf="@+id/title_site_fns"
+                tools:text="ФН № 99990789902007958" />
+
+            <TextView
+                android:id="@+id/title_inn_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="ИНН:"
+                app:layout_constraintRight_toRightOf="@+id/total_cost"
+                app:layout_constraintTop_toBottomOf="@+id/title_fn_num"
+                tools:text="ИНН: 6155089066" />
 
             <ImageView
                 android:id="@+id/qr_holder"
-                android:layout_marginTop="10dp"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_inn_num"
-                tools:src="@drawable/ic_qr_demo"/>
+                tools:src="@drawable/ic_qr_demo" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

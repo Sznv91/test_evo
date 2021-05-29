@@ -65,10 +65,8 @@ public class SessionPresenter {
     public boolean previousSessionStatus;
 
     public final static String SHOP_NAME = "shop_name";
-    public final static String SHOP_ADDRESS_CITY = "shop_address_city";
-    public final static String SHOP_ADDRESS_STREET = "shop_address_street";
-    public final static String PAYMENT_LOCATION_ADDRESS_CITY = "payment_location_address_city";
-    public final static String PAYMENT_LOCATION_ADDRESS_STREET = "payment_location_address_street";
+    public final static String SHOP_ADDRESS = "shop_address";
+    public final static String PAYMENT_PLACE_ADDRESS = "payment_place_address";
     public final static String SNO_TYPE = "sno_type";
     public final static String ORG_INN = "org_inn";
 
@@ -167,10 +165,8 @@ public class SessionPresenter {
 
     @Getter
     private String shop_name,
-            shop_address_city,
-            shop_address_street,
-            payment_location_address_city,
-            payment_location_address_street,
+            address,
+            payment_place,
             sno_type;
     @Getter
     private long org_inn;
@@ -230,10 +226,8 @@ public class SessionPresenter {
         }
 
         shop_name = Prefs.getInstance().loadString(SHOP_NAME);
-        shop_address_city = Prefs.getInstance().loadString(SHOP_ADDRESS_CITY);
-        shop_address_street = Prefs.getInstance().loadString(SHOP_ADDRESS_STREET);
-        payment_location_address_city = Prefs.getInstance().loadString(PAYMENT_LOCATION_ADDRESS_CITY);
-        payment_location_address_street = Prefs.getInstance().loadString(PAYMENT_LOCATION_ADDRESS_STREET);
+        address = Prefs.getInstance().loadString(SHOP_ADDRESS);
+        payment_place = Prefs.getInstance().loadString(PAYMENT_PLACE_ADDRESS);
         sno_type = Prefs.getInstance().loadString(SNO_TYPE);
         org_inn = Prefs.getInstance().loadLong(ORG_INN);
         initOrgInfo();
@@ -631,27 +625,35 @@ public class SessionPresenter {
         return manager;
     }
 
-    public void setShopInfo(String shop_name, String shop_address_city, String shop_address_street, String payment_location_address_city, String payment_location_address_street, String sno_type, long org_inn) {
+    /**
+     * Если не заданно "Место расчетов"(payment_place), то оно заполняется информаций о адрессе предприятния.
+     *
+     * @param shop_name     назвение предприятия
+     * @param address       адресс предприятния
+     * @param payment_place место расчетов
+     * @param sno_type      СНО (УСН Доход - расход)
+     * @param org_inn       ИНН предприятия
+     */
+    public void setShopInfo(String shop_name, String address, String payment_place, String sno_type, long org_inn) {
         if (!this.shop_name.equals(shop_name)) {
             this.shop_name = shop_name;
             Prefs.getInstance().saveString(SHOP_NAME, shop_name);
         }
-        if (!this.shop_address_city.equals(shop_address_city)) {
-            this.shop_address_city = shop_address_city;
-            Prefs.getInstance().saveString(SHOP_ADDRESS_CITY, shop_address_city);
+        if (!this.address.equals(address)) {
+            this.address = address;
+            Prefs.getInstance().saveString(SHOP_ADDRESS, address);
         }
-        if (!this.shop_address_street.equals(shop_address_street)) {
-            this.shop_address_street = shop_address_street;
-            Prefs.getInstance().saveString(SHOP_ADDRESS_STREET, shop_address_street);
+
+        if (TextUtils.isEmpty(payment_place)) {
+            this.payment_place = address;
+            Prefs.getInstance().saveString(PAYMENT_PLACE_ADDRESS, this.payment_place);
+        } else {
+            if (!this.payment_place.equals(payment_place)) {
+                this.payment_place = payment_place;
+                Prefs.getInstance().saveString(PAYMENT_PLACE_ADDRESS, payment_place);
+            }
         }
-        if (!this.payment_location_address_city.equals(payment_location_address_city)) {
-            this.payment_location_address_city = payment_location_address_city;
-            Prefs.getInstance().saveString(PAYMENT_LOCATION_ADDRESS_CITY, payment_location_address_city);
-        }
-        if (!this.payment_location_address_street.equals(payment_location_address_street)) {
-            this.payment_location_address_street = payment_location_address_street;
-            Prefs.getInstance().saveString(PAYMENT_LOCATION_ADDRESS_STREET, payment_location_address_street);
-        }
+
         if (!this.sno_type.equals(sno_type)) {
             this.sno_type = sno_type;
             Prefs.getInstance().saveString(SNO_TYPE, sno_type);
@@ -671,10 +673,8 @@ public class SessionPresenter {
                 Log.d(TAG + "_org_info", info.toString());
 
                 setShopInfo(info.getName(),
-                        info.getShop_address_city(),
-                        info.getShop_address_street(),
-                        info.getPayment_location_address_city(),
-                        info.getPayment_location_address_street(),
+                        info.getAddress(),
+                        info.getPayment_place(),
                         info.getSno(),
                         info.getInn());
             }

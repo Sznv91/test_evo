@@ -12,13 +12,9 @@ public class OrgInfo {
     @Expose
     String name;
 
-    @SerializedName("shop_address_city")
+    @SerializedName("address")
     @Expose
-    String shop_address_city;
-
-    @SerializedName("shop_address_street")
-    @Expose
-    String shop_address_street;
+    String address;
 
     @SerializedName("inn")
     @Expose
@@ -28,11 +24,7 @@ public class OrgInfo {
     @Expose
     String sno;
 
-    @SerializedName("payment_location_address_city")
+    @SerializedName("payment_place")
     @Expose
-    String payment_location_address_city;
-
-    @SerializedName("payment_location_address_street")
-    @Expose
-    String payment_location_address_street;
+    String payment_place;
 }

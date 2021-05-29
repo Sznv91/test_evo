@@ -65,12 +65,8 @@ public class ReceiptEntity {
 
     @ColumnInfo(name = "shop_name")
     String shop_name;
-    @ColumnInfo(name = "shop_address_city")
-    String shop_address_city;
-    @ColumnInfo(name = "shop_address_street")
-    String shop_address_street;
-    @ColumnInfo(name = "payment_location_address_city")
-    String payment_location_address_city;
-    @ColumnInfo(name = "payment_location_address_street")
-    String payment_location_address_street;
+    @ColumnInfo(name = "shop_address")
+    String address;
+    @ColumnInfo(name = "shop_payment_place")
+    String payment_place;
 }

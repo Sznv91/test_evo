@@ -96,12 +96,10 @@ public class ReceiptDetailFragment extends Fragment {
 
     shop_name,
             shop_address_city,
-            shop_address_street,
             title_user_name,
             user_name,
             title_payment_location,
-            payment_location_address_city,
-            payment_location_address_street;
+            payment_location_address_city;
 
     private TextView
             title_sno,
@@ -181,13 +179,11 @@ public class ReceiptDetailFragment extends Fragment {
         location_icon = view.findViewById(R.id.location_icon);
         qr_holder = view.findViewById(R.id.qr_holder);
         shop_name = view.findViewById(R.id.shop_name);
-        shop_address_city = view.findViewById(R.id.shop_address_city);
-        shop_address_street = view.findViewById(R.id.shop_address_street);
+        shop_address_city = view.findViewById(R.id.address);
         title_user_name = view.findViewById(R.id.title_user_name);
         user_name = view.findViewById(R.id.user_name);
         title_payment_location = view.findViewById(R.id.title_payment_location);
-        payment_location_address_city = view.findViewById(R.id.payment_location_address_city);
-        payment_location_address_street = view.findViewById(R.id.payment_location_address_street);
+        payment_location_address_city = view.findViewById(R.id.payment_place);
 
         title_sno = view.findViewById(R.id.title_sno);
         title_session_fm = view.findViewById(R.id.title_session_fm);
@@ -260,10 +256,8 @@ public class ReceiptDetailFragment extends Fragment {
                         }
                         user_name.setText(String.format("%s %s", firstName, secondName));
                         shop_name.setText(entity.getShop_name());
-                        shop_address_city.setText(entity.getShop_address_city());
-                        shop_address_street.setText(entity.getShop_address_street());
-                        payment_location_address_city.setText(entity.getPayment_location_address_city());
-                        payment_location_address_street.setText(entity.getPayment_location_address_street());
+                        shop_address_city.setText(entity.getAddress());
+                        payment_location_address_city.setText(entity.getPayment_place());
 
                         content_sno.setText(entity.getSno_type());
                         String rn = "";
@@ -557,10 +551,8 @@ public class ReceiptDetailFragment extends Fragment {
 
         }
         shop_address_city.setTextColor(ContextCompat.getColor(shop_address_city.getContext(), R.color.color29));
-        shop_address_street.setTextColor(ContextCompat.getColor(shop_address_street.getContext(), R.color.color29));
         user_name.setTextColor(ContextCompat.getColor(user_name.getContext(), R.color.color29));
         payment_location_address_city.setTextColor(ContextCompat.getColor(payment_location_address_city.getContext(), R.color.color29));
-        payment_location_address_street.setTextColor(ContextCompat.getColor(payment_location_address_street.getContext(), R.color.color29));
         title_payment.setTextColor(ContextCompat.getColor(title_payment.getContext(), R.color.color29));
 
         title_sno.setTextColor(ContextCompat.getColor(title_sno.getContext(), R.color.color29));
