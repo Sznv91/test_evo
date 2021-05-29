@@ -8,9 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -30,14 +28,15 @@ import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.liveDataHolder.OrderLiveData;
 import ru.softvillage.test_evo.liveDataHolder.States;
 import ru.softvillage.test_evo.network.OrderInterface;
-import ru.softvillage.test_evo.network.entity.Good;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
-import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.network.entity.Order;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.GoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.GoodDb;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.OrderDbWithGoods;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.utils.PositionCreator;
-import ru.softvillage.test_evo.utils.PrintUtil;
 // Примеры:
 // https://gist.github.com/sunmeat/c7e824f9c1e83c85e987c70e1ef8bb35
 
@@ -114,9 +113,13 @@ public class ForegroundServiceDispatcher extends Service {
 
         });*/
 
-        Intent serviceIntent = new Intent(context, SessionCloseWatcher.class);
+        Intent SessionCloseWatcher = new Intent(context, SessionCloseWatcher.class);
 //        serviceIntent.setAction("cidadaos.cidade.data.UpdaterServiceManager");
-        context.startService(serviceIntent);
+        context.startService(SessionCloseWatcher);
+
+        Intent PrintDispatcher = new Intent(context, PrintDispatcher.class);
+        context.startService(PrintDispatcher);
+
 
         new Thread(() -> {
 
@@ -128,15 +131,25 @@ public class ForegroundServiceDispatcher extends Service {
                         if (response.code() == 200) {
                             if (response.body().getSuccess()) {
                                 Log.d(EvoApp.TAG, "Received TRUE Order");
-                                PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(response.body().getOrderList());
+
+                                List<Order> orders = response.body().getOrderList();
+                                /**
+                                 * Добавление данных в БД для очереди печати
+                                 */
+                                for (Order order : orders) {
+                                    OrderDbWithGoods orderDbWithGoods = new OrderDbWithGoods(order);
+                                    EvoApp.getInstance().getDbHelper().createOrderDbWithGoods(orderDbWithGoods);
+                                }
+
+                                PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(new ArrayList<>(response.body().getOrderList()));
                                 for (PositionCreator.OrderTo.PositionTo orderTo : toProcessing.getOrderList()) {
                                     ReceiptEntity dataToDb = new ReceiptEntity(orderTo);
                                     ReceiptWithGoodEntity receiptWithGoodEntity = new ReceiptWithGoodEntity();
                                     receiptWithGoodEntity.setReceiptEntity(dataToDb);
 //                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
                                     List<GoodEntity> goodsToDB = new ArrayList<>();
-                                    for (Good good : orderTo.getOrderData().goods) {
-                                        GoodEntity tGoodEntity = new GoodEntity(good, orderTo.getOrderData().id);
+                                    for (GoodDb good : orderTo.getOrderData().goodDbEntities) {
+                                        GoodEntity tGoodEntity = new GoodEntity(good, orderTo.getOrderData().getOrderDb().sv_id);
                                         Log.d(EvoApp.TAG + "_good_db", tGoodEntity.toString());
                                         goodsToDB.add(tGoodEntity);
 
@@ -147,7 +160,7 @@ public class ForegroundServiceDispatcher extends Service {
                                     //todo Вынести в отдельный метод.
 
                                     EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
-                                    PrintUtil.getInstance().printOrder(getApplicationContext(), orderTo, printCallback);
+//                                    PrintUtil.getInstance().printOrder(getApplicationContext(), orderTo, printCallback);
                                 }
 
                             } else {
@@ -195,19 +208,19 @@ public class ForegroundServiceDispatcher extends Service {
         }
     }
 
-    PrintUtil.PrintCallback printCallback = new PrintUtil.PrintCallback() {
+    /*PrintUtil.PrintCallback printCallback = new PrintUtil.PrintCallback() {
         @Override
         public void printSuccess() {
 
         }
 
         @Override
-        public void printFailure(PositionCreator.OrderTo.PositionTo order/*List<Position> list, BigDecimal receiptCost*/) {
+        public void printFailure(PositionCreator.OrderTo.PositionTo order*//*List<Position> list, BigDecimal receiptCost*//*) {
             new Handler(Looper.getMainLooper()).postDelayed(() -> PrintUtil.getInstance().printOrder(
                     getApplicationContext(),
                     order,
                     this), 1000);
         }
-    };
+    };*/
 
 }

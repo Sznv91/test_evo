@@ -51,7 +51,7 @@ import ru.evotor.query.Cursor;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.DbHelper;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.test_evo.tabs.viewModel.ReceiptDetailViewModel;
 

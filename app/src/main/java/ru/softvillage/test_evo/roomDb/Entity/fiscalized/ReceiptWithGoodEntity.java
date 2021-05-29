@@ -1,4 +1,4 @@
-package ru.softvillage.test_evo.roomDb.Entity;
+package ru.softvillage.test_evo.roomDb.Entity.fiscalized;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
@@ -11,7 +11,7 @@ import lombok.Data;
 public class ReceiptWithGoodEntity {
     @Embedded
     public ReceiptEntity receiptEntity;
-    @Relation(parentColumn = "id",
+    @Relation(parentColumn = "sv_id",
             entity = GoodEntity.class,
             entityColumn = "receipt_id")
     public List<GoodEntity> goodEntities;

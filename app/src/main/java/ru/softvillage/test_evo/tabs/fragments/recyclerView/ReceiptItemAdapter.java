@@ -16,7 +16,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
 
 @RequiredArgsConstructor
 public class ReceiptItemAdapter extends RecyclerView.Adapter<AbstractReceiptViewHolder> {

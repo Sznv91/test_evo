@@ -9,11 +9,12 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
-import ru.softvillage.test_evo.roomDb.Entity.PushEvent;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.GoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.GoodDb;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.OrderDb;
 
-@Database(entities = {PushEvent.class, ReceiptEntity.class, GoodEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {GoodDb.class, OrderDb.class, ReceiptEntity.class, GoodEntity.class}, version = 1, exportSchema = false)
 public abstract class LocalDataBase extends RoomDatabase {
     /*public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
@@ -38,8 +39,6 @@ public abstract class LocalDataBase extends RoomDatabase {
             database.execSQL("ALTER TABLE 'receipt' ADD COLUMN 'user_uuid' TEXT");
         }
     };*/
-
-    public abstract PushEventDao pushEventDao();
 
     public abstract ReceiptDao receiptDao();
 

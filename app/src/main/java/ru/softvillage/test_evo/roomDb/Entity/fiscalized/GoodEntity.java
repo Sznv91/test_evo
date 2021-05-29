@@ -1,28 +1,24 @@
-package ru.softvillage.test_evo.roomDb.Entity;
+package ru.softvillage.test_evo.roomDb.Entity.fiscalized;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.math.BigDecimal;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
-import ru.softvillage.test_evo.network.entity.Good;
 import ru.softvillage.test_evo.roomDb.BigDecimalConverter;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.GoodDb;
 
 import static androidx.room.ForeignKey.CASCADE;
-import static androidx.room.ForeignKey.RESTRICT;
 
 @Entity(tableName = "good",
         foreignKeys = @ForeignKey(
                 entity = ReceiptEntity.class,
-                parentColumns = "id",
+                parentColumns = "sv_id",
                 childColumns = "receipt_id",
                 onDelete = CASCADE),
         indices = @Index("receipt_id"))
@@ -64,7 +60,7 @@ public class GoodEntity {
     public GoodEntity() {
     }
 
-    public GoodEntity(Good good, long receiptId) {
+    public GoodEntity(GoodDb good, long receiptId) {
         this.receiptId = receiptId;
 
         productUUID = good.productUUID;

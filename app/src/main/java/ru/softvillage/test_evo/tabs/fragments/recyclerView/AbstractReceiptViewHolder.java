@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
 
 public abstract class AbstractReceiptViewHolder extends RecyclerView.ViewHolder {
 

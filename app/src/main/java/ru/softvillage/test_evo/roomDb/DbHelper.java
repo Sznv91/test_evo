@@ -1,14 +1,20 @@
 package ru.softvillage.test_evo.roomDb;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Transaction;
 
 import java.util.List;
 
-import ru.softvillage.test_evo.roomDb.Entity.GoodEntity;
-import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.EvoApp;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.GoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.PartialReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.OrderDb;
+import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.OrderDbWithGoods;
 
 public class DbHelper {
     LocalDataBase dataBase;
@@ -62,8 +68,40 @@ public class DbHelper {
         });
     }
 
+    /*public ArrayList<ReceiptEntity> getAllNotFiscalized() {
+        return dataBase.receiptDao().getAllNotFiscalized();
+    }*/
+
+    ////////////////////////////////////////////////////////////////////
+
+    /**
+     * Network entity part
+     */
+    public List<OrderDbWithGoods> getOrderDbWithGoods() {
+        return dataBase.receiptDao().getOrderDbWithGoods();
+    }
+
+    @SuppressLint("LongLogTag")
+    @Transaction
+    public void createOrderDbWithGoods(OrderDbWithGoods entity) {
+        LocalDataBase.databaseWriteExecutor.execute(() -> {
+            dataBase.receiptDao().createOrderDb(entity.getOrderDb());
+            dataBase.receiptDao().createGoodDb(entity.getGoodDbEntities());
+            Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_createOrderDbWithGoods", "Успешно сохранили в БД: " + entity.toString());
+        });
+    }
+
+    public void removeOrderDbWithGoods(OrderDb entity) {
+        LocalDataBase.databaseWriteExecutor.execute(() -> {
+            dataBase.receiptDao().removeOrderDb(entity);
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
     public interface AsyncCallback {
         void sessionRequest(long sessionId);
+
         void receiptRequest(ReceiptEntity entity);
     }
 }

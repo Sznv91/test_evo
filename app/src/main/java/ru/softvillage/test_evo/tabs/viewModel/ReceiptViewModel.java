@@ -22,7 +22,7 @@ import java.util.List;
 
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.fragments.ReceiptDetailFragment;
 import ru.softvillage.test_evo.tabs.fragments.recyclerView.ReceiptItemAdapter;
 
@@ -58,7 +58,7 @@ public class ReceiptViewModel extends ViewModel {
                         @Override
                         public void clickClick(ReceiptEntity recipientEntity) {
                             Log.d(EvoApp.TAG + "_Recycler", "click - click " + recipientEntity.getReceiptNumber());
-                            Fragment fragment = ReceiptDetailFragment.newInstance(String.valueOf(recipientEntity.getId()));
+                            Fragment fragment = ReceiptDetailFragment.newInstance(String.valueOf(recipientEntity.getSv_id()));
                             if (EvoApp.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                                 EvoApp.getInstance().getFragmentDispatcher().replaceFragment(fragment);
                             } else if (EvoApp.getInstance().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

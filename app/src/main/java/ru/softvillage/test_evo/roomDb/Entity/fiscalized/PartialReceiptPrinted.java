@@ -1,4 +1,4 @@
-package ru.softvillage.test_evo.roomDb.Entity;
+package ru.softvillage.test_evo.roomDb.Entity.fiscalized;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -16,7 +16,7 @@ import ru.softvillage.test_evo.roomDb.DateTimeConverter;
 public class PartialReceiptPrinted {
 
     @PrimaryKey
-    long id;
+    long sv_id;
 
     @ColumnInfo(name = "date_time_printed")
     LocalDateTime printed;

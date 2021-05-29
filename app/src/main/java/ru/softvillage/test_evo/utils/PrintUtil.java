@@ -40,7 +40,7 @@ import ru.evotor.query.Cursor;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.network.entity.FiscalizedAnswer;
 import ru.softvillage.test_evo.network.entity.NetworkAnswer;
-import ru.softvillage.test_evo.roomDb.Entity.PartialReceiptPrinted;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.PartialReceiptPrinted;
 import ru.softvillage.test_evo.services.ForegroundServiceDispatcher;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
@@ -63,12 +63,12 @@ public class PrintUtil {
 
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
-        if (!order.getOrderData().checkDiscount.equals(BigDecimal.ZERO)) {
+        if (!order.getOrderData().orderDb.checkDiscount.equals(BigDecimal.ZERO)) {
             Log.d(EvoApp.TAG + "_discount_", "Сумма чека без скидок: " + order.getSumPrice());
             BigDecimal onePercentFromAllPrice = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             Log.d(EvoApp.TAG + "_discount_", "Цена одного процента от общей стоимости: " + onePercentFromAllPrice);
-            Log.d(EvoApp.TAG + "_discount_", "Процент скидки: " + order.getOrderData().checkDiscount);
-            receiptDiscount = onePercentFromAllPrice.multiply(order.getOrderData().checkDiscount);
+            Log.d(EvoApp.TAG + "_discount_", "Процент скидки: " + order.getOrderData().orderDb.checkDiscount);
+            receiptDiscount = onePercentFromAllPrice.multiply(order.getOrderData().orderDb.checkDiscount);
             Log.d(EvoApp.TAG + "_discount_", "Размер скидки: " + receiptDiscount);
         }
 
@@ -113,13 +113,13 @@ public class PrintUtil {
         new PrintSellReceiptCommand(listDocs,
                 null,
 //                "79011234567",
-                order.getOrderData().phone,
+                order.getOrderData().orderDb.phone,
 //                "example@example.com",
-                order.getOrderData().email,
+                order.getOrderData().orderDb.email,
                 receiptDiscount,
                 null,
                 null,
-                order.getOrderData().userUUID).process(context, new IntegrationManagerCallback() {
+                order.getOrderData().orderDb.userUUID).process(context, new IntegrationManagerCallback() {
             @SuppressLint("LongLogTag")
             @Override
             public void run(IntegrationManagerFuture integrationManagerFuture) {
@@ -134,10 +134,10 @@ public class PrintUtil {
                             dataToDb.setPrinted(LocalDateTime.now());
                             dataToDb.setReceiptNumber(Long.parseLong(result.getData().getString("receiptNumber")));
                             dataToDb.setUuid(result.getData().getString("receiptUuid"));
-                            dataToDb.setId(order.getOrderData().id);
+                            dataToDb.setSv_id(order.getOrderData().orderDb.sv_id);
                             dataToDb.setSessionId(SystemStateApi.getLastSessionNumber(context));
-                            if (order.getOrderData().getUserUUID() != null) {
-                                dataToDb.setUserUuid(order.getOrderData().getUserUUID());
+                            if (order.getOrderData().orderDb.getUserUUID() != null) {
+                                dataToDb.setUserUuid(order.getOrderData().orderDb.getUserUUID());
                             } else {
                                 dataToDb.setUserUuid(UserApi.getAuthenticatedUser(EvoApp.getInstance()).getUuid());
                             }
@@ -157,7 +157,7 @@ public class PrintUtil {
                             FiscalizedAnswer answer = new FiscalizedAnswer();
                             answer.setEmailFlag(SessionPresenter.getInstance().isSendEmail());
                             answer.setSmsFlag(SessionPresenter.getInstance().isSendSms());
-                            answer.setId(order.getOrderData().id);
+                            answer.setId(order.getOrderData().orderDb.sv_id);
                             answer.setNumber(Long.parseLong(result.getData().getString("receiptNumber")));
                             answer.setUuid(result.getData().getString("receiptUuid"));
                             answer.setStatus(1);
@@ -189,16 +189,17 @@ public class PrintUtil {
                              */
                             StatisticConsider.addCountReceipt();
                             StatisticConsider.addFiscalizedMoney(finalCost);
-                            if (SessionPresenter.getInstance().isSendSms() && !TextUtils.isEmpty(order.getOrderData().getPhone())) {
+                            if (SessionPresenter.getInstance().isSendSms() && !TextUtils.isEmpty(order.getOrderData().orderDb.getPhone())) {
                                 StatisticConsider.addCountSms();
                             }
-                            if (SessionPresenter.getInstance().isSendEmail() && !TextUtils.isEmpty(order.getOrderData().getEmail())) {
+                            if (SessionPresenter.getInstance().isSendEmail() && !TextUtils.isEmpty(order.getOrderData().orderDb.getEmail())) {
                                 StatisticConsider.addCountEmail();
                             }
                             /**
                              * Обновление оповещения
                              */
                             ForegroundServiceDispatcher.updateNotificationCounter();
+                            callback.printSuccess();
                             break;
                         case ERROR:
                             //todo отловить причину истечения срока сессии -> закрыть сессию по условию.

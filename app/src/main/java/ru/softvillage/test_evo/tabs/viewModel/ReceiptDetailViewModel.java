@@ -9,7 +9,7 @@ import lombok.Getter;
 import ru.evotor.framework.receipt.Receipt;
 import ru.evotor.framework.receipt.ReceiptApi;
 import ru.softvillage.test_evo.EvoApp;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptWithGoodEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptWithGoodEntity;
 import ru.softvillage.test_evo.tabs.fragments.recyclerView.PositionGoodsItemAdapter;
 
 

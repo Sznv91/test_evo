@@ -1,4 +1,4 @@
-package ru.softvillage.test_evo.roomDb.Entity;
+package ru.softvillage.test_evo.roomDb.Entity.fiscalized;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -23,7 +23,7 @@ public class ReceiptEntity {
     }
 
     public ReceiptEntity(PositionCreator.OrderTo.PositionTo orderTo) {
-        id = orderTo.getOrderData().id;
+        sv_id = orderTo.getOrderData().orderDb.sv_id;
         received = LocalDateTime.now();
         price = orderTo.getSumPrice();
         countOfPosition = orderTo.getPositions().size();
@@ -31,7 +31,7 @@ public class ReceiptEntity {
     }
 
     @PrimaryKey
-    private long id;
+    private long sv_id;
 
     @ColumnInfo(name = "summary_price")
     private BigDecimal price;

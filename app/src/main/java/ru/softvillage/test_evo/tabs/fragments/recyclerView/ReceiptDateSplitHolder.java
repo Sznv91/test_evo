@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat;
 
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
 
 public class ReceiptDateSplitHolder extends AbstractReceiptViewHolder {
     private final TextView date;

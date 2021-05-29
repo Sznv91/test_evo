@@ -55,12 +55,12 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".services.receiver.SessionCheckerReceiver" />
+        <!--<receiver android:name=".services.receiver.SessionCheckerReceiver" />-->
 
-        <service
+        <!--<service
             android:name=".services.MyService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false" />-->
         <service
             android:name=".services.ForegroundServiceDispatcher"
             android:enabled="true"
@@ -68,6 +68,10 @@
         <service
             android:name=".services.SessionCloseWatcher"
             android:enabled="true" />
+        <service
+            android:name=".services.PrintDispatcher"
+            android:enabled="true"
+            android:exported="false" />
 
         <meta-data
             android:name="app_uuid"

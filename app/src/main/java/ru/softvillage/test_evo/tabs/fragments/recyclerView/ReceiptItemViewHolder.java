@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer;
 
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.roomDb.Entity.ReceiptEntity;
+import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
