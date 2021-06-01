@@ -17,9 +17,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.evotor.devices.commons.ConnectionWrapper;
+import ru.evotor.devices.commons.DeviceServiceConnector;
+import ru.evotor.devices.commons.exception.DeviceServiceException;
+import ru.evotor.devices.commons.printer.PrinterDocument;
+import ru.evotor.devices.commons.printer.printable.PrintableText;
+import ru.evotor.devices.commons.services.IPrinterServiceWrapper;
+import ru.evotor.devices.commons.services.IScalesServiceWrapper;
 import ru.evotor.framework.users.UserApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.network.entity.FiscalizationRequest;
+import ru.softvillage.test_evo.roomDb.DbHelper;
 import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.OrderDbWithGoods;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
@@ -32,7 +40,7 @@ public class PrintDispatcher extends Service {
     private AtomicBoolean printerAccess = new AtomicBoolean();
     private static final int LATENCY_UPDATE_QUEUE = 30000;
     private static final int LATENCY_PRINT = 5000;
-    private static final int RETRY_AFTER_FAILED = 10000;
+    private static final int RETRY_AFTER_FAILED = 50000;
 
 
     @Nullable
@@ -45,6 +53,51 @@ public class PrintDispatcher extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+       /* *//**
+         * Инициализация принтера
+         *//*
+        DeviceServiceConnector.startInitConnections(getApplicationContext());
+        DeviceServiceConnector.addConnectionWrapper(new ConnectionWrapper() {
+            @Override
+            public void onPrinterServiceConnected(IPrinterServiceWrapper printerService) {
+                Log.e(getClass().getSimpleName(), "onPrinterServiceConnected");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            //Печать сообщения об успешной инициализации принтера
+                            DeviceServiceConnector.getPrinterService().printDocument(
+                                    //В настоящий момент печать возможна только на ККМ, встроенной в смарт-терминал,
+                                    //поэтому вместо номера устройства всегда следует передавать константу
+                                    ru.evotor.devices.commons.Constants.DEFAULT_DEVICE_INDEX,
+                                    new PrinterDocument(
+                                            new PrintableText("PRINTER INIT OK")));
+                        } catch (DeviceServiceException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onPrinterServiceDisconnected() {
+                Log.e(getClass().getSimpleName(), "onPrinterServiceDisconnected");
+            }
+
+            @Override
+            public void onScalesServiceConnected(IScalesServiceWrapper scalesService) {
+                Log.e(getClass().getSimpleName(), "onScalesServiceConnected");
+            }
+
+            @Override
+            public void onScalesServiceDisconnected() {
+                Log.e(getClass().getSimpleName(), "onScalesServiceDisconnected");
+            }
+        });
+*/
+
 
         /**
          * При запуске сервиса предпологаем что принтер свободен.
@@ -92,7 +145,7 @@ public class PrintDispatcher extends Service {
                                 Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_networker", "Получили ответ из сети. Entity id: " + entity.getOrderDb().getSv_id() + " результат: " + response.body().isNeedPrint());
                                 if (!response.body().isNeedPrint()) {
                                     receiptQueue.remove(entity);
-                                    EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb());
+                                    EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb(), null);
                                     return;
                                 } else {
                                     if (printerAccess.get()) {
@@ -103,15 +156,12 @@ public class PrintDispatcher extends Service {
                                             public void printSuccess() {
                                                 Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_printSuccess", "Получили положительный коллбек о печати чека ");
                                                 receiptQueue.remove(entity);
-                                                EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb());
-                                                printerAccess.set(true);
+                                                EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb(), () -> printerAccess.set(true));
                                             }
 
                                             @Override
-                                            public void printFailure(PositionCreator.OrderTo.PositionTo order) {
-                                                Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_printFailure", "Получили Отрицательный коллбек о печати чека");
-                                                receiptQueue.remove(entity);
-                                                EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb());
+                                            public void printFailure(PositionCreator.OrderTo.PositionTo order, String errorMessage) {
+                                                Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_printFailure", "Получили Отрицательный коллбек о печати чека errorMessage: " + errorMessage);
                                                 Handler handler = new Handler(Looper.getMainLooper());
                                                 handler.postDelayed(() -> printerAccess.set(true), RETRY_AFTER_FAILED);
                                             }

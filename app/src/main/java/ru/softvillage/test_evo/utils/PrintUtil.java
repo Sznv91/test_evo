@@ -204,7 +204,7 @@ public class PrintUtil {
                         case ERROR:
                             //todo отловить причину истечения срока сессии -> закрыть сессию по условию.
                             Log.d(EvoApp.TAG + "_print_error", result.getError().getMessage());
-                            callback.printFailure(order);
+                            callback.printFailure(order, result.getError().getMessage() + " Code:" + result.getError().getCode() + " Data: " + result.getError().getData());
 //                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;
                     }
@@ -320,6 +320,6 @@ public class PrintUtil {
     public interface PrintCallback {
         void printSuccess();
 
-        void printFailure(PositionCreator.OrderTo.PositionTo order /*List<Position> list, BigDecimal receiptCost*/);
+        void printFailure(PositionCreator.OrderTo.PositionTo order, String error /*List<Position> list, BigDecimal receiptCost*/);
     }
 }

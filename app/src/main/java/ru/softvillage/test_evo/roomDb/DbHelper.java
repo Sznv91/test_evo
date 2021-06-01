@@ -91,13 +91,25 @@ public class DbHelper {
         });
     }
 
-    public void removeOrderDbWithGoods(OrderDb entity) {
+    public void removeOrderDbWithGoods(OrderDb entity, removeCallBack callBack) {
         LocalDataBase.databaseWriteExecutor.execute(() -> {
             dataBase.receiptDao().removeOrderDb(entity);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (callBack != null) {
+                callBack.removeFinish();
+            }
         });
     }
 
     ////////////////////////////////////////////////////////////////////
+
+    public interface removeCallBack {
+        void removeFinish();
+    }
 
     public interface AsyncCallback {
         void sessionRequest(long sessionId);
