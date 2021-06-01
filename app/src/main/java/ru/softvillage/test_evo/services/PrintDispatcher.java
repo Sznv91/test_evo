@@ -37,7 +37,7 @@ public class PrintDispatcher extends Service {
      * Многопоточный ArrayList
      */
     private final CopyOnWriteArrayList<OrderDbWithGoods> receiptQueue = new CopyOnWriteArrayList<>();
-    private AtomicBoolean printerAccess = new AtomicBoolean();
+    private static final AtomicBoolean printerAccess = new AtomicBoolean();
     private static final int LATENCY_UPDATE_QUEUE = 30000;
     private static final int LATENCY_PRINT = 5000;
     private static final int RETRY_AFTER_FAILED = 50000;
