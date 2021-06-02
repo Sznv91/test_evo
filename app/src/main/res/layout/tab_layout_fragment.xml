@@ -21,7 +21,9 @@
         app:tabIndicatorColor="@color/color17"
         app:tabInlineLabel="true"
         app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="@color/color29" />
+        app:tabTextColor="@color/color29"
+        android:divider="@drawable/tab_divider"
+        android:showDividers="middle" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

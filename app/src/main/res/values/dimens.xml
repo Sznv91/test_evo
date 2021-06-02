@@ -42,4 +42,6 @@
     <dimen name="tsize_29">29sp</dimen>
     <dimen name="tsize_30">30sp</dimen>
     <dimen name="tsize_32">32sp</dimen>
+
+    <dimen name="statistic_divider">1sp</dimen>
 </resources>

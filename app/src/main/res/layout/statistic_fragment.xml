@@ -22,9 +22,9 @@
             android:id="@+id/statistic_session_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/title_current_session"
-            android:textColor="@color/black"
+            android:textColor="@color/fonts_lt"
             android:textSize="@dimen/tsize_18"
             app:layout_constraintBottom_toTopOf="@+id/statistic_current_data"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -32,11 +32,12 @@
             tools:text="Текущая смена №1555" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/statistic_current_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
-            android:textColor="@color/color29"
+            android:textColor="@color/active_fonts_lt"
             app:drawableStartCompat="@drawable/ic_statistic_calendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -46,7 +47,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:background="@color/color_f8"
+        android:background="@color/main_lt"
         android:id="@+id/statistic_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,10 +58,10 @@
             android:id="@+id/title_statistic_information"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:fontFamily="@font/roboto_regular"
+            android:fontFamily="@font/roboto_medium"
             android:padding="@dimen/margin_16"
             android:text="ИНФОРМАЦИЯ"
-            android:textColor="@color/color29"
+            android:textColor="@color/active_fonts_lt"
             app:layout_constraintLeft_toLeftOf="parent" />
     </FrameLayout>
 
@@ -90,7 +91,7 @@
             android:layout_marginStart="@dimen/padding_8"
             android:fontFamily="@font/roboto_regular"
             android:text="@string/title_time_to_close"
-            android:textColor="@color/black"
+            android:textColor="@color/fonts_lt"
             android:textSize="@dimen/tsize_18"
             app:layout_constraintBottom_toTopOf="@+id/time_ticker_holder"
             app:layout_constraintLeft_toRightOf="@id/iv_clock"
@@ -98,11 +99,12 @@
             tools:text="Время до закрытия смены" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/time_ticker_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
-            android:textColor="@color/color29"
+            android:textColor="@color/active_fonts_lt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/time_to_close"
             app:layout_constraintTop_toBottomOf="@+id/time_to_close"
@@ -114,7 +116,7 @@
         android:id="@+id/sum_fiscalization_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_2"
+        android:layout_marginTop="@dimen/statistic_divider"
         android:background="@color/white"
         android:padding="@dimen/padding_8"
         android:paddingStart="@dimen/margin_16"
@@ -145,6 +147,7 @@
             tools:text="Общая сумма фискализации" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/sum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,7 +165,7 @@
         android:id="@+id/count_receipt_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_2"
+        android:layout_marginTop="@dimen/statistic_divider"
         android:background="@color/white"
         android:padding="@dimen/padding_8"
         android:paddingStart="@dimen/margin_16"
@@ -193,6 +196,7 @@
             tools:text="Общее количество чеков" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/receipt_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -210,7 +214,7 @@
         android:id="@+id/send_sms_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_2"
+        android:layout_marginTop="@dimen/statistic_divider"
         android:background="@color/white"
         android:padding="@dimen/padding_8"
         android:paddingStart="@dimen/margin_16"
@@ -241,6 +245,7 @@
             tools:text="Отправлено SMS" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/sms_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -258,7 +263,7 @@
         android:id="@+id/send_email_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_2"
+        android:layout_marginTop="@dimen/statistic_divider"
         android:background="@color/white"
         android:padding="@dimen/padding_8"
         android:paddingStart="@dimen/margin_16"
@@ -289,6 +294,7 @@
             tools:text="Отправлено E-mail" />
 
         <TextView
+            android:fontFamily="@font/roboto_regular"
             android:id="@+id/email_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

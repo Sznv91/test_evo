@@ -282,8 +282,8 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         Drawable calendar_icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_statistic_calendar);
 
         if (currentTheme == THEME_LIGHT) {
-            statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.color_f8));
-            statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.color_e7));
+            statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.main_lt));
+            statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.divider_lt));
             sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.white));
             timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.white));
             sumFiscalizationHolder.setBackgroundColor(ContextCompat.getColor(sumFiscalizationHolder.getContext(), R.color.white));
@@ -291,49 +291,49 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             sendSmsHolder.setBackgroundColor(ContextCompat.getColor(sendSmsHolder.getContext(), R.color.white));
             sendEmailHolder.setBackgroundColor(ContextCompat.getColor(sendEmailHolder.getContext(), R.color.white));
 
-            statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.color20));
-            title_statistic_information.setTextColor(ContextCompat.getColor(title_statistic_information.getContext(), R.color.color29));
-            time_to_close.setTextColor(ContextCompat.getColor(time_to_close.getContext(), R.color.color20));
-            sum_fiscalization.setTextColor(ContextCompat.getColor(sum_fiscalization.getContext(), R.color.color20));
-            sum_receipt.setTextColor(ContextCompat.getColor(sum_receipt.getContext(), R.color.color20));
-            send_sms.setTextColor(ContextCompat.getColor(send_sms.getContext(), R.color.color20));
-            send_email.setTextColor(ContextCompat.getColor(send_email.getContext(), R.color.color20));
+            statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.fonts_lt));
+            title_statistic_information.setTextColor(ContextCompat.getColor(title_statistic_information.getContext(), R.color.active_fonts_lt));
+            time_to_close.setTextColor(ContextCompat.getColor(time_to_close.getContext(), R.color.fonts_lt));
+            sum_fiscalization.setTextColor(ContextCompat.getColor(sum_fiscalization.getContext(), R.color.fonts_lt));
+            sum_receipt.setTextColor(ContextCompat.getColor(sum_receipt.getContext(), R.color.fonts_lt));
+            send_sms.setTextColor(ContextCompat.getColor(send_sms.getContext(), R.color.fonts_lt));
+            send_email.setTextColor(ContextCompat.getColor(send_email.getContext(), R.color.fonts_lt));
 
 
             changeDateTimeColour();
-            int tabIconColor = ContextCompat.getColor(getContext(), R.color.color29);
+            int tabIconColor = ContextCompat.getColor(getContext(), R.color.fonts_lt);
             calendar_icon.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             statistic_current_data.setCompoundDrawablesRelativeWithIntrinsicBounds(calendar_icon, null, null, null);
-            sum.setTextColor(ContextCompat.getColor(sum.getContext(), R.color.color29));
-            receipt_count.setTextColor(ContextCompat.getColor(receipt_count.getContext(), R.color.color29));
-            sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.color29));
-            email_count.setTextColor(ContextCompat.getColor(email_count.getContext(), R.color.color29));
+            sum.setTextColor(ContextCompat.getColor(sum.getContext(), R.color.active_fonts_lt));
+            receipt_count.setTextColor(ContextCompat.getColor(receipt_count.getContext(), R.color.active_fonts_lt));
+            sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.active_fonts_lt));
+            email_count.setTextColor(ContextCompat.getColor(email_count.getContext(), R.color.active_fonts_lt));
         } else {
-            statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.black));
-            statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.black));
-            sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.color31));
-            timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.color31));
-            sumFiscalizationHolder.setBackgroundColor(ContextCompat.getColor(sumFiscalizationHolder.getContext(), R.color.color31));
-            countReceiptHolder.setBackgroundColor(ContextCompat.getColor(countReceiptHolder.getContext(), R.color.color31));
-            sendSmsHolder.setBackgroundColor(ContextCompat.getColor(sendSmsHolder.getContext(), R.color.color31));
-            sendEmailHolder.setBackgroundColor(ContextCompat.getColor(sendEmailHolder.getContext(), R.color.color31));
+            statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.main_dt));
+            statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.divider_dt));
+            sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.background_dt));
+            timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.background_dt));
+            sumFiscalizationHolder.setBackgroundColor(ContextCompat.getColor(sumFiscalizationHolder.getContext(), R.color.background_dt));
+            countReceiptHolder.setBackgroundColor(ContextCompat.getColor(countReceiptHolder.getContext(), R.color.background_dt));
+            sendSmsHolder.setBackgroundColor(ContextCompat.getColor(sendSmsHolder.getContext(), R.color.background_dt));
+            sendEmailHolder.setBackgroundColor(ContextCompat.getColor(sendEmailHolder.getContext(), R.color.background_dt));
 
-            statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.white));
-            title_statistic_information.setTextColor(ContextCompat.getColor(title_statistic_information.getContext(), R.color.color20));
-            time_to_close.setTextColor(ContextCompat.getColor(time_to_close.getContext(), R.color.white));
-            sum_fiscalization.setTextColor(ContextCompat.getColor(sum_fiscalization.getContext(), R.color.white));
-            sum_receipt.setTextColor(ContextCompat.getColor(sum_receipt.getContext(), R.color.white));
-            send_sms.setTextColor(ContextCompat.getColor(send_sms.getContext(), R.color.white));
-            send_email.setTextColor(ContextCompat.getColor(send_email.getContext(), R.color.white));
+            statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.fonts_dt));
+            title_statistic_information.setTextColor(ContextCompat.getColor(title_statistic_information.getContext(), R.color.active_fonts_dt));
+            time_to_close.setTextColor(ContextCompat.getColor(time_to_close.getContext(), R.color.fonts_dt));
+            sum_fiscalization.setTextColor(ContextCompat.getColor(sum_fiscalization.getContext(), R.color.fonts_dt));
+            sum_receipt.setTextColor(ContextCompat.getColor(sum_receipt.getContext(), R.color.fonts_dt));
+            send_sms.setTextColor(ContextCompat.getColor(send_sms.getContext(), R.color.fonts_dt));
+            send_email.setTextColor(ContextCompat.getColor(send_email.getContext(), R.color.fonts_dt));
 
             changeDateTimeColour();
-            int tabIconColor = ContextCompat.getColor(getContext(), R.color.color20);
+            int tabIconColor = ContextCompat.getColor(getContext(), R.color.active_fonts_dt);
             calendar_icon.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             statistic_current_data.setCompoundDrawablesRelativeWithIntrinsicBounds(calendar_icon, null, null, null);
-            sum.setTextColor(ContextCompat.getColor(sum.getContext(), R.color.color20));
-            receipt_count.setTextColor(ContextCompat.getColor(receipt_count.getContext(), R.color.color20));
-            sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.color20));
-            email_count.setTextColor(ContextCompat.getColor(email_count.getContext(), R.color.color20));
+            sum.setTextColor(ContextCompat.getColor(sum.getContext(), R.color.active_fonts_dt));
+            receipt_count.setTextColor(ContextCompat.getColor(receipt_count.getContext(), R.color.active_fonts_dt));
+            sms_count.setTextColor(ContextCompat.getColor(sms_count.getContext(), R.color.active_fonts_dt));
+            email_count.setTextColor(ContextCompat.getColor(email_count.getContext(), R.color.active_fonts_dt));
         }
     }
 
@@ -343,11 +343,11 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color17));
         } else {
             if (getInstance().getCurrentTheme() == THEME_LIGHT) {
-                statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color29));
-                time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color29));
+                statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.active_fonts_lt));
+                time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.active_fonts_lt));
             } else {
-                statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color20));
-                time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.color20));
+                statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.active_fonts_dt));
+                time_ticker_holder.setTextColor(ContextCompat.getColor(time_ticker_holder.getContext(), R.color.active_fonts_dt));
             }
         }
     }
