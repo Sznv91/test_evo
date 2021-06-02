@@ -16,7 +16,7 @@
         android:fontFamily="@font/roboto_regular"
         android:text="@string/title_dialog_close_every"
         android:textColor="@color/color20"
-        android:textSize="@dimen/tsize_28"
+        android:textSize="@dimen/tsize_15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         app:wheel_cyclic="true"
         app:wheel_font_path="roboto_regular.ttf"
         app:wheel_item_text_color="@color/color27"
-        app:wheel_item_text_size="@dimen/tsize_25"
+        app:wheel_item_text_size="@dimen/tsize_18"
         app:wheel_visible_item_count="5" />
 
     <androidx.appcompat.widget.AppCompatSpinner

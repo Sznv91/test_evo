@@ -1,8 +1,10 @@
 package ru.softvillage.test_evo.tabs.left_menu.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.aigestudio.wheelpicker.WheelPicker;
 
 import java.util.ArrayList;
 
+import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
@@ -172,8 +175,26 @@ public class SetCloseEveryDialog extends DialogFragment implements View.OnClickL
             save();
     }
 
+    @SuppressLint("LongLogTag")
     private void save() {
-        SessionPresenter.getInstance().setAutoCloseEveryValue(value.getCurrentItemPosition() + 1);
+        if (unit.getSelectedItemPosition() == AUTO_CLOSE_EVERY_UNIT_HOUR) {
+            long periodTime = (value.getCurrentItemPosition() + 1) * 60 * 1000;
+            /**
+             * Если выбранное количество часов > 24, то автоматически значение
+             * заменяется на 24 часа.
+             */
+            long hours24 = 86400000L;
+            periodTime *= 60;
+            Log.d(EvoApp.TAG + "_SetCloseEveryDialog", String.format("periodTime: %s ; hours24: %s", periodTime, hours24));
+            if (periodTime > hours24) {
+                SessionPresenter.getInstance().setAutoCloseEveryValue(24);
+            } else {
+                SessionPresenter.getInstance().setAutoCloseEveryValue(value.getCurrentItemPosition() + 1);
+            }
+
+        } else {
+            SessionPresenter.getInstance().setAutoCloseEveryValue(value.getCurrentItemPosition() + 1);
+        }
         SessionPresenter.getInstance().setAutoCloseEveryUnit(unit.getSelectedItemPosition());
 //        SessionPresenter.getInstance().setAutoCloseType(AUTO_CLOSE_EVERY_);
 

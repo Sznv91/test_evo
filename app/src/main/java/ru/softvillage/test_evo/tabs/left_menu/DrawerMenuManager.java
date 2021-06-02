@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
     /*private ImageView menu;*/
     private ImageView changeTheme;
+    private FrameLayout changeThemeBottom;
 
     private TextView titleEvery;
     private TextView titleAt;
@@ -171,6 +173,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
         /*menu = activity.findViewById(R.id.menu);*/
         changeTheme = activity.findViewById(R.id.changeTheme);
+        changeThemeBottom = activity.findViewById(R.id.changeThemeBottom);
         layoutAutoClose = activity.findViewById(R.id.layoutAutoClose);
         titleEvery = activity.findViewById(R.id.titleEvery);
         titleAt = activity.findViewById(R.id.titleAt);
@@ -219,7 +222,8 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
  /*       menu.setOnClickListener(this);
         menu.setOnClickListener(this);*/
-        changeTheme.setOnClickListener(this);
+//        changeTheme.setOnClickListener(this);
+        changeThemeBottom.setOnClickListener(this);
         layoutAutoClose.setOnClickListener(this);
         titleEvery.setOnClickListener(this);
         titleAt.setOnClickListener(this);
@@ -351,7 +355,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
                 if (!drawer.isDrawerOpen(START))
                     drawer.openDrawer(START);
                 break;*/
-            case R.id.changeTheme:
+            case R.id.changeThemeBottom:
                 toggleTheme();
                 break;
             case R.id.layoutAutoClose:
@@ -722,9 +726,12 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         }
     }
 
+    /**
+     * Обработка диалога Exit
+     */
     @Override
     public void onCloseClick() {
-        stopNotifyService();
+//        stopNotifyService();
         activity.finish();
     }
 
@@ -773,7 +780,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         SessionPresenter.getInstance().toggleTheme();
 
         updateUITheme();
-        activity.recreate();
+//        activity.recreate();
     }
 
     private void updateUITheme() {
