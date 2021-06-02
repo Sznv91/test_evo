@@ -58,6 +58,24 @@
     <color name="color_da">#DDDADA</color>
     <color name="color_e7">#E7E7E7</color>
 
+    <!--LightTheme-->
+    <color name="main_lt">#F8F8F8</color>
+    <color name="background_lt">#FFFFFF</color>
+    <color name="divider_lt">#E7E7E7</color>
+    <color name="active_fonts_lt">#C0C0C0</color>
+    <color name="fonts_lt">#666666</color>
+    <color name="header_lt">#FF7043</color>
+    <color name="icon_lt">#00AF70</color>
+    <color name="switcher_lt">#ACE9D3</color>
 
+    <!--DarkTheme-->
+    <color name="main_dt">#121212</color>
+    <color name="background_dt">#1F1F1F</color>
+    <color name="divider_dt">#2E2E2E</color>
+    <color name="active_fonts_dt">#666666</color>
+    <color name="fonts_dt">#FFFFFF</color>
+    <color name="pictograms_dt">#FF7043</color>
+    <color name="icon_dt">#00AF70</color>
+    <color name="switcher_dt">#225F49</color>
 
 </resources>

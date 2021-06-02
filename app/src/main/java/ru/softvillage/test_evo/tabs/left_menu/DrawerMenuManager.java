@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -227,17 +228,17 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         iconExit.setOnClickListener(this);
         titleExit.setOnClickListener(this);
 
-        closeAllToggle();
-        initSwitch();
-        updateVersion();
-        updateUITheme();
-
         toolbar.setTitle(activity.getString(R.string.app_name));
         activity.setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(activity/*this*/, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mActionBar = activity.getSupportActionBar();
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        closeAllToggle();
+        initSwitch();
+        updateVersion();
+        updateUITheme();
     }
 
     @SuppressLint("LongLogTag")
@@ -772,6 +773,7 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         SessionPresenter.getInstance().toggleTheme();
 
         updateUITheme();
+        activity.recreate();
     }
 
     private void updateUITheme() {
@@ -779,47 +781,51 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
         if (SessionPresenter.getInstance().getCurrentTheme() == 0) {
             changeTheme.setImageResource(R.drawable.ic_moon);
+            /*int tabIconColor = ContextCompat.getColor(changeTheme.getContext(), R.color.active_fonts_lt);
+            changeTheme.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.LIGHTEN*//*PorterDuff.Mode.SRC_IN*//*);*/
 
             drawerMenu.post(new Runnable() {
                 @Override
                 public void run() {
-                    drawerMenu.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), android.R.color.white));
+                    drawerMenu.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.background_lt));
                 }
             });
 
-            main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color18));
-            toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color17));
+            main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.background_lt));
+            toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.header_lt));
 
 //            updateTabs(viewPager.getCurrentItem());
 
-            titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color20));
+            titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
 
-            printReportAfterClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            dividerPrintAfterClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+            printReportAfterClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            dividerPrintAfterClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_lt));
 
-            printReceipts.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            dividerPrintReceipts.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+            printReceipts.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            dividerPrintReceipts.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_lt));
 
-            titleAutoClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), android.R.color.black));
-            titleAutoClose.setAlpha(0.3f);
-            everyDay.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            titleEvery.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            titleAt.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            dividerAutoClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+            titleAutoClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
+            everyDay.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            titleEvery.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            titleAt.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            dividerAutoClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_lt));
 
-            titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), android.R.color.black));
-            titleSendSms.setAlpha(0.3f);
-            sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color22));
+            titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
+            sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_lt));
 
-            titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), android.R.color.black));
-            titleSendEmail.setAlpha(0.3f);
-            sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color21));
-            dividerExit.setBackgroundColor(ContextCompat.getColor(dividerExit.getContext(), R.color.color22));
+            titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
+            sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+
+            titleExit.setTextColor(ContextCompat.getColor(titleExit.getContext(), R.color.fonts_lt));
+            dividerExit.setBackgroundColor(ContextCompat.getColor(dividerExit.getContext(), R.color.divider_lt));
+            version.setTextColor(ContextCompat.getColor(version.getContext(), R.color.active_fonts_lt));
         } else {
             changeTheme.setImageResource(R.drawable.ic_sun);
+            int tabIconColor = ContextCompat.getColor(changeTheme.getContext(), R.color.active_fonts_dt);
+            changeTheme.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
 
             drawerMenu.post(new Runnable() {
                 @Override
@@ -828,37 +834,37 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
                 }
             });
 
-            main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color30));
-            toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.color31));
+            main.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.background_dt));
+            toolbar.setBackgroundColor(ContextCompat.getColor(drawerMenu.getContext(), R.color.background_dt));
 
 //            updateTabs(viewPager.getCurrentItem());
 
-            titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleParams.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
 
-            printReportAfterClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            dividerPrintAfterClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            printReportAfterClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            dividerPrintAfterClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_dt));
 
-            printReceipts.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            dividerPrintReceipts.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            printReceipts.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            dividerPrintReceipts.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_dt));
 
-            titleAutoClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            titleAutoClose.setAlpha(1f);
-            everyDay.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            titleEvery.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            titleAt.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            dividerAutoClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleAutoClose.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
+            everyDay.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            titleEvery.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            titleAt.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            dividerAutoClose.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_dt));
 
-            titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            titleSendSms.setAlpha(1f);
-            sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
+            titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
+            sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_dt));
 
-            titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            titleSendEmail.setAlpha(1f);
-            sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.color29));
-            dividerExit.setBackgroundColor(ContextCompat.getColor(dividerExit.getContext(), R.color.color29));
+            titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
+            sendEmailEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            sendEmailSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+
+            titleExit.setTextColor(ContextCompat.getColor(titleExit.getContext(), R.color.active_fonts_dt));
+            dividerExit.setBackgroundColor(ContextCompat.getColor(dividerExit.getContext(), R.color.divider_dt));
+            version.setTextColor(ContextCompat.getColor(version.getContext(), R.color.active_fonts_dt));
         }
 
         /*if (viewPager.getAdapter() != null)

@@ -26,24 +26,24 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (SessionPresenter.getInstance().getCurrentTheme() == SessionPresenter.THEME_LIGHT) {
+            setTheme(R.style.SVLightTheme);
+        } else {
+            setTheme(R.style.SVDarkTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startForegroundService();
-
+        manager = new DrawerMenuManager<>(this);
 
         if (savedInstanceState == null) {
-            manager = new DrawerMenuManager<>(this);
-            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, new TabLayoutFragment()).commit();
 //                return "Портретная ориентация";
-            else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, new LandscapeTabLayoutFragment()).commit();
             }
-
-                /*return "Альбомная ориентация";*/
-
-        } else {
-            manager.setActivity(this);
+            /*return "Альбомная ориентация";*/
         }
         EvoApp.getInstance().getFragmentDispatcher().setActivity(this);
 

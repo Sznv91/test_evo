@@ -80,8 +80,7 @@
         <activity
             android:name=".MainActivity"
             android:icon="@mipmap/ic_launcher"
-            android:label="Example tile"
-            android:theme="@style/NoActionBar">
+            android:label="Example tile">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

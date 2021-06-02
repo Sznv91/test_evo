@@ -35,12 +35,12 @@
             android:fontFamily="@font/roboto_medium"
             android:text="@string/title_params"
             android:textColor="@color/color20"
-            android:textSize="@dimen/tsize_32" />
+            android:textSize="21sp" />
 
         <ImageView
             android:id="@+id/changeTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             app:srcCompat="@drawable/ic_moon" />
     </LinearLayout>
 
@@ -64,7 +64,6 @@
             app:layout_constraintTop_toBottomOf="@+id/header">
 
             <androidx.appcompat.widget.SwitchCompat
-                android:fastScrollEnabled="false"
                 android:id="@+id/printReportAfterClose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,7 +77,6 @@
                 android:id="@+id/dividerPrintAfterClose"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:alpha="0.12"
                 android:background="@color/color22" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -96,7 +94,6 @@
                 android:id="@+id/dividerPrintReceipts"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:alpha="0.12"
                 android:background="@color/color22" />
 
             <LinearLayout
@@ -105,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_4"
+                android:padding="@dimen/padding_8"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -113,7 +110,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:alpha="0.3"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_auto_close_session"
                     android:textColor="@android:color/black"
@@ -224,17 +220,15 @@
                 android:id="@+id/dividerAutoClose"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:alpha="0.12"
                 android:background="@color/color22" />
 
             <LinearLayout
-                android:fastScrollEnabled="false"
                 android:id="@+id/layoutSendSms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_4"
+                android:padding="@dimen/padding_8"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -243,7 +237,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:alpha="0.3"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_send_sms_settings"
                     android:textColor="@android:color/black"
@@ -299,17 +292,15 @@
                 android:id="@+id/dividerSendSms"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:alpha="0.12"
                 android:background="@color/color22" />
 
             <LinearLayout
-                android:fastScrollEnabled="false"
                 android:id="@+id/layoutSendEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_4"
+                android:padding="@dimen/padding_8"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -318,7 +309,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:alpha="0.3"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/title_send_email_settings"
                     android:textColor="@android:color/black"
@@ -411,7 +401,6 @@
             android:id="@+id/dividerExit"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:alpha="0.12"
             android:background="@color/color22"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -422,7 +411,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_16"
-            android:alpha="0.4"
             android:fontFamily="@font/roboto_medium"
             android:text="TextView"
             android:textColor="@color/color24"

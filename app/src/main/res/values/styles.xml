@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SVLightTheme" parent = "Widget.AppCompat.CompoundButton.Switch">
+        <item name="thumbTint">@color/selector_switch_thumb</item>
+        <item name="android:colorForeground">@color/divider_lt</item>
+    </style>
+
+    <!--http://developer.alexanderklimov.ru/android/views/switch.php-->
+    <style name="SVDarkTheme" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="colorControlActivated">@color/icon_dt</item>
+        <item name="colorSwitchThumbNormal">@color/active_fonts_dt</item>
+        <item name="android:colorForeground">@color/divider_dt</item>
+    </style>
+</resources>
