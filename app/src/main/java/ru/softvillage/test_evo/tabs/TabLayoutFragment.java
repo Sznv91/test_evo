@@ -20,10 +20,9 @@ import java.util.Objects;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
-import static com.google.android.material.tabs.TabLayout.GRAVITY_CENTER;
-
 public class TabLayoutFragment extends Fragment {
     TabLayout tabLayout;
+    private View tab_divider;
 
     @Nullable
     @Override
@@ -35,18 +34,41 @@ public class TabLayoutFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tabLayout = view.findViewById(R.id.tab_layout);
+        tab_divider = view.findViewById(R.id.tab_divider);
 
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
+            int tabIconColor = 0;
             if (currentTheme == SessionPresenter.THEME_LIGHT) {
-                tabLayout.setBackgroundColor(ContextCompat.getColor(tabLayout.getContext(), R.color.color_f8));
+                tabLayout.setBackgroundColor(ContextCompat.getColor(tabLayout.getContext(), R.color.main_lt));
                 tabLayout.setTabTextColors(ContextCompat.getColor(
-                        tabLayout.getContext(), R.color.color29),
-                        ContextCompat.getColor(tabLayout.getContext(), R.color.black));
+                        tabLayout.getContext(), R.color.active_fonts_lt),
+                        ContextCompat.getColor(tabLayout.getContext(), R.color.fonts_lt));
+                tab_divider.setBackgroundColor(ContextCompat.getColor(tab_divider.getContext(), R.color.background_lt));
+
+                int tabCount = tabLayout.getTabCount();
+                tabIconColor = ContextCompat.getColor(getContext(), R.color.active_fonts_lt);
+                for (int i = 0; i < tabCount; i++) {
+                    TabLayout.Tab tab = tabLayout.getTabAt(i);
+                    if (tab != null && !tab.isSelected()) {
+                        tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                    }
+                }
+
             } else {
-                tabLayout.setBackgroundColor(ContextCompat.getColor(tabLayout.getContext(), R.color.black));
+                tabLayout.setBackgroundColor(ContextCompat.getColor(tabLayout.getContext(), R.color.main_dt));
                 tabLayout.setTabTextColors(ContextCompat.getColor(
-                        tabLayout.getContext(), R.color.color29),
-                        ContextCompat.getColor(tabLayout.getContext(), R.color.white));
+                        tabLayout.getContext(), R.color.active_fonts_dt),
+                        ContextCompat.getColor(tabLayout.getContext(), R.color.fonts_dt));
+                tab_divider.setBackgroundColor(ContextCompat.getColor(tab_divider.getContext(), R.color.divider_dt));
+
+                int tabCount = tabLayout.getTabCount();
+                tabIconColor = ContextCompat.getColor(getContext(), R.color.active_fonts_dt);
+                for (int i = 0; i < tabCount; i++) {
+                    TabLayout.Tab tab = tabLayout.getTabAt(i);
+                    if (tab != null && !tab.isSelected()) {
+                        tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                    }
+                }
             }
         });
         initTabs();
@@ -68,7 +90,7 @@ public class TabLayoutFragment extends Fragment {
             if (position == 0) {
                 tab.setText("Статистика");
                 tab.setIcon(R.drawable.ic_component_1statistic);
-                int tabIconColor = ContextCompat.getColor(getContext(), R.color.color17);
+                int tabIconColor = ContextCompat.getColor(getContext(), R.color.header_lt);
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             } else {
                 tab.setText("Чеки");
@@ -87,7 +109,12 @@ public class TabLayoutFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(getContext(), R.color.color29);
+                int tabIconColor = 0;
+                if (SessionPresenter.getInstance().getCurrentTheme() == SessionPresenter.THEME_LIGHT) {
+                    tabIconColor = ContextCompat.getColor(getContext(), R.color.active_fonts_lt);
+                } else {
+                    tabIconColor = ContextCompat.getColor(getContext(), R.color.active_fonts_dt);
+                }
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             }
 

@@ -1,38 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
-        app:tabGravity="fill"
-        app:tabMode="fixed"
-        app:tabMaxWidth="0dp"
-        
-
-        app:tabContentStart="0dp"
-        app:fontFamily="@font/roboto_regular"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@color/color_f8"
-        app:tabIconTint="@color/color29"
-        app:tabIndicatorColor="@color/color17"
+
+        app:fontFamily="@font/roboto_regular"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabContentStart="0dp"
+        app:tabGravity="fill"
+        app:tabIconTint="@color/active_fonts_lt"
+        app:tabIndicatorColor="@color/header_lt"
         app:tabInlineLabel="true"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="@color/color29"
-        android:divider="@drawable/tab_divider"
-        android:showDividers="middle" />
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/fonts_lt"
+        app:tabTextColor="@color/active_fonts_lt" />
+
+    <View
+        android:id="@+id/tab_divider"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
+        app:layout_constraintLeft_toLeftOf="@+id/tab_layout"
+        app:layout_constraintRight_toRightOf="@id/tab_layout"
+        app:layout_constraintTop_toTopOf="@+id/tab_layout" />
+
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_layout">
 
     </androidx.viewpager2.widget.ViewPager2>
     <!--android:layout_height="?attr/actionBarSize"-->
     <!--    android:background="?attr/colorPrimary"-->
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
