@@ -50,7 +50,7 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
         receipt_item_position_cost = itemView.findViewById(R.id.receipt_item_position_cost);
 
         receipt_item_nds = itemView.findViewById(R.id.receipt_item_nds);
-        initColour(SessionPresenter.getInstance().getCurrentTheme());
+        initColor(SessionPresenter.getInstance().getCurrentTheme());
        /* static_nds = itemView.findViewById(R.id.static_nds);
         nds_percent = itemView.findViewById(R.id.nds_percent);
         static_nds_equal = itemView.findViewById(R.id.static_nds_equal);
@@ -259,7 +259,7 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
         Log.d(EvoApp.TAG + "_total_discount_receipt.toString()", receipt.toString());
     }
 
-    private void initColour(int currentTheme) {
+    private void initColor(int currentTheme) {
         Drawable good_icon = ContextCompat.getDrawable(EvoApp.getInstance().getApplicationContext(), R.drawable.ic_baseline_receipt_24);
         if (currentTheme == SessionPresenter.THEME_LIGHT) {
             position_name.setTextColor(ContextCompat.getColor(position_name.getContext(), R.color.color20));

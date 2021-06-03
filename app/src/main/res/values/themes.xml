@@ -19,7 +19,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-   <!-- https://habr.com/ru/post/456178/-->
+    <!-- https://habr.com/ru/post/456178/-->
     <!--<style name="LightThemeSwitchQ" parent="NoActionBar">
         <item name="switchStyle">@style/MySwitchStyle</item>
         <item name="colorPrimary">@color/background_dt</item>

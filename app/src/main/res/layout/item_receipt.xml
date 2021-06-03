@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/title_receipt_sale"
         android:textColor="@color/color8"
         app:layout_constraintStart_toEndOf="@+id/iv_static_check_list"
@@ -32,7 +32,7 @@
         android:id="@+id/tv_static_summ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/tv_static_summ"
         android:textColor="@color/color6"
         android:textSize="10sp"
@@ -40,6 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/title_receipt_sale" />
 
     <TextView
+        android:fontFamily="@font/roboto_regular"
         android:id="@+id/title_receipt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -30,11 +30,15 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
         @Override
         public void onChanged(Integer integer) {
             if (integer == SessionPresenter.THEME_LIGHT) {
-                item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.white));
-                title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.color20));
+                item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.background_lt));
+                title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.fonts_lt));
+                tv_static_summ.setTextColor(ContextCompat.getColor(tv_static_summ.getContext(), R.color.active_fonts_lt));
+                title_receipt_time.setTextColor(ContextCompat.getColor(title_receipt_time.getContext(), R.color.active_fonts_lt));
             } else {
-                item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.color31));
-                title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.white));
+                item_receipt_layout.setBackgroundColor(ContextCompat.getColor(item_receipt_layout.getContext(), R.color.background_dt));
+                title_receipt_sale.setTextColor(ContextCompat.getColor(title_receipt_sale.getContext(), R.color.fonts_dt));
+                tv_static_summ.setTextColor(ContextCompat.getColor(tv_static_summ.getContext(), R.color.active_fonts_dt));
+                title_receipt_time.setTextColor(ContextCompat.getColor(title_receipt_time.getContext(), R.color.active_fonts_dt));
             }
         }
     };
@@ -52,7 +56,7 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
     public void bind(ReceiptEntity entity) {
         if (entity.getReceiptNumber() == 0) {
             title_receipt_sale.setText(String.format("Чек продажи на %d позиции", entity.getCountOfPosition()));
-            int tabIconColor = ContextCompat.getColor(EvoApp.getInstance(), R.color.color17);
+            int tabIconColor = ContextCompat.getColor(EvoApp.getInstance(), R.color.active_fonts_lt);
             iv_static_check_list.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
         } else {
             title_receipt_sale.setText(String.format(EvoApp.getInstance().getString(R.string.title_receipt_sale), entity.getReceiptNumber(), entity.getCountOfPosition()));
@@ -60,6 +64,5 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
         tv_static_summ.setText(String.format(EvoApp.getInstance().getString(R.string.tv_static_summ), entity.getPrice()));
         title_receipt_time.setText(entity.getReceived().toString("HH:mm"));
     }
-
 
 }

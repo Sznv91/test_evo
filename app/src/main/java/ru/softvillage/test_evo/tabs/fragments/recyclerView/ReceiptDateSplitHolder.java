@@ -3,27 +3,52 @@ package ru.softvillage.test_evo.tabs.fragments.recyclerView;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.R;
 import ru.softvillage.test_evo.roomDb.Entity.fiscalized.ReceiptEntity;
+import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 public class ReceiptDateSplitHolder extends AbstractReceiptViewHolder {
-    private final TextView date;
+    private final TextView item_date_splitter;
+    private final ImageView image_calendar;
+    private final ConstraintLayout item_date_holder;
+
+    private final Observer<Integer> observer = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer integer) {
+            int tabIconColor;
+            if (integer == SessionPresenter.THEME_LIGHT) {
+                item_date_holder.setBackgroundColor(ContextCompat.getColor(item_date_holder.getContext(), R.color.main_lt));
+                item_date_splitter.setTextColor(ContextCompat.getColor(item_date_splitter.getContext(), R.color.active_fonts_lt));
+                tabIconColor = ContextCompat.getColor(EvoApp.getInstance().getApplicationContext(), R.color.active_fonts_lt);
+            } else {
+                item_date_holder.setBackgroundColor(ContextCompat.getColor(item_date_holder.getContext(), R.color.main_dt));
+                item_date_splitter.setTextColor(ContextCompat.getColor(item_date_splitter.getContext(), R.color.active_fonts_dt));
+                tabIconColor = ContextCompat.getColor(EvoApp.getInstance().getApplicationContext(), R.color.active_fonts_dt);
+            }
+            Drawable calendar_icon = ContextCompat.getDrawable(EvoApp.getInstance().getApplicationContext(), R.drawable.ic_statistic_calendar);
+            assert calendar_icon != null;
+            calendar_icon.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            image_calendar.setImageDrawable(calendar_icon);
+        }
+    };
 
     public ReceiptDateSplitHolder(View itemView) {
         super(itemView);
-        date = itemView.findViewById(R.id.item_date_splitter);
+        item_date_splitter = itemView.findViewById(R.id.item_date_splitter);
+        image_calendar = itemView.findViewById(R.id.image_calendar);
+        item_date_holder = itemView.findViewById(R.id.item_date_holder);
     }
 
     public void bind(ReceiptEntity entity) {
-        Drawable calendar_icon = ContextCompat.getDrawable(EvoApp.getInstance().getApplicationContext(), R.drawable.ic_statistic_calendar);
-        int tabIconColor = ContextCompat.getColor(EvoApp.getInstance().getApplicationContext(), R.color.color29);
-        calendar_icon.setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-        date.setCompoundDrawablesRelativeWithIntrinsicBounds(calendar_icon, null, null, null);
+        SessionPresenter.getInstance().getCurrentThemeLiveData().observeForever(observer);
 
         int numMonthOfYear = entity.getReceived().getMonthOfYear();
         String nameMonthOfYear = "";
@@ -67,7 +92,7 @@ public class ReceiptDateSplitHolder extends AbstractReceiptViewHolder {
         }
         int dayOfMonth = entity.getReceived().getDayOfMonth();
         int year = entity.getReceived().getYear();
-        date.setText(String.format("%d %s %dг", dayOfMonth, nameMonthOfYear, year));
+        item_date_splitter.setText(String.format("%d %s %dг", dayOfMonth, nameMonthOfYear, year));
     }
 
 }

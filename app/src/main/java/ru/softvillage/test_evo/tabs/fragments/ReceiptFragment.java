@@ -56,11 +56,11 @@ public class ReceiptFragment extends Fragment {
         fab = view.findViewById(R.id.fab_up);
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
             if (currentTheme == SessionPresenter.THEME_LIGHT) {
-                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color_e7));
-                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color17)));
+                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.divider_lt));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.header_lt)));
             } else {
-                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.black));
-                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.color32)));
+                receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.divider_dt));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.switcher_dt)));
             }
         });
         initRecyclerView();

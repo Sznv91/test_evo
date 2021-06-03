@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="SVLightTheme" parent = "NoActionBar">
+   <!-- <style name="SVLightTheme" parent = "NoActionBar">
         <item name="thumbTint">@color/selector_switch_thumb</item>
+        <item name="android:colorForeground">@color/divider_lt</item>
+    </style>-->
+
+    <style name="SVLightTheme" parent = "NoActionBar">
+        <item name="colorControlActivated">@color/icon_lt</item>
+        <item name="colorSwitchThumbNormal">@color/active_fonts_lt</item>
         <item name="android:colorForeground">@color/divider_lt</item>
     </style>
 

@@ -284,12 +284,12 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         if (currentTheme == THEME_LIGHT) {
             statistic_information.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.main_lt));
             statisticFragment.setBackgroundColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.divider_lt));
-            sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.white));
-            timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.white));
-            sumFiscalizationHolder.setBackgroundColor(ContextCompat.getColor(sumFiscalizationHolder.getContext(), R.color.white));
-            countReceiptHolder.setBackgroundColor(ContextCompat.getColor(countReceiptHolder.getContext(), R.color.white));
-            sendSmsHolder.setBackgroundColor(ContextCompat.getColor(sendSmsHolder.getContext(), R.color.white));
-            sendEmailHolder.setBackgroundColor(ContextCompat.getColor(sendEmailHolder.getContext(), R.color.white));
+            sessionNumberHolder.setBackgroundColor(ContextCompat.getColor(sessionNumberHolder.getContext(), R.color.background_lt));
+            timeToCloseHolder.setBackgroundColor(ContextCompat.getColor(timeToCloseHolder.getContext(), R.color.background_lt));
+            sumFiscalizationHolder.setBackgroundColor(ContextCompat.getColor(sumFiscalizationHolder.getContext(), R.color.background_lt));
+            countReceiptHolder.setBackgroundColor(ContextCompat.getColor(countReceiptHolder.getContext(), R.color.background_lt));
+            sendSmsHolder.setBackgroundColor(ContextCompat.getColor(sendSmsHolder.getContext(), R.color.background_lt));
+            sendEmailHolder.setBackgroundColor(ContextCompat.getColor(sendEmailHolder.getContext(), R.color.background_lt));
 
             statistic_session_number.setTextColor(ContextCompat.getColor(statistic_session_number.getContext(), R.color.fonts_lt));
             title_statistic_information.setTextColor(ContextCompat.getColor(title_statistic_information.getContext(), R.color.active_fonts_lt));

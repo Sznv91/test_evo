@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_date_holder"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
+    <ImageView
+        android:id="@+id/image_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:src="@drawable/ic_statistic_calendar"
+        app:layout_constraintBottom_toBottomOf="@+id/item_date_splitter"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/item_date_splitter"
+        app:layout_constraintTop_toTopOf="@id/item_date_splitter" />
+
     <TextView
         android:id="@+id/item_date_splitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawablePadding="@dimen/padding_8"
-        android:fontFamily="@font/roboto_bold"
+        android:paddingTop="@dimen/margin_4"
+        android:paddingBottom="@dimen/margin_4"
+        android:fontFamily="@font/roboto_medium"
+        android:paddingStart="@dimen/padding_4"
         android:textColor="@color/color29"
-        android:textStyle="bold"
-        app:drawableStartCompat="@drawable/ic_statistic_calendar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@+id/image_calendar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="10.01.2021" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
