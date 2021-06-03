@@ -54,6 +54,7 @@ public class ReceiptFragment extends Fragment {
         SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
         receipt_layout_fragment = view.findViewById(R.id.receipt_layout_fragment);
         fab = view.findViewById(R.id.fab_up);
+        fab.hide();
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
             if (currentTheme == SessionPresenter.THEME_LIGHT) {
                 receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.divider_lt));
@@ -94,7 +95,7 @@ public class ReceiptFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && layoutManager.findFirstVisibleItemPosition() != 0) {
                     fab.show();
                 }
             }
@@ -107,7 +108,11 @@ public class ReceiptFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        fab.setOnClickListener(view -> layoutManager.scrollToPositionWithOffset(0, 0));
+        fab.setOnClickListener(view -> {
+//            layoutManager.scrollToPositionWithOffset(0, 0);
+            layoutManager.smoothScrollToPosition(recycler, new RecyclerView.State(), 0);
+            fab.hide();
+        });
     }
 
 }
