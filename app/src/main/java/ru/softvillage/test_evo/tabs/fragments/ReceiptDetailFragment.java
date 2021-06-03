@@ -638,9 +638,9 @@ public class ReceiptDetailFragment extends Fragment {
             int offset = y * width;
             for (int x = 0; x < width; x++) {
                 if (SessionPresenter.getInstance().getCurrentTheme() == SessionPresenter.THEME_LIGHT) {
-                    pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(EvoApp.getInstance(), R.color.color20) : WHITE;
+                    pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(EvoApp.getInstance(), R.color.fonts_lt) : WHITE;
                 } else {
-                    pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(EvoApp.getInstance(), R.color.color_da) : ContextCompat.getColor(EvoApp.getInstance(), R.color.color31);
+                    pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(EvoApp.getInstance(), R.color.fonts_dt) : ContextCompat.getColor(EvoApp.getInstance(), R.color.main_dt);
                 }
             }
         }
