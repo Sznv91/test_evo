@@ -29,6 +29,7 @@
         android:id="@+id/tab_divider"
         android:layout_width="1dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
         android:background="@android:color/holo_red_dark"
         app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
         app:layout_constraintLeft_toLeftOf="@+id/tab_layout"

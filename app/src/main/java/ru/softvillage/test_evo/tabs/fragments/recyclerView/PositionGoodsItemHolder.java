@@ -262,16 +262,21 @@ public class PositionGoodsItemHolder extends RecyclerView.ViewHolder {
     private void initColor(int currentTheme) {
         Drawable good_icon = ContextCompat.getDrawable(EvoApp.getInstance().getApplicationContext(), R.drawable.ic_baseline_receipt_24);
         if (currentTheme == SessionPresenter.THEME_LIGHT) {
-            position_name.setTextColor(ContextCompat.getColor(position_name.getContext(), R.color.color20));
-            good_icon.setColorFilter(ContextCompat.getColor(position_name.getContext(), R.color.color20), PorterDuff.Mode.SRC_IN);
+            position_name.setTextColor(ContextCompat.getColor(position_name.getContext(), R.color.fonts_lt));
+            good_icon.setColorFilter(ContextCompat.getColor(position_name.getContext(), R.color.active_fonts_lt), PorterDuff.Mode.SRC_IN);
+            receipt_item_single_position.setTextColor(ContextCompat.getColor(receipt_item_single_position.getContext(), R.color.active_fonts_lt));
+            receipt_item_position_discount.setTextColor(ContextCompat.getColor(receipt_item_position_discount.getContext(), R.color.active_fonts_lt));
+            receipt_item_position_cost.setTextColor(ContextCompat.getColor(receipt_item_position_cost.getContext(), R.color.active_fonts_lt));
+            receipt_item_nds.setTextColor(ContextCompat.getColor(receipt_item_nds.getContext(), R.color.active_fonts_lt));
         } else {
-            position_name.setTextColor(ContextCompat.getColor(position_name.getContext(), R.color.color_c4));
-            good_icon.setColorFilter(ContextCompat.getColor(position_name.getContext(), R.color.color_c4), PorterDuff.Mode.SRC_IN);
+            position_name.setTextColor(ContextCompat.getColor(position_name.getContext(), R.color.fonts_dt));
+            good_icon.setColorFilter(ContextCompat.getColor(position_name.getContext(), R.color.active_fonts_dt), PorterDuff.Mode.SRC_IN);
+            receipt_item_single_position.setTextColor(ContextCompat.getColor(receipt_item_single_position.getContext(), R.color.active_fonts_dt));
+            receipt_item_position_discount.setTextColor(ContextCompat.getColor(receipt_item_position_discount.getContext(), R.color.active_fonts_dt));
+            receipt_item_position_cost.setTextColor(ContextCompat.getColor(receipt_item_position_cost.getContext(), R.color.active_fonts_dt));
+            receipt_item_nds.setTextColor(ContextCompat.getColor(receipt_item_nds.getContext(), R.color.active_fonts_dt));
         }
         position_name.setCompoundDrawablesRelativeWithIntrinsicBounds(good_icon, null, null, null);
-        receipt_item_single_position.setTextColor(ContextCompat.getColor(receipt_item_single_position.getContext(), R.color.color29));
-        receipt_item_position_discount.setTextColor(ContextCompat.getColor(receipt_item_position_discount.getContext(), R.color.color29));
-        receipt_item_position_cost.setTextColor(ContextCompat.getColor(receipt_item_position_cost.getContext(), R.color.color29));
-        receipt_item_nds.setTextColor(ContextCompat.getColor(receipt_item_nds.getContext(), R.color.color29));
+
     }
 }

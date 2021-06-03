@@ -74,6 +74,7 @@ public class ReceiptDetailFragment extends Fragment {
     private TextView totalCost;
     private TextView discount;
     private TextView total;
+    private TextView cash;
     private TextView ndsDigit;
     private TextView ndsType;
     private TextView sessionId;
@@ -98,7 +99,7 @@ public class ReceiptDetailFragment extends Fragment {
             title_payment,
 
     shop_name,
-            shop_address_city,
+            address,
             title_user_name,
             user_name,
             title_payment_location,
@@ -162,6 +163,7 @@ public class ReceiptDetailFragment extends Fragment {
         totalCost = getView().findViewById(R.id.total_cost);
         discount = getView().findViewById(R.id.discount);
         total = getView().findViewById(R.id.total);
+        cash = view.findViewById(R.id.cash);
         ndsDigit = getView().findViewById(R.id.nds);
         ndsType = getView().findViewById(R.id.nds_type);
 
@@ -183,7 +185,7 @@ public class ReceiptDetailFragment extends Fragment {
         location_icon = view.findViewById(R.id.location_icon);
         qr_holder = view.findViewById(R.id.qr_holder);
         shop_name = view.findViewById(R.id.shop_name);
-        shop_address_city = view.findViewById(R.id.address);
+        address = view.findViewById(R.id.address);
         title_user_name = view.findViewById(R.id.title_user_name);
         user_name = view.findViewById(R.id.user_name);
         title_payment_location = view.findViewById(R.id.title_payment_location);
@@ -269,7 +271,7 @@ public class ReceiptDetailFragment extends Fragment {
                         }
                         user_name.setText(String.format("%s %s", firstName, secondName));
                         shop_name.setText(entity.getShop_name());
-                        shop_address_city.setText(entity.getAddress());
+                        address.setText(entity.getAddress());
                         payment_location_address_city.setText(entity.getPayment_place());
 
                         content_sno.setText(entity.getSno_type());
@@ -466,10 +468,11 @@ public class ReceiptDetailFragment extends Fragment {
 
     private void setDisplayData(String dsaleNumber, BigDecimal dtotalCost, BigDecimal ddiscount, BigDecimal dtotal, String dndsDigit, String dndsType) {
         saleNumber.setText(String.format(getActivity().getString(R.string.receipt_detail_sale_num), dsaleNumber));
-        totalCost.setText(String.format("=%.02f", dtotalCost).replace(",", "."));
-        discount.setText(String.format("=%.02f", ddiscount).replace(",", "."));
-        total.setText(String.format("=%.02f", dtotal).replace(",", "."));
-        ndsDigit.setText(String.format("=%s", dndsDigit));
+        totalCost.setText(String.format("= %.02f", dtotalCost).replace(",", "."));
+        discount.setText(String.format("= %.02f", ddiscount).replace(",", "."));
+        total.setText(String.format("= %.02f", dtotal).replace(",", "."));
+        cash.setText(String.format("= %.02f", dtotal).replace(",", "."));
+        ndsDigit.setText(String.format("= %s", dndsDigit));
         ndsType.setText(dndsType);
     }
 
@@ -501,85 +504,101 @@ public class ReceiptDetailFragment extends Fragment {
 
     private void initColour(int themeType) {
         if (themeType == SessionPresenter.THEME_LIGHT) {
-            fragment_receipt_loader.setBackgroundColor(ContextCompat.getColor(fragment_receipt_loader.getContext(), R.color.white));
-            receipt_detail_title_holder.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.white));
-            receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.white));
-            divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.light_divider));
-            divider_cred.setBackgroundColor(ContextCompat.getColor(divider_cred.getContext(), R.color.light_divider));
-            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.light_divider));
+            fragment_receipt_loader.setBackgroundColor(ContextCompat.getColor(fragment_receipt_loader.getContext(), R.color.background_lt));
+            receipt_detail_title_holder.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.background_lt));
+            receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.background_lt));
+            divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.divider_lt));
+            divider_cred.setBackgroundColor(ContextCompat.getColor(divider_cred.getContext(), R.color.divider_lt));
+            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.divider_lt));
 
-            saleNumber.setTextColor(ContextCompat.getColor(saleNumber.getContext(), R.color.black));
-            saleNumber.setAlpha(Float.parseFloat("0.3"));
-            sessionId.setTextColor(ContextCompat.getColor(sessionId.getContext(), R.color.black));
-            sessionId.setAlpha(Float.parseFloat("0.3"));
-            totalCost.setTextColor(ContextCompat.getColor(totalCost.getContext(), R.color.color20));
-            discount.setTextColor(ContextCompat.getColor(discount.getContext(), R.color.color20));
-            total.setTextColor(ContextCompat.getColor(total.getContext(), R.color.color_20_alpha));
-            ndsDigit.setTextColor(ContextCompat.getColor(ndsDigit.getContext(), R.color.color29));
-            ndsType.setTextColor(ContextCompat.getColor(ndsType.getContext(), R.color.color29));
+            saleNumber.setTextColor(ContextCompat.getColor(saleNumber.getContext(), R.color.active_fonts_lt));
+            sessionId.setTextColor(ContextCompat.getColor(sessionId.getContext(), R.color.active_fonts_lt));
+            totalCost.setTextColor(ContextCompat.getColor(totalCost.getContext(), R.color.active_fonts_lt));
+            discount.setTextColor(ContextCompat.getColor(discount.getContext(), R.color.active_fonts_lt));
+            total.setTextColor(ContextCompat.getColor(total.getContext(), R.color.fonts_lt));
+            ndsDigit.setTextColor(ContextCompat.getColor(ndsDigit.getContext(), R.color.active_fonts_lt));
+            ndsType.setTextColor(ContextCompat.getColor(ndsType.getContext(), R.color.active_fonts_lt));
+            title_payment.setTextColor(ContextCompat.getColor(title_payment.getContext(), R.color.active_fonts_lt));
+            cash.setTextColor(ContextCompat.getColor(cash.getContext(), R.color.active_fonts_lt));
 
-            receipt_detail_title.setTextColor(ContextCompat.getColor(receipt_detail_title.getContext(), R.color.color19));
-            receipt_type.setTextColor(ContextCompat.getColor(receipt_type.getContext(), R.color.color_c0));
-            title_total_cost.setTextColor(ContextCompat.getColor(title_total_cost.getContext(), R.color.color_20_alpha));
-            title_discount.setTextColor(ContextCompat.getColor(title_discount.getContext(), R.color.color20));
-            title_total.setTextColor(ContextCompat.getColor(title_total.getContext(), R.color.color20));
 
-            diplomat_icon.setColorFilter(ContextCompat.getColor(diplomat_icon.getContext(), R.color.color_c0), PorterDuff.Mode.SRC_IN);
-            user_icon.setColorFilter(ContextCompat.getColor(user_icon.getContext(), R.color.color_c0), PorterDuff.Mode.SRC_IN);
-            location_icon.setColorFilter(ContextCompat.getColor(location_icon.getContext(), R.color.color_c0), PorterDuff.Mode.SRC_IN);
+            receipt_detail_title.setTextColor(ContextCompat.getColor(receipt_detail_title.getContext(), R.color.fonts_lt));
+            receipt_type.setTextColor(ContextCompat.getColor(receipt_type.getContext(), R.color.active_fonts_lt));
+            title_total_cost.setTextColor(ContextCompat.getColor(title_total_cost.getContext(), R.color.active_fonts_lt));
+            title_discount.setTextColor(ContextCompat.getColor(title_discount.getContext(), R.color.active_fonts_lt));
+            title_total.setTextColor(ContextCompat.getColor(title_total.getContext(), R.color.fonts_lt));
 
-            shop_name.setTextColor(ContextCompat.getColor(shop_name.getContext(), R.color.color20));
-            title_user_name.setTextColor(ContextCompat.getColor(title_user_name.getContext(), R.color.color20));
-            title_payment_location.setTextColor(ContextCompat.getColor(title_payment_location.getContext(), R.color.color20));
+            diplomat_icon.setColorFilter(ContextCompat.getColor(diplomat_icon.getContext(), R.color.active_fonts_lt), PorterDuff.Mode.SRC_IN);
+            user_icon.setColorFilter(ContextCompat.getColor(user_icon.getContext(), R.color.active_fonts_lt), PorterDuff.Mode.SRC_IN);
+            location_icon.setColorFilter(ContextCompat.getColor(location_icon.getContext(), R.color.active_fonts_lt), PorterDuff.Mode.SRC_IN);
 
+            shop_name.setTextColor(ContextCompat.getColor(shop_name.getContext(), R.color.fonts_lt));
+            address.setTextColor(ContextCompat.getColor(address.getContext(), R.color.active_fonts_lt));
+            title_user_name.setTextColor(ContextCompat.getColor(title_user_name.getContext(), R.color.fonts_lt));
+            user_name.setTextColor(ContextCompat.getColor(user_name.getContext(), R.color.active_fonts_lt));
+            title_payment_location.setTextColor(ContextCompat.getColor(title_payment_location.getContext(), R.color.fonts_lt));
+            payment_location_address_city.setTextColor(ContextCompat.getColor(payment_location_address_city.getContext(), R.color.active_fonts_lt));
+
+            title_sno.setTextColor(ContextCompat.getColor(title_sno.getContext(), R.color.active_fonts_lt));
+            title_session_fm.setTextColor(ContextCompat.getColor(title_session_fm.getContext(), R.color.active_fonts_lt));
+            title_fd_num.setTextColor(ContextCompat.getColor(title_fd_num.getContext(), R.color.active_fonts_lt));
+            title_fp_num.setTextColor(ContextCompat.getColor(title_fp_num.getContext(), R.color.active_fonts_lt));
+            title_fm_date.setTextColor(ContextCompat.getColor(title_fm_date.getContext(), R.color.active_fonts_lt));
+            content_sno.setTextColor(ContextCompat.getColor(content_sno.getContext(), R.color.active_fonts_lt));
+            title_rn_kkt.setTextColor(ContextCompat.getColor(title_rn_kkt.getContext(), R.color.active_fonts_lt));
+            title_zn_kkt.setTextColor(ContextCompat.getColor(title_zn_kkt.getContext(), R.color.active_fonts_lt));
+            title_site_fns.setTextColor(ContextCompat.getColor(title_site_fns.getContext(), R.color.active_fonts_lt));
+            title_fn_num.setTextColor(ContextCompat.getColor(title_fn_num.getContext(), R.color.active_fonts_lt));
+            title_inn_num.setTextColor(ContextCompat.getColor(title_inn_num.getContext(), R.color.active_fonts_lt));
         } else {
-            fragment_receipt_loader.setBackgroundColor(ContextCompat.getColor(fragment_receipt_loader.getContext(), R.color.black));
-            receipt_detail_title_holder.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.black));
-            receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.color31));
-            divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.dark_divider));
-            divider_cred.setBackgroundColor(ContextCompat.getColor(divider_cred.getContext(), R.color.dark_divider));
-            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.dark_divider));
+            fragment_receipt_loader.setBackgroundColor(ContextCompat.getColor(fragment_receipt_loader.getContext(), R.color.main_dt));
+            receipt_detail_title_holder.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.main_dt));
+            receipt_detail_layout.setBackgroundColor(ContextCompat.getColor(receipt_detail_layout.getContext(), R.color.main_dt));
+            divider.setBackgroundColor(ContextCompat.getColor(divider.getContext(), R.color.divider_dt));
+            divider_cred.setBackgroundColor(ContextCompat.getColor(divider_cred.getContext(), R.color.divider_dt));
+            divider_shop_info.setBackgroundColor(ContextCompat.getColor(divider_shop_info.getContext(), R.color.divider_dt));
+
+            saleNumber.setTextColor(ContextCompat.getColor(saleNumber.getContext(), R.color.active_fonts_dt));
+            sessionId.setTextColor(ContextCompat.getColor(sessionId.getContext(), R.color.active_fonts_dt));
+            totalCost.setTextColor(ContextCompat.getColor(totalCost.getContext(), R.color.active_fonts_dt));
+            discount.setTextColor(ContextCompat.getColor(discount.getContext(), R.color.active_fonts_dt));
+            total.setTextColor(ContextCompat.getColor(total.getContext(), R.color.fonts_dt));
+            ndsDigit.setTextColor(ContextCompat.getColor(ndsDigit.getContext(), R.color.active_fonts_dt));
+            ndsType.setTextColor(ContextCompat.getColor(ndsType.getContext(), R.color.active_fonts_dt));
+            title_payment.setTextColor(ContextCompat.getColor(title_payment.getContext(), R.color.active_fonts_dt));
+            cash.setTextColor(ContextCompat.getColor(cash.getContext(), R.color.active_fonts_dt));
 
 
-            saleNumber.setTextColor(ContextCompat.getColor(saleNumber.getContext(), R.color.color29));
-            sessionId.setTextColor(ContextCompat.getColor(sessionId.getContext(), R.color.color29));
-            totalCost.setTextColor(ContextCompat.getColor(totalCost.getContext(), R.color.color29));
-            discount.setTextColor(ContextCompat.getColor(discount.getContext(), R.color.color29));
-            total.setTextColor(ContextCompat.getColor(total.getContext(), R.color.color_c4));
-            ndsDigit.setTextColor(ContextCompat.getColor(ndsDigit.getContext(), R.color.color29));
-            ndsType.setTextColor(ContextCompat.getColor(ndsType.getContext(), R.color.color29));
+            receipt_detail_title.setTextColor(ContextCompat.getColor(receipt_detail_title.getContext(), R.color.fonts_dt));
+            receipt_type.setTextColor(ContextCompat.getColor(receipt_type.getContext(), R.color.active_fonts_dt));
+            title_total_cost.setTextColor(ContextCompat.getColor(title_total_cost.getContext(), R.color.active_fonts_dt));
+            title_discount.setTextColor(ContextCompat.getColor(title_discount.getContext(), R.color.active_fonts_dt));
+            title_total.setTextColor(ContextCompat.getColor(title_total.getContext(), R.color.fonts_dt));
 
-            receipt_detail_title.setTextColor(ContextCompat.getColor(receipt_detail_title.getContext(), R.color.color_c4));
-            receipt_type.setTextColor(ContextCompat.getColor(receipt_type.getContext(), R.color.color29));
-            title_total_cost.setTextColor(ContextCompat.getColor(title_total_cost.getContext(), R.color.color29));
-            title_discount.setTextColor(ContextCompat.getColor(title_discount.getContext(), R.color.color29));
-            title_total.setTextColor(ContextCompat.getColor(title_total.getContext(), R.color.color_c4));
+            diplomat_icon.setColorFilter(ContextCompat.getColor(diplomat_icon.getContext(), R.color.active_fonts_dt), PorterDuff.Mode.SRC_IN);
+            user_icon.setColorFilter(ContextCompat.getColor(user_icon.getContext(), R.color.active_fonts_dt), PorterDuff.Mode.SRC_IN);
+            location_icon.setColorFilter(ContextCompat.getColor(location_icon.getContext(), R.color.active_fonts_dt), PorterDuff.Mode.SRC_IN);
 
-            diplomat_icon.setColorFilter(ContextCompat.getColor(diplomat_icon.getContext(), R.color.color_c4), PorterDuff.Mode.SRC_IN);
-            user_icon.setColorFilter(ContextCompat.getColor(user_icon.getContext(), R.color.color_c4), PorterDuff.Mode.SRC_IN);
-            location_icon.setColorFilter(ContextCompat.getColor(location_icon.getContext(), R.color.color_c4), PorterDuff.Mode.SRC_IN);
+            shop_name.setTextColor(ContextCompat.getColor(shop_name.getContext(), R.color.fonts_dt));
+            address.setTextColor(ContextCompat.getColor(address.getContext(), R.color.active_fonts_dt));
+            title_user_name.setTextColor(ContextCompat.getColor(title_user_name.getContext(), R.color.fonts_dt));
+            user_name.setTextColor(ContextCompat.getColor(user_name.getContext(), R.color.active_fonts_dt));
+            title_payment_location.setTextColor(ContextCompat.getColor(title_payment_location.getContext(), R.color.fonts_dt));
+            payment_location_address_city.setTextColor(ContextCompat.getColor(payment_location_address_city.getContext(), R.color.active_fonts_dt));
 
-            shop_name.setTextColor(ContextCompat.getColor(shop_name.getContext(), R.color.color_c4));
-            title_user_name.setTextColor(ContextCompat.getColor(title_user_name.getContext(), R.color.color_c4));
-            title_payment_location.setTextColor(ContextCompat.getColor(title_payment_location.getContext(), R.color.color_c4));
-
+            title_sno.setTextColor(ContextCompat.getColor(title_sno.getContext(), R.color.active_fonts_dt));
+            title_session_fm.setTextColor(ContextCompat.getColor(title_session_fm.getContext(), R.color.active_fonts_dt));
+            title_fd_num.setTextColor(ContextCompat.getColor(title_fd_num.getContext(), R.color.active_fonts_dt));
+            title_fp_num.setTextColor(ContextCompat.getColor(title_fp_num.getContext(), R.color.active_fonts_dt));
+            title_fm_date.setTextColor(ContextCompat.getColor(title_fm_date.getContext(), R.color.active_fonts_dt));
+            content_sno.setTextColor(ContextCompat.getColor(content_sno.getContext(), R.color.active_fonts_dt));
+            title_rn_kkt.setTextColor(ContextCompat.getColor(title_rn_kkt.getContext(), R.color.active_fonts_dt));
+            title_zn_kkt.setTextColor(ContextCompat.getColor(title_zn_kkt.getContext(), R.color.active_fonts_dt));
+            title_site_fns.setTextColor(ContextCompat.getColor(title_site_fns.getContext(), R.color.active_fonts_dt));
+            title_fn_num.setTextColor(ContextCompat.getColor(title_fn_num.getContext(), R.color.active_fonts_dt));
+            title_inn_num.setTextColor(ContextCompat.getColor(title_inn_num.getContext(), R.color.active_fonts_dt));
         }
-        shop_address_city.setTextColor(ContextCompat.getColor(shop_address_city.getContext(), R.color.color29));
-        user_name.setTextColor(ContextCompat.getColor(user_name.getContext(), R.color.color29));
-        payment_location_address_city.setTextColor(ContextCompat.getColor(payment_location_address_city.getContext(), R.color.color29));
-        title_payment.setTextColor(ContextCompat.getColor(title_payment.getContext(), R.color.color29));
 
-        title_sno.setTextColor(ContextCompat.getColor(title_sno.getContext(), R.color.color29));
-        title_session_fm.setTextColor(ContextCompat.getColor(title_session_fm.getContext(), R.color.color29));
-        title_fd_num.setTextColor(ContextCompat.getColor(title_fd_num.getContext(), R.color.color29));
-        title_fp_num.setTextColor(ContextCompat.getColor(title_fp_num.getContext(), R.color.color29));
-        title_fm_date.setTextColor(ContextCompat.getColor(title_fm_date.getContext(), R.color.color29));
-        content_sno.setTextColor(ContextCompat.getColor(content_sno.getContext(), R.color.color29));
-        title_rn_kkt.setTextColor(ContextCompat.getColor(title_rn_kkt.getContext(), R.color.color29));
-        title_zn_kkt.setTextColor(ContextCompat.getColor(title_zn_kkt.getContext(), R.color.color29));
-        title_site_fns.setTextColor(ContextCompat.getColor(title_site_fns.getContext(), R.color.color29));
-        title_fn_num.setTextColor(ContextCompat.getColor(title_fn_num.getContext(), R.color.color29));
-        title_inn_num.setTextColor(ContextCompat.getColor(title_inn_num.getContext(), R.color.color29));
     }
 
     /*private void addFakeShopAddress() {

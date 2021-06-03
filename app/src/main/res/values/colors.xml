@@ -72,7 +72,8 @@
     <color name="main_dt">#121212</color>
     <color name="background_dt">#1F1F1F</color>
     <color name="divider_dt">#2E2E2E</color>
-    <color name="active_fonts_dt">#666666</color>
+<!--    <color name="active_fonts_dt">#666666</color>-->
+    <color name="active_fonts_dt">#959595</color>
     <color name="fonts_dt">#FFFFFF</color>
     <color name="pictograms_dt">#FF7043</color>
     <color name="icon_dt">#00AF70</color>
