@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 
 import java.util.Objects;
 
@@ -366,7 +367,6 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
                     deltaFromLastClose = new Duration(
                             LocalDateTime.now().toDateTime(),
                             calcCloseTime.toDateTime());
-
                     break;
                 case AUTO_CLOSE_EVERY_:
                     int value = SessionPresenter.getInstance().getAutoCloseEveryValue();
@@ -382,11 +382,19 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
 
                     break;
                 case AUTO_CLOSE_AT_:
+                    int hourToClose = SessionPresenter.getInstance().getAutoCloseAtHour();
+                    int minutesToClose = SessionPresenter.getInstance().getAutoCloseAtMinute();
+                    LocalTime localTimeToClose = LocalDateTime.now().withTime(hourToClose, minutesToClose, 0, 0).toLocalTime();
+                    if (localTimeToClose.isAfter(LocalTime.now())) {
+                        deltaFromLastClose = new Duration(LocalDateTime.now().toDateTime(), LocalDateTime.now().withTime(localTimeToClose.getHourOfDay(), localTimeToClose.getMinuteOfHour(), localTimeToClose.getSecondOfMinute(), 0).toDateTime());
+                    } else {
+                        deltaFromLastClose = new Duration(LocalDateTime.now().toDateTime(), LocalDateTime.now().plusDays(1).withTime(localTimeToClose.getHourOfDay(), localTimeToClose.getMinuteOfHour(), localTimeToClose.getSecondOfMinute(), 0).toDateTime());
+                    }
                     break;
             }
             hours = deltaFromLastClose.toStandardHours().getHours();
             minutes = deltaFromLastClose.toStandardMinutes().getMinutes() - (hours * 60);
-            seconds = deltaFromLastClose.toStandardSeconds().getSeconds() - ((hours * 60) + minutes * 60);
+            seconds = deltaFromLastClose.toStandardSeconds().getSeconds() - ((hours * 60) * 60 + (minutes * 60));
             if (hours < 0) {
                 hours = 0;
             }

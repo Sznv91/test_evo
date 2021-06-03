@@ -247,13 +247,23 @@ public class SessionPresenter {
         if (!TextUtils.isEmpty(Prefs.getInstance().loadString(LAST_OPEN_SESSION))) {
             dateLastOpenSession = LocalDateTime.parse(Prefs.getInstance().loadString(LAST_OPEN_SESSION));
         } else {
-            dateLastOpenSession = null;
+            /**
+             * Обработка первого включения с открытой сменой
+             */
+            dateLastOpenSession = LocalDateTime.now();
+            Prefs.getInstance().saveString(LAST_OPEN_SESSION, dateLastOpenSession.toString());
+//            dateLastOpenSession = null;
         }
 
         if (!TextUtils.isEmpty(Prefs.getInstance().loadString(LAST_CLOSE_SESSION))) {
             dateLastCloseSession = LocalDateTime.parse(Prefs.getInstance().loadString(LAST_CLOSE_SESSION));
         } else {
-            dateLastCloseSession = null;
+            /**
+             * Обработка первого включения с открытой сменой
+             */
+            dateLastCloseSession = LocalDateTime.now().minusSeconds(1);
+            Prefs.getInstance().saveString(LAST_CLOSE_SESSION, dateLastCloseSession.toString());
+//            dateLastCloseSession = null;
         }
 
 

@@ -17,17 +17,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.evotor.devices.commons.ConnectionWrapper;
-import ru.evotor.devices.commons.DeviceServiceConnector;
-import ru.evotor.devices.commons.exception.DeviceServiceException;
-import ru.evotor.devices.commons.printer.PrinterDocument;
-import ru.evotor.devices.commons.printer.printable.PrintableText;
-import ru.evotor.devices.commons.services.IPrinterServiceWrapper;
-import ru.evotor.devices.commons.services.IScalesServiceWrapper;
 import ru.evotor.framework.users.UserApi;
 import ru.softvillage.test_evo.EvoApp;
 import ru.softvillage.test_evo.network.entity.FiscalizationRequest;
-import ru.softvillage.test_evo.roomDb.DbHelper;
 import ru.softvillage.test_evo.roomDb.Entity.fromNetwork.OrderDbWithGoods;
 import ru.softvillage.test_evo.utils.PositionCreator;
 import ru.softvillage.test_evo.utils.PrintUtil;
@@ -54,7 +46,7 @@ public class PrintDispatcher extends Service {
     public void onCreate() {
         super.onCreate();
 
-       /* *//**
+        /* *//**
          * Инициализация принтера
          *//*
         DeviceServiceConnector.startInitConnections(getApplicationContext());
@@ -142,13 +134,13 @@ public class PrintDispatcher extends Service {
                         EvoApp.getInstance().getOrderInterface().postIsNeedPrint(entity.getOrderDb().getSv_id()).enqueue(new Callback<FiscalizationRequest>() {
                             @Override
                             public void onResponse(Call<FiscalizationRequest> call, Response<FiscalizationRequest> response) {
-                                Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_networker", "Получили ответ из сети. Entity id: " + entity.getOrderDb().getSv_id() + " результат: " + response.body().isNeedPrint());
-                                if (!response.body().isNeedPrint()) {
+                                Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_networker", "Получили ответ из сети. Entity id: " + entity.getOrderDb().getSv_id() + " результат: " + response.body().toString());
+                                if (!response.body().isNeedPrint() && response.body().getSvUuid() == entity.orderDb.getSv_id()) {
                                     receiptQueue.remove(entity);
                                     EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb(), null);
                                     return;
                                 } else {
-                                    if (printerAccess.get()) {
+                                    if (printerAccess.get() && response.body().getSvUuid() == entity.orderDb.getSv_id()) {
                                         PositionCreator.OrderTo.PositionTo toProcessing = PositionCreator.makeSinglePositionTo(entity);
                                         printerAccess.set(false);
                                         PrintUtil.getInstance().printOrder(getApplicationContext(), toProcessing, new PrintUtil.PrintCallback() {

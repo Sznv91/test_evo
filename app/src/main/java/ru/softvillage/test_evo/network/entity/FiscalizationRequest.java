@@ -14,4 +14,8 @@ public class FiscalizationRequest {
     @SerializedName("success")
     @Expose
     private boolean needPrint;
+
+    @SerializedName("message")
+    @Expose
+    private long svUuid;
 }
