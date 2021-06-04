@@ -63,8 +63,8 @@ import static android.graphics.Color.WHITE;
  * create an instance of this fragment.
  */
 public class ReceiptDetailFragment extends Fragment {
+    public static int LOADER_TIME_SCREEN = 2000;
     ReceiptDetailViewModel viewModel;
-
     /**
      * Элементы несущие информационную нагрузку.
      */
@@ -149,6 +149,7 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        EvoApp.getInstance().getFragmentDispatcher().setAllowBack(false);
         return inflater.inflate(R.layout.fragment_receipt_detail, container, false);
     }
 
@@ -216,7 +217,9 @@ public class ReceiptDetailFragment extends Fragment {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             fragment_receipt_loader.setVisibility(View.GONE);
-        }, 2000);
+            EvoApp.getInstance().getFragmentDispatcher().setAllowBack(true);
+        }, LOADER_TIME_SCREEN);
+        SessionPresenter.getInstance().setLastOpenReceiptDetailFragment(LocalDateTime.now());
 
         RecyclerView recycler = getView().findViewById(R.id.position_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

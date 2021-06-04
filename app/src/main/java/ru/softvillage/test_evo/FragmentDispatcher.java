@@ -1,5 +1,7 @@
 package ru.softvillage.test_evo;
 
+import android.annotation.SuppressLint;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -9,8 +11,13 @@ import lombok.Setter;
 public class FragmentDispatcher {
     @Getter
     @Setter
+    private boolean allowBack = true;
+
+    @Getter
+    @Setter
     private AppCompatActivity activity;
 
+    @SuppressLint("LongLogTag")
     public void replaceFragment(Fragment fragment) {
         activity.getSupportFragmentManager()
                 .beginTransaction()

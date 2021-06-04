@@ -20,7 +20,7 @@ import ru.softvillage.test_evo.tabs.fragments.StatisticFragment;
 import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 
 public class LandscapeTabLayoutFragment extends Fragment {
-    private View divider_tabs;
+    private View divider_tabs, tab_landscape_background;
     private TextView tab_title_statistic_information,
             title_receipts;
 
@@ -45,6 +45,7 @@ public class LandscapeTabLayoutFragment extends Fragment {
         divider_tabs = view.findViewById(R.id.divider_tabs);
         tab_title_statistic_information = view.findViewById(R.id.tab_title_statistic_information);
         title_receipts = view.findViewById(R.id.title_receipts);
+        tab_landscape_background = view.findViewById(R.id.tab_landscape_background);
 
         Drawable tab_title_statistic_information_icon = ContextCompat.getDrawable(EvoApp.getInstance().getApplicationContext(), R.drawable.ic_component_1statistic);
         tab_title_statistic_information_icon.setColorFilter(ContextCompat.getColor(tab_title_statistic_information.getContext(), R.color.color17), PorterDuff.Mode.SRC_IN);
@@ -60,13 +61,15 @@ public class LandscapeTabLayoutFragment extends Fragment {
 
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
             if (currentTheme == SessionPresenter.THEME_LIGHT) {
-                tab_title_statistic_information.setTextColor(ContextCompat.getColor(tab_title_statistic_information.getContext(), R.color.black));
-                title_receipts.setTextColor(ContextCompat.getColor(title_receipts.getContext(), R.color.black));
-                divider_tabs.setBackgroundColor(ContextCompat.getColor(title_receipts.getContext(), R.color.color_e7));
+                tab_title_statistic_information.setTextColor(ContextCompat.getColor(tab_title_statistic_information.getContext(), R.color.fonts_lt));
+                title_receipts.setTextColor(ContextCompat.getColor(title_receipts.getContext(), R.color.fonts_lt));
+                divider_tabs.setBackgroundColor(ContextCompat.getColor(title_receipts.getContext(), R.color.divider_lt));
+                tab_landscape_background.setBackgroundColor(ContextCompat.getColor(tab_landscape_background.getContext(), R.color.main_lt));
             } else {
-                tab_title_statistic_information.setTextColor(ContextCompat.getColor(tab_title_statistic_information.getContext(), R.color.white));
-                title_receipts.setTextColor(ContextCompat.getColor(title_receipts.getContext(), R.color.white));
-                divider_tabs.setBackgroundColor(ContextCompat.getColor(title_receipts.getContext(), R.color.black));
+                tab_title_statistic_information.setTextColor(ContextCompat.getColor(tab_title_statistic_information.getContext(), R.color.fonts_dt));
+                title_receipts.setTextColor(ContextCompat.getColor(title_receipts.getContext(), R.color.fonts_dt));
+                divider_tabs.setBackgroundColor(ContextCompat.getColor(title_receipts.getContext(), R.color.divider_dt));
+                tab_landscape_background.setBackgroundColor(ContextCompat.getColor(tab_landscape_background.getContext(), R.color.main_dt));
             }
         });
     }

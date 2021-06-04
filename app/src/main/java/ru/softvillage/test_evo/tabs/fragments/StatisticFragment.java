@@ -5,11 +5,12 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.potterhsu.Pinger;
 
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
@@ -39,11 +42,14 @@ import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.
 import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.getInstance;
 
 public class StatisticFragment extends Fragment implements StatisticDisplayUpdate {
-    private Handler handler;
-    private Runnable r;
+    private Handler timerHandler;
+    private Runnable timerRun;
+    private Runnable pingerRun;
+    private Handler pingerHandler;
     private StatisticViewModel mViewModel;
+    ImageView network_quality;
 
-    private FrameLayout statistic_information;
+    private ConstraintLayout statistic_information;
     private ConstraintLayout statisticFragment;
     private ConstraintLayout sessionNumberHolder;
     private ConstraintLayout timeToCloseHolder;
@@ -100,11 +106,11 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             email_count.setTextSize(TypedValue.COMPLEX_UNIT_SP, landscape_text_size);
 
 
-            if (SessionPresenter.getInstance().getCurrentTheme() == THEME_LIGHT) {
-                title_statistic_information.setTextColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.black));
+           /* if (SessionPresenter.getInstance().getCurrentTheme() == THEME_LIGHT) {
+                title_statistic_information.setTextColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.fonts_lt));
             } else {
-                title_statistic_information.setTextColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.white));
-            }
+                title_statistic_information.setTextColor(ContextCompat.getColor(statisticFragment.getContext(), R.color.fonts_dt));
+            }*/
 
         }
     }
@@ -114,6 +120,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
 
         getInstance().setIstatisticDisplayUpdate(this);
+        network_quality = view.findViewById(R.id.network_quality);
         statistic_information = view.findViewById(R.id.statistic_information);
         tab_title_statistic_information = getActivity().findViewById(R.id.tab_title_statistic_information);
         statisticFragment = view.findViewById(R.id.statistic_fragment);
@@ -143,24 +150,61 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
 /**
  * Из класса статистики достаем все нреобходимые данные
  */
-        getInstance().getSessionData().toString();
+//        getInstance().getSessionData().toString();
 
         initDateSession();
         updateView(SessionPresenter.getInstance().getSessionData());
         updateTheme();
 
-        r = new Runnable() {
+        /**
+         * Тикер для отрисовки таймера обратного отсчета закрытия смены
+         */
+        timerRun = new Runnable() {
             @Override
             public void run() {
-                if (r != null && handler != null) {
+                if (timerRun != null && timerHandler != null) {
                     timeTicker();
-                    handler.postDelayed(r, 1000);
+                    timerHandler.postDelayed(timerRun, 1000);
                 }
 
             }
         };
-        handler = new Handler();
-        handler.postDelayed(r, 1000);
+        timerHandler = new Handler();
+        timerHandler.postDelayed(timerRun, 1000);
+
+
+/**
+ * Pinger для определения качества сети
+ */
+        Pinger pinger = new Pinger();
+        pingerHandler = new Handler(Looper.getMainLooper());
+
+        pingerRun = new Runnable() {
+            @Override
+            public void run() {
+                if (pingerRun != null && pingerHandler != null) {
+                    pinger.pingUntilSucceeded("37.140.192.130", 300);
+                    pingerHandler.postDelayed(pingerRun, 10000);
+                }
+            }
+        };
+
+        pinger.setOnPingListener(new Pinger.OnPingListener() {
+            @Override
+            public void onPingSuccess() {
+                endAnimation();
+            }
+
+            @Override
+            public void onPingFailure() {
+                startAnimation();
+            }
+
+            @Override
+            public void onPingFinish() {
+            }
+        });
+        pingerHandler.post(pingerRun);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -168,8 +212,10 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     @Override
     public void onDestroyView() {
         getInstance().setIstatisticDisplayUpdate(null);
-        r = null;
-        handler = null;
+        timerRun = null;
+        timerHandler = null;
+        pingerHandler = null;
+        pingerRun = null;
         super.onDestroyView();
     }
 
@@ -404,12 +450,24 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
             if (seconds < 0) {
                 seconds = 0;
             }
-            if (handler != null && r != null) {
+            if (timerHandler != null && timerRun != null) {
                 time_ticker_holder.setText(String.format("%02d:%02d:%02d",
                         hours,
                         minutes,
                         seconds));
             }
         }
+    }
+
+    public void startAnimation() {
+        getActivity().runOnUiThread(() -> {
+            network_quality.setVisibility(View.VISIBLE);
+        });
+    }
+
+    public void endAnimation() {
+        getActivity().runOnUiThread(() -> {
+            network_quality.setVisibility(View.INVISIBLE);
+        });
     }
 }

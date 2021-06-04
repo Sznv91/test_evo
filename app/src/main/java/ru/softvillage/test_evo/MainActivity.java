@@ -23,6 +23,19 @@ import ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter;
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     DrawerMenuManager<MainActivity> manager;
 
+    /**
+     * Для запрета возврата из ReceiptDetailFragment до окончания загрузки данных на UI
+     */
+    @SuppressLint("LongLogTag")
+    @Override
+    public void onBackPressed() {
+        if (EvoApp.getInstance().getFragmentDispatcher().isAllowBack()){
+            super.onBackPressed();
+        } else {
+            Log.d(EvoApp.TAG + "_MainActivity", "onBackPressed false");
+        }
+    }
+
     @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

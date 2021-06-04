@@ -85,7 +85,8 @@ public class SessionPresenter {
     public final static String LAST_OPEN_SESSION = "lastOpenSession";
     public final static String LAST_CLOSE_SESSION = "lastCloseSession";
 
-
+    public final static String LAST_OPEN_RECEIPT_DETAIL_FRAGMENT = "lastOpenReceiptDetailFragment";
+    private LocalDateTime lastOpenReceiptDetailFragment;
     /**
      * Константа для интервала проверки открытия сессии в миллисекундах.
      */
@@ -233,6 +234,17 @@ public class SessionPresenter {
         initOrgInfo();
 
         previousSessionStatus = Prefs.getInstance().loadBoolean(PREVIOUS_SESSION_STATUS);
+
+        /**
+         * Время последнего открытия ReceiptDetailFragment
+         */
+        String tLastOpenReceiptDetailFragment = Prefs.getInstance().loadString(LAST_OPEN_RECEIPT_DETAIL_FRAGMENT);
+        if (TextUtils.isEmpty(tLastOpenReceiptDetailFragment)) {
+            lastOpenReceiptDetailFragment = LocalDateTime.now();
+            setLastOpenReceiptDetailFragment(lastOpenReceiptDetailFragment);
+        } else {
+            lastOpenReceiptDetailFragment = LocalDateTime.parse(tLastOpenReceiptDetailFragment);
+        }
 
         if (!TextUtils.isEmpty(Prefs.getInstance().loadString(KEY_SESSION_DATA))) {
             Gson gson = new Gson();
@@ -706,5 +718,14 @@ public class SessionPresenter {
             this.lastSessionNumber = lastSessionNumber;
             Prefs.getInstance().saveLong(KEY_LAST_SESSION_NUMBER, this.lastSessionNumber);
         }
+    }
+
+    public LocalDateTime getLastOpenReceiptDetailFragment() {
+        return lastOpenReceiptDetailFragment;
+    }
+
+    public void setLastOpenReceiptDetailFragment(LocalDateTime lastOpenReceiptDetailFragment) {
+        this.lastOpenReceiptDetailFragment = lastOpenReceiptDetailFragment;
+        Prefs.getInstance().saveString(LAST_OPEN_RECEIPT_DETAIL_FRAGMENT, lastOpenReceiptDetailFragment.toString());
     }
 }

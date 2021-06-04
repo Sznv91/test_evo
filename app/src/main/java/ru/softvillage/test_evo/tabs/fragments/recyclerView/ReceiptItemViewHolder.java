@@ -60,6 +60,7 @@ public class ReceiptItemViewHolder extends AbstractReceiptViewHolder {
             iv_static_check_list.getDrawable().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
         } else {
             title_receipt_sale.setText(String.format(EvoApp.getInstance().getString(R.string.title_receipt_sale), entity.getReceiptNumber(), entity.getCountOfPosition()));
+            iv_static_check_list.setImageDrawable(ContextCompat.getDrawable(iv_static_check_list.getContext(), R.drawable.ic_recipient_list));
         }
         tv_static_summ.setText(String.format(EvoApp.getInstance().getString(R.string.tv_static_summ), entity.getPrice()));
         title_receipt_time.setText(entity.getReceived().toString("HH:mm"));

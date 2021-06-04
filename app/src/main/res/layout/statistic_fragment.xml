@@ -32,11 +32,11 @@
             tools:text="Текущая смена №1555" />
 
         <TextView
-            android:fontFamily="@font/roboto_regular"
             android:id="@+id/statistic_current_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/active_fonts_lt"
             app:drawableStartCompat="@drawable/ic_statistic_calendar"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -46,11 +46,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
-        android:background="@color/main_lt"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/statistic_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/main_lt"
         app:layout_constraintBottom_toTopOf="@id/time_to_close_holder"
         app:layout_constraintTop_toBottomOf="@+id/session_number_holder">
 
@@ -62,8 +62,23 @@
             android:padding="@dimen/margin_16"
             android:text="ИНФОРМАЦИЯ"
             android:textColor="@color/active_fonts_lt"
-            app:layout_constraintLeft_toLeftOf="parent" />
-    </FrameLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/network_quality"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_network"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/time_to_close_holder"
@@ -99,11 +114,11 @@
             tools:text="Время до закрытия смены" />
 
         <TextView
-            android:fontFamily="@font/roboto_regular"
             android:id="@+id/time_ticker_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/active_fonts_lt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/time_to_close"
@@ -147,11 +162,11 @@
             tools:text="Общая сумма фискализации" />
 
         <TextView
-            android:fontFamily="@font/roboto_regular"
             android:id="@+id/sum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/template_rub_count"
             android:textColor="@color/color29"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -196,11 +211,11 @@
             tools:text="Общее количество чеков" />
 
         <TextView
-            android:fontFamily="@font/roboto_regular"
             android:id="@+id/receipt_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/template_count"
             android:textColor="@color/color29"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -245,11 +260,11 @@
             tools:text="Отправлено SMS" />
 
         <TextView
-            android:fontFamily="@font/roboto_regular"
             android:id="@+id/sms_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/template_count"
             android:textColor="@color/color29"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -294,11 +309,11 @@
             tools:text="Отправлено E-mail" />
 
         <TextView
-            android:fontFamily="@font/roboto_regular"
             android:id="@+id/email_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/padding_8"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/template_count"
             android:textColor="@color/color29"
             app:layout_constraintBottom_toBottomOf="parent"
