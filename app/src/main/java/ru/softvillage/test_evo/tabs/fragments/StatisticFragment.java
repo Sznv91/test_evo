@@ -192,12 +192,16 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         pinger.setOnPingListener(new Pinger.OnPingListener() {
             @Override
             public void onPingSuccess() {
-                endAnimation();
+                if (timerRun != null && timerHandler != null) {
+                    endAnimation();
+                }
             }
 
             @Override
             public void onPingFailure() {
-                startAnimation();
+                if (timerRun != null && timerHandler != null) {
+                    startAnimation();
+                }
             }
 
             @Override
@@ -460,14 +464,24 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     }
 
     public void startAnimation() {
-        getActivity().runOnUiThread(() -> {
-            network_quality.setVisibility(View.VISIBLE);
-        });
+        if (timerRun != null && timerHandler != null) {
+            getActivity().runOnUiThread(() -> {
+                if (timerRun != null && timerHandler != null) {
+                    network_quality.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
     }
 
     public void endAnimation() {
-        getActivity().runOnUiThread(() -> {
-            network_quality.setVisibility(View.INVISIBLE);
-        });
+        if (timerRun != null && timerHandler != null) {
+            if (timerRun != null && timerHandler != null) {
+                getActivity().runOnUiThread(() -> {
+                    network_quality.setVisibility(View.INVISIBLE);
+                });
+            }
+        }
+
     }
 }
