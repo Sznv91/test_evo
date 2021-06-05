@@ -180,7 +180,7 @@ public class SessionPresenter {
     public static int THEME_LIGHT = 0;
     public static int THEME_DARK = 1;
     private int currentTheme = 0;
-    private MutableLiveData<Integer> currentThemeLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Integer> currentThemeLiveData = new MutableLiveData<>();
 
     private DrawerMenuManager manager;
 
@@ -289,12 +289,16 @@ public class SessionPresenter {
         // если ключа автозыкрытия нет - первый запуск
         // ставим автозакрытие в true
         // тип автозакрытия каждые 24 часа
+        // Устанавливаем Печать при закрытии смены в true
         if (!Prefs.getInstance().isKeyExist(AUTO_CLOSE)) {
             autoClose = true;
             Prefs.getInstance().saveBoolean(AUTO_CLOSE, true);
 
             autoCloseType = AUTO_CLOSE_EVERY_DAY;
             Prefs.getInstance().saveInt(AUTO_CLOSE_TYPE, autoCloseType);
+
+            printReportOnClose = true;
+            Prefs.getInstance().saveBoolean(PRINT_AFTER_CLOSE, printReportOnClose);
         } else {
             autoClose = Prefs.getInstance().loadBoolean(AUTO_CLOSE);
 
