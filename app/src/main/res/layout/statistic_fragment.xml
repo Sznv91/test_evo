@@ -44,6 +44,19 @@
             app:layout_constraintTop_toBottomOf="@+id/statistic_session_number"
             tools:text="2020-02-24" />
 
+        <ImageView
+            android:visibility="visible"
+            android:id="@+id/network_quality"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_network"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,19 +77,6 @@
             android:textColor="@color/active_fonts_lt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:visibility="invisible"
-            android:id="@+id/network_quality"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_marginEnd="@dimen/margin_16"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_network"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

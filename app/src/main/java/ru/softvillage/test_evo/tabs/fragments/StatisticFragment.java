@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.potterhsu.Pinger;
 
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
@@ -44,8 +41,6 @@ import static ru.softvillage.test_evo.tabs.left_menu.presenter.SessionPresenter.
 public class StatisticFragment extends Fragment implements StatisticDisplayUpdate {
     private Handler timerHandler;
     private Runnable timerRun;
-    private Runnable pingerRun;
-    private Handler pingerHandler;
     private StatisticViewModel mViewModel;
     ImageView network_quality;
 
@@ -155,6 +150,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         initDateSession();
         updateView(SessionPresenter.getInstance().getSessionData());
         updateTheme();
+        updateNetworkQuality();
 
         /**
          * Тикер для отрисовки таймера обратного отсчета закрытия смены
@@ -173,43 +169,6 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         timerHandler.postDelayed(timerRun, 1000);
 
 
-/**
- * Pinger для определения качества сети
- */
-        Pinger pinger = new Pinger();
-        pingerHandler = new Handler(Looper.getMainLooper());
-
-        pingerRun = new Runnable() {
-            @Override
-            public void run() {
-                if (pingerRun != null && pingerHandler != null) {
-                    pinger.pingUntilSucceeded("37.140.192.130", 300);
-                    pingerHandler.postDelayed(pingerRun, 10000);
-                }
-            }
-        };
-
-        pinger.setOnPingListener(new Pinger.OnPingListener() {
-            @Override
-            public void onPingSuccess() {
-                if (timerRun != null && timerHandler != null) {
-                    endAnimation();
-                }
-            }
-
-            @Override
-            public void onPingFailure() {
-                if (timerRun != null && timerHandler != null) {
-                    startAnimation();
-                }
-            }
-
-            @Override
-            public void onPingFinish() {
-            }
-        });
-        pingerHandler.post(pingerRun);
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -218,8 +177,6 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         getInstance().setIstatisticDisplayUpdate(null);
         timerRun = null;
         timerHandler = null;
-        pingerHandler = null;
-        pingerRun = null;
         super.onDestroyView();
     }
 
@@ -388,6 +345,15 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         }
     }
 
+    @Override
+    public void updateNetworkQuality() {
+        if (SessionPresenter.getInstance().isPingResult()) {
+            endAnimation();
+        } else {
+            startAnimation();
+        }
+    }
+
     private void changeDateTimeColour() {
         if (getInstance().getSessionData().getSessionId() == -1) {
             statistic_current_data.setTextColor(ContextCompat.getColor(statistic_current_data.getContext(), R.color.color17));
@@ -464,24 +430,15 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     }
 
     public void startAnimation() {
-        if (timerRun != null && timerHandler != null) {
-            getActivity().runOnUiThread(() -> {
-                if (timerRun != null && timerHandler != null) {
-                    network_quality.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+        getActivity().runOnUiThread(() -> {
+            network_quality.setVisibility(View.VISIBLE);
+        });
 
     }
 
     public void endAnimation() {
-        if (timerRun != null && timerHandler != null) {
-            if (timerRun != null && timerHandler != null) {
-                getActivity().runOnUiThread(() -> {
-                    network_quality.setVisibility(View.INVISIBLE);
-                });
-            }
-        }
-
+        getActivity().runOnUiThread(() -> {
+            network_quality.setVisibility(View.INVISIBLE);
+        });
     }
 }

@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.potterhsu:Pinger:v1.1'
+//    implementation 'com.github.potterhsu:Pinger:v1.1'
 
     /*Генератор QR кодов*/
     implementation group: 'com.google.zxing', name: 'android-core', version: '3.3.0'

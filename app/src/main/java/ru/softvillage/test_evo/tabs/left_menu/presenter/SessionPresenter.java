@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -16,6 +17,9 @@ import com.google.gson.Gson;
 
 import org.joda.time.LocalDateTime;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -189,6 +193,29 @@ public class SessionPresenter {
         return format.format(new Date(millis));
     }
 
+    /**
+     * Pinger для определения качества сети
+     */
+    private final int PING_UPDATE_TIME = 5000;
+    private boolean pingResult = false;
+    private Handler pingerHandler = new Handler(Looper.getMainLooper());
+    private Runnable pingerRun = new Runnable() {
+        @Override
+        public void run() {
+            boolean result = ping("37.140.192.130");
+//            Log.d(TAG + "_pinger", String.valueOf(result) + " before if");
+            if (result != pingResult) {
+//                Log.d(TAG + "_pinger", String.valueOf(result) + " after if");
+                setPingResult(result);
+                if (IstatisticDisplayUpdate != null) {
+                    IstatisticDisplayUpdate.updateNetworkQuality();
+                }
+            }
+            pingerHandler.postDelayed(pingerRun, PING_UPDATE_TIME);
+        }
+    };
+
+
     @SuppressLint("LongLogTag")
     public SessionPresenter() {
         dataHandlerThread = new HandlerThread("Fiscalizer:SessionData");
@@ -356,6 +383,7 @@ public class SessionPresenter {
         startDateTime = Prefs.getInstance().loadLong(KEY_SESSION_START);
 
         currentThemeLiveData.postValue(currentTheme);
+        pingerHandler.postDelayed(pingerRun, PING_UPDATE_TIME);
     }
 
     /*public MutableLiveData<Integer> getNotifyCount() {
@@ -731,5 +759,39 @@ public class SessionPresenter {
     public void setLastOpenReceiptDetailFragment(LocalDateTime lastOpenReceiptDetailFragment) {
         this.lastOpenReceiptDetailFragment = lastOpenReceiptDetailFragment;
         Prefs.getInstance().saveString(LAST_OPEN_RECEIPT_DETAIL_FRAGMENT, lastOpenReceiptDetailFragment.toString());
+    }
+
+    public boolean isPingResult() {
+        return pingResult;
+    }
+
+    public void setPingResult(boolean pingResult) {
+        this.pingResult = pingResult;
+    }
+
+    @SuppressLint("LongLogTag")
+    public Boolean ping(String url) {
+        String str = "";
+        try {
+            Process process = Runtime.getRuntime().exec(
+                    "/system/bin/ping -W 2 -c 1 " + url);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    process.getInputStream()));
+            int i;
+            char[] buffer = new char[4096];
+            StringBuffer output = new StringBuffer();
+            while ((i = reader.read(buffer)) > 0)
+                output.append(buffer, 0, i);
+            reader.close();
+
+            // body.append(output.toString()+"\n");
+            str = output.toString();
+            // Log.d(TAG, str);
+        } catch (IOException e) {
+            // body.append("Error\n");
+            e.printStackTrace();
+        }
+//        Log.d(EvoApp.TAG + "_pinger",str);
+        return !str.contains("100%");
     }
 }
