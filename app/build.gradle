@@ -7,10 +7,11 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "ru.softvillage.test_evo"
+        applicationId "ru.softvillage.fiscalizer"
+        flavorDimensions "mode"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 3
+        versionCode 27
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -22,6 +23,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        primary {
+            manifestPlaceholders = [uuid:"96ed2245-8288-431e-8b2a-9f1b1fe36959"]
+        }
+        version_for_their {
+            applicationId "ru.softvillage.fiscalizer_for_their"
+            manifestPlaceholders = [uuid:"0e17a718-627a-4a80-8990-12f443233b23"]
+        }
+        version_test {
+            applicationId "ru.softvillage.fiscalizer_test"
+            manifestPlaceholders = [uuid:"02c5c0af-ca62-4e5c-bb8a-5e9d92d89f48"]
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

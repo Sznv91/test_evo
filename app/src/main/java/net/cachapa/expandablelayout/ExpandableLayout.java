@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 
 import net.cachapa.expandablelayout.util.FastOutSlowInInterpolator;
 
-import ru.softvillage.test_evo.R;
-import ru.softvillage.test_evo.tabs.left_menu.IExpanded;
+import ru.softvillage.fiscalizer.R;
+import ru.softvillage.fiscalizer.tabs.left_menu.IExpanded;
 
 import static net.cachapa.expandablelayout.ExpandableLayout.State.COLLAPSED;
 import static net.cachapa.expandablelayout.ExpandableLayout.State.COLLAPSING;

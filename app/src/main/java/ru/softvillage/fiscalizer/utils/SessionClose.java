@@ -1,0 +1,27 @@
+package ru.softvillage.fiscalizer.utils;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+
+import org.joda.time.LocalDateTime;
+
+import ru.evotor.framework.core.IntegrationException;
+import ru.evotor.framework.core.IntegrationManagerFuture;
+import ru.evotor.framework.core.action.command.print_z_report_command.PrintZReportCommand;
+import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
+
+public class SessionClose {
+
+    @SuppressLint("LongLogTag")
+    public static void close(Context context) {
+        new PrintZReportCommand().process(context, future -> {
+            try {
+                if (future.getResult().getType().equals(IntegrationManagerFuture.Result.Type.OK)) {
+                    SessionPresenter.getInstance().setDateLastCloseSession(LocalDateTime.now());
+                }
+            } catch (IntegrationException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}

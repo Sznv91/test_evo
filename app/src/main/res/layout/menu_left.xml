@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
                         android:id="@+id/everyDay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                         android:textColor="@color/color21"
                         android:textSize="@dimen/tsize_14" />
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ELinearLayout
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fastScrollEnabled="false"
@@ -191,9 +191,9 @@
                             android:textColor="@color/color21"
                             android:textSize="@dimen/tsize_14" />
 
-                    </ru.softvillage.test_evo.tabs.left_menu.ELinearLayout>
+                    </ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout>
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ELinearLayout
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fastScrollEnabled="false"
@@ -227,7 +227,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                    </ru.softvillage.test_evo.tabs.left_menu.ELinearLayout>
+                    </ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout>
 
                 </LinearLayout>
 
@@ -281,7 +281,7 @@
                     android:fastScrollEnabled="false"
                     android:orientation="vertical">
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
                         android:id="@+id/sendSmsEvotor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -292,7 +292,7 @@
                         android:textColor="@color/color21"
                         android:textSize="@dimen/tsize_14" />
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
                         android:id="@+id/sendSmsSv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -352,7 +352,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
                         android:id="@+id/sendEmailEvotor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -363,7 +363,7 @@
                         android:textColor="@color/color21"
                         android:textSize="@dimen/tsize_14" />
 
-                    <ru.softvillage.test_evo.tabs.left_menu.ESwitchCompat
+                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
                         android:id="@+id/sendEmailSv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
