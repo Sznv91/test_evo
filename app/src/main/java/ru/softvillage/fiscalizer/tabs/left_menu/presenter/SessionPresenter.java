@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -197,21 +198,21 @@ public class SessionPresenter {
      * Pinger для определения качества сети
      */
     private final int PING_UPDATE_TIME = 5000;
-    private boolean pingResult = false;
-    private Handler pingerHandler = new Handler(Looper.getMainLooper());
-    private Runnable pingerRun = new Runnable() {
+    private static final String PINGER_ADDRESS = "37.140.192.130";
+    private final AtomicBoolean pingResult = new AtomicBoolean(false);
+    private final Handler pingerHandler = new Handler(Looper.getMainLooper());
+
+    private final Thread pingerThread = new Thread() {
+        @SneakyThrows
         @Override
         public void run() {
-            boolean result = ping("37.140.192.130");
-//            Log.d(TAG + "_pinger", String.valueOf(result) + " before if");
-            if (result != pingResult) {
-//                Log.d(TAG + "_pinger", String.valueOf(result) + " after if");
-                setPingResult(result);
-                if (IstatisticDisplayUpdate != null) {
-                    IstatisticDisplayUpdate.updateNetworkQuality();
+            while (true) {
+                Boolean pingResultTemp = ping(PINGER_ADDRESS);
+                if (pingResult.get() != pingResultTemp) {
+                    setPingResult(pingResultTemp);
                 }
+                Thread.sleep(PING_UPDATE_TIME);
             }
-            pingerHandler.postDelayed(pingerRun, PING_UPDATE_TIME);
         }
     };
 
@@ -383,7 +384,11 @@ public class SessionPresenter {
         startDateTime = Prefs.getInstance().loadLong(KEY_SESSION_START);
 
         currentThemeLiveData.postValue(currentTheme);
-        pingerHandler.postDelayed(pingerRun, PING_UPDATE_TIME);
+        pingerHandler.postDelayed(() -> {
+            synchronized (pingerThread) {
+                pingerThread.start();
+            }
+        }, PING_UPDATE_TIME);
     }
 
     /*public MutableLiveData<Integer> getNotifyCount() {
@@ -762,11 +767,14 @@ public class SessionPresenter {
     }
 
     public boolean isPingResult() {
-        return pingResult;
+        return pingResult.get();
     }
 
     public void setPingResult(boolean pingResult) {
-        this.pingResult = pingResult;
+        this.pingResult.set(pingResult);
+        if (IstatisticDisplayUpdate != null) {
+            IstatisticDisplayUpdate.updateNetworkQuality();
+        }
     }
 
     @SuppressLint("LongLogTag")
@@ -786,8 +794,13 @@ public class SessionPresenter {
 
             // body.append(output.toString()+"\n");
             str = output.toString();
-            // Log.d(TAG, str);
+            if (TextUtils.isEmpty(str)) {
+                str = "100%";
+            }
+//            Log.d(TAG + "_pinger", str);
         } catch (IOException e) {
+//            setPingResult(false);
+//            Log.d(TAG + "_pinger", "Try Catch");
             // body.append("Error\n");
             e.printStackTrace();
         }

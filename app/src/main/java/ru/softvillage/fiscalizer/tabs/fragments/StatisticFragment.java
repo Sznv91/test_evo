@@ -1,14 +1,17 @@
 package ru.softvillage.fiscalizer.tabs.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +25,6 @@ import androidx.lifecycle.ViewModelProvider;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
-
-import java.util.Objects;
 
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.fiscalizer.EvoApp;
@@ -262,26 +263,32 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
 
     @Override
     public void updateView(SessionStatisticData data) {
-        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-            if (data.getSessionId() == -1) {
-                statistic_session_number.setText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance())));
-                time_ticker_holder.setText("00:00:00");
-            } else {
+        if (data.getSessionId() == -1) {
+            statistic_session_number.setText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance())));
+            time_ticker_holder.setText("00:00:00");
+        } else {
+            if (getActivity() != null) {
                 statistic_session_number.setText(String.format(getActivity().getString(R.string.title_current_session), data.getSessionId()));
             }
+        }
 
-            if (getInstance().getDateLastOpenSession() != null) {
-                statistic_current_data.setText(getInstance().getDateLastOpenSession().toString("YYYY-MM-dd"));
-                changeDateTimeColour();
-            }
+        if (getInstance().getDateLastOpenSession() != null) {
+            statistic_current_data.setText(getInstance().getDateLastOpenSession().toString("YYYY-MM-dd"));
+            changeDateTimeColour();
+        }
 
+        if (getActivity() != null) {
             sum.setText(String.format(getActivity().getString(R.string.template_rub_count), data.getSumFiscalization()));
             receipt_count.setText(String.format(getActivity().getString(R.string.template_count), data.getCountReceipt()));
             sms_count.setText(String.format(getActivity().getString(R.string.template_count), data.getSendSms()));
             email_count.setText(String.format(getActivity().getString(R.string.template_count), data.getSendEmail()));
+        }
 
-            /*statisticContainer.setText(data.toString());*/
-        });
+        /*Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+
+
+         *//*statisticContainer.setText(data.toString());*//*
+        });*/
     }
 
     @Override
@@ -369,45 +376,56 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         }
     }
 
+    @SuppressLint("LongLogTag")
     private void timeTicker() {
-        if (SessionPresenter.getInstance().isAutoClose() && SystemStateApi.isSessionOpened(getContext())) {
-            int autoCloseType = SessionPresenter.getInstance().getAutoCloseType();
+        if (SystemStateApi.isSessionOpened(getContext())) {
+
             LocalDateTime calcCloseTime;
             Duration deltaFromLastClose = null;
             int minutes = 0;
             int seconds = 0;
             int hours = 0;
-            switch (autoCloseType) {
-                case AUTO_CLOSE_EVERY_DAY:
-                    calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusHours(24);
-                    deltaFromLastClose = new Duration(
-                            LocalDateTime.now().toDateTime(),
-                            calcCloseTime.toDateTime());
-                    break;
-                case AUTO_CLOSE_EVERY_:
-                    int value = SessionPresenter.getInstance().getAutoCloseEveryValue();
-                    int unit = SessionPresenter.getInstance().getAutoCloseEveryUnit();
-                    if (unit == SessionPresenter.AUTO_CLOSE_EVERY_UNIT_HOUR) {
-                        calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusHours(value);
-                    } else {
-                        calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusMinutes(value);
-                    }
-                    deltaFromLastClose = new Duration(
-                            LocalDateTime.now().toDateTime(),
-                            calcCloseTime.toDateTime());
 
-                    break;
-                case AUTO_CLOSE_AT_:
-                    int hourToClose = SessionPresenter.getInstance().getAutoCloseAtHour();
-                    int minutesToClose = SessionPresenter.getInstance().getAutoCloseAtMinute();
-                    LocalTime localTimeToClose = LocalDateTime.now().withTime(hourToClose, minutesToClose, 0, 0).toLocalTime();
-                    if (localTimeToClose.isAfter(LocalTime.now())) {
-                        deltaFromLastClose = new Duration(LocalDateTime.now().toDateTime(), LocalDateTime.now().withTime(localTimeToClose.getHourOfDay(), localTimeToClose.getMinuteOfHour(), localTimeToClose.getSecondOfMinute(), 0).toDateTime());
-                    } else {
-                        deltaFromLastClose = new Duration(LocalDateTime.now().toDateTime(), LocalDateTime.now().plusDays(1).withTime(localTimeToClose.getHourOfDay(), localTimeToClose.getMinuteOfHour(), localTimeToClose.getSecondOfMinute(), 0).toDateTime());
-                    }
-                    break;
+            if (SessionPresenter.getInstance().isAutoClose()) {
+                time_to_close.setText(getActivity().getText(R.string.title_time_to_close));
+                int autoCloseType = SessionPresenter.getInstance().getAutoCloseType();
+                switch (autoCloseType) {
+                    case AUTO_CLOSE_EVERY_DAY:
+                        calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusHours(24);
+                        deltaFromLastClose = new Duration(
+                                LocalDateTime.now().toDateTime(),
+                                calcCloseTime.toDateTime());
+                        break;
+                    case AUTO_CLOSE_EVERY_:
+                        int value = SessionPresenter.getInstance().getAutoCloseEveryValue();
+                        int unit = SessionPresenter.getInstance().getAutoCloseEveryUnit();
+                        if (unit == SessionPresenter.AUTO_CLOSE_EVERY_UNIT_HOUR) {
+                            calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusHours(value);
+                        } else {
+                            calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession().plusMinutes(value);
+                        }
+                        deltaFromLastClose = new Duration(
+                                LocalDateTime.now().toDateTime(),
+                                calcCloseTime.toDateTime());
+
+                        break;
+                    case AUTO_CLOSE_AT_:
+                        int hourToClose = SessionPresenter.getInstance().getAutoCloseAtHour();
+                        int minutesToClose = SessionPresenter.getInstance().getAutoCloseAtMinute();
+                        LocalTime localTimeToClose = LocalDateTime.now().withTime(hourToClose, minutesToClose, 0, 0).toLocalTime();
+                        if (localTimeToClose.isAfter(LocalTime.now())) {
+                            deltaFromLastClose = new Duration(LocalDateTime.now().toDateTime(), LocalDateTime.now().withTime(localTimeToClose.getHourOfDay(), localTimeToClose.getMinuteOfHour(), localTimeToClose.getSecondOfMinute(), 0).toDateTime());
+                        } else {
+                            deltaFromLastClose = new Duration(LocalDateTime.now().toDateTime(), LocalDateTime.now().plusDays(1).withTime(localTimeToClose.getHourOfDay(), localTimeToClose.getMinuteOfHour(), localTimeToClose.getSecondOfMinute(), 0).toDateTime());
+                        }
+                        break;
+                }
+            } else {
+                time_to_close.setText(getActivity().getText(R.string.title_time_from_open));
+                calcCloseTime = SessionPresenter.getInstance().getDateLastOpenSession();
+                deltaFromLastClose = new Duration(calcCloseTime.toDateTime(), LocalDateTime.now().toDateTime());
             }
+
             hours = deltaFromLastClose.toStandardHours().getHours();
             minutes = deltaFromLastClose.toStandardMinutes().getMinutes() - (hours * 60);
             seconds = deltaFromLastClose.toStandardSeconds().getSeconds() - ((hours * 60) * 60 + (minutes * 60));
@@ -429,16 +447,34 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         }
     }
 
-    public void startAnimation() {
-        getActivity().runOnUiThread(() -> {
-            network_quality.setVisibility(View.VISIBLE);
-        });
+    private AlphaAnimation animation1;
 
+    @SuppressLint("LongLogTag")
+    public void startAnimation() {
+        Log.d(EvoApp.TAG + "_pinger", "startAnimation");
+        /*Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            network_quality.setVisibility(View.VISIBLE);
+        });*/
+
+        animation1 = new AlphaAnimation(0.2f, 1.0f);
+        animation1.setDuration(1000);
+        animation1.setFillAfter(true);
+        animation1.setRepeatCount(AlphaAnimation.INFINITE);
+        animation1.setRepeatMode(AlphaAnimation.REVERSE);
+        network_quality.startAnimation(animation1);
     }
 
+    @SuppressLint("LongLogTag")
     public void endAnimation() {
-        getActivity().runOnUiThread(() -> {
-            network_quality.setVisibility(View.INVISIBLE);
-        });
+        Log.d(EvoApp.TAG + "_pinger", "endAnimation");
+
+        animation1 = new AlphaAnimation(0, 0);
+        animation1.setFillEnabled(true);
+        animation1.setFillAfter(true);
+        network_quality.startAnimation(animation1);
+
+        /*Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            network_quality.setVisibility(View.GONE);
+        });*/
     }
 }

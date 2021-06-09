@@ -47,6 +47,7 @@
     <string name="info">ИНФОРМАЦИЯ</string>
     <string name="title_current_session">Текущая смена №%d</string>
     <string name="title_time_to_close">Время до закрытия смены</string>
+    <string name="title_time_from_open">Время от открытия смены</string>
     <string name="title_common_sum">Общая сума фискализации</string>
     <string name="title_receipts_count">Общее количество чеков</string>
     <string name="title_sms_sends">Отправлено SMS</string>
