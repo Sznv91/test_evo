@@ -9,6 +9,7 @@ import ru.softvillage.fiscalizer.network.entity.FiscalizationRequest;
 import ru.softvillage.fiscalizer.network.entity.FiscalizedAnswer;
 import ru.softvillage.fiscalizer.network.entity.NetworkAnswer;
 import ru.softvillage.fiscalizer.network.entity.OrgInfo;
+import ru.softvillage.fiscalizer.network.entity.SmsServerInitResponse;
 
 public interface OrderInterface {
 
@@ -32,4 +33,6 @@ public interface OrderInterface {
     @Headers("Content-Type: application/x-www-form-urlencoded")
     Call<FiscalizationRequest> postIsNeedPrint(@Body long sv_receipt_id);
 
+    @GET("test_app/check_sms_server.php")
+    Call<SmsServerInitResponse> getIsInitSmsServer();
 }

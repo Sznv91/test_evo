@@ -34,6 +34,7 @@ import retrofit2.Response;
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.fiscalizer.EvoApp;
 import ru.softvillage.fiscalizer.network.entity.OrgInfo;
+import ru.softvillage.fiscalizer.network.entity.SmsServerInitResponse;
 import ru.softvillage.fiscalizer.roomDb.Entity.SessionStatisticData;
 import ru.softvillage.fiscalizer.tabs.fragments.StatisticDisplayUpdate;
 import ru.softvillage.fiscalizer.tabs.left_menu.DrawerMenuManager;
@@ -577,11 +578,12 @@ public class SessionPresenter {
     }
 
     public String getDefaultSmsService() {
-        Log.d(TAG, "defaultSmsService: " + defaultSmsService);
+        Log.d(TAG, "GET defaultSmsService: " + defaultSmsService);
         return defaultSmsService;
     }
 
     public void setDefaultSmsService(String defaultSmsService) {
+        Log.d(TAG, "SET defaultSmsService: " + defaultSmsService);
         this.defaultSmsService = defaultSmsService;
         Prefs.getInstance().saveString(DEFAULT_SMS_SERVICE, defaultSmsService);
     }
@@ -729,13 +731,15 @@ public class SessionPresenter {
             @Override
             public void onResponse(Call<OrgInfo> call, Response<OrgInfo> response) {
                 OrgInfo info = response.body();
-                Log.d(TAG + "_org_info", info.toString());
+                if (info != null && !TextUtils.isEmpty(info.getName())) {
+                    Log.d(TAG + "_org_info", info.toString());
 
-                setShopInfo(info.getName(),
-                        info.getAddress(),
-                        info.getPayment_place(),
-                        info.getSno(),
-                        info.getInn());
+                    setShopInfo(info.getName(),
+                            info.getAddress(),
+                            info.getPayment_place(),
+                            info.getSno(),
+                            info.getInn());
+                }
             }
 
             @Override
@@ -806,5 +810,36 @@ public class SessionPresenter {
         }
 //        Log.d(EvoApp.TAG + "_pinger",str);
         return !str.contains("100%");
+    }
+
+    public boolean isSmsServiceInit() {
+        return smsServiceInit;
+    }
+
+    public void setSmsServiceInit(boolean smsServiceInit) {
+        this.smsServiceInit = smsServiceInit;
+        Prefs.getInstance().saveBoolean(SMS_SERVICE_INIT, this.smsServiceInit);
+        if (iMainView1 != null) {
+            iMainView1.updateUserHasSmsServer();
+        }
+    }
+
+    public void checkInitSmsServer() {
+        EvoApp.getInstance().getOrderInterface().getIsInitSmsServer().enqueue(new Callback<SmsServerInitResponse>() {
+            @Override
+            public void onResponse(Call<SmsServerInitResponse> call, Response<SmsServerInitResponse> response) {
+                SmsServerInitResponse initResponse = response.body();
+                if (initResponse != null && initResponse.getSuccess() == 1) {
+                    if (smsServiceInit != initResponse.isInitSmsServer()) {
+                        setSmsServiceInit(initResponse.isInitSmsServer());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SmsServerInitResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

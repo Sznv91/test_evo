@@ -102,5 +102,12 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         return false;
     }
     //////////////////////////
+
+
+    @Override
+    protected void onDestroy() {
+        SessionPresenter.getInstance().setiMainView1(null);
+        super.onDestroy();
+    }
 }
 

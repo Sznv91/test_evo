@@ -35,6 +35,7 @@ import ru.softvillage.fiscalizer.R;
 import ru.softvillage.fiscalizer.services.ForegroundServiceDispatcher;
 import ru.softvillage.fiscalizer.tabs.left_menu.dialogs.AlertDialog;
 import ru.softvillage.fiscalizer.tabs.left_menu.dialogs.ExitDialog;
+import ru.softvillage.fiscalizer.tabs.left_menu.dialogs.NotExistSmsServerDialog;
 import ru.softvillage.fiscalizer.tabs.left_menu.dialogs.SetCloseAtDialog;
 import ru.softvillage.fiscalizer.tabs.left_menu.dialogs.SetCloseEveryDialog;
 import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
@@ -205,8 +206,11 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
             }
 
+            @SuppressLint("LongLogTag")
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
+                SessionPresenter.getInstance().checkInitSmsServer();
+                Log.d(EvoApp.TAG + "_onDrawerOpened", String.format("ClassName: %s, Action: onDrawerOpened", "DrawerMenuManager.java"));
             }
 
             @Override
@@ -671,14 +675,25 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
     private void sendSmsSvChecked(boolean isChecked) {
         if (isChecked) {
-            expandableSendSms.setActiveChildId(1);
-            sendSmsEvotor.setOnCheckedChangeListener(null);
-            sendSmsEvotor.setChecked(false);
-            sendSmsEvotor.setOnCheckedChangeListener(this);
+            if (!SessionPresenter.getInstance().isSmsServiceInit()) {
+                sendSmsSv.setChecked(false);
+                NotExistSmsServerDialog notExistSmsServerDialog = NotExistSmsServerDialog.newInstance();
+                notExistSmsServerDialog.setCancelable(false);
+                notExistSmsServerDialog.show(activity.getSupportFragmentManager(), ExitDialog.class.getSimpleName());
 
-            if (!SessionPresenter.getInstance().getDefaultSmsService().equals(SOFT_VILLAGE_SERVICE)) {
-                SessionPresenter.getInstance().setDefaultSmsService(SOFT_VILLAGE_SERVICE);
-                SessionPresenter.getInstance().setSendSms(true);
+                expandableSendSms.setActiveChildId(-1);
+                SessionPresenter.getInstance().setSendSms(false);
+                SessionPresenter.getInstance().setDefaultSmsService(EVOTOR_SERVICE);
+            } else {
+                expandableSendSms.setActiveChildId(1);
+                sendSmsEvotor.setOnCheckedChangeListener(null);
+                sendSmsEvotor.setChecked(false);
+                sendSmsEvotor.setOnCheckedChangeListener(this);
+
+                if (!SessionPresenter.getInstance().getDefaultSmsService().equals(SOFT_VILLAGE_SERVICE)) {
+                    SessionPresenter.getInstance().setDefaultSmsService(SOFT_VILLAGE_SERVICE);
+                    SessionPresenter.getInstance().setSendSms(true);
+                }
             }
         } else {
             if (!sendSmsEvotor.isChecked() && !sendSmsSv.isChecked()) {
@@ -775,6 +790,30 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
     }
 
+    @Override
+    public void updateUserHasSmsServer() {
+        if (SessionPresenter.getInstance().isSmsServiceInit()) {
+            if (SessionPresenter.getInstance().getCurrentTheme() == SessionPresenter.THEME_LIGHT) {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            } else {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            }
+        } else {
+            if (SessionPresenter.getInstance().getCurrentTheme() == SessionPresenter.THEME_LIGHT) {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
+            } else {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
+            }
+            if (SessionPresenter.getInstance().getDefaultSmsService() != null &&
+                    SessionPresenter.getInstance().getDefaultSmsService().equals(SOFT_VILLAGE_SERVICE) &&
+                    SessionPresenter.getInstance().isSendSms()) {
+                sendSmsSv.setChecked(false);
+                expandableSendSms.setActiveChildId(-1);
+                SessionPresenter.getInstance().setSendSms(false);
+                SessionPresenter.getInstance().setDefaultSmsService(EVOTOR_SERVICE);
+            }
+        }
+    }
 
     private void toggleTheme() {
         SessionPresenter.getInstance().toggleTheme();
@@ -819,7 +858,11 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
             titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
             sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
-            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            if (SessionPresenter.getInstance().isSmsServiceInit()) {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_lt));
+            } else {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
+            }
             dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_lt));
 
             titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_lt));
@@ -862,7 +905,11 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
 
             titleSendSms.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
             sendSmsEvotor.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
-            sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            if (SessionPresenter.getInstance().isSmsServiceInit()) {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.fonts_dt));
+            } else {
+                sendSmsSv.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
+            }
             dividerSendSms.setBackgroundColor(ContextCompat.getColor(titleParams.getContext(), R.color.divider_dt));
 
             titleSendEmail.setTextColor(ContextCompat.getColor(titleParams.getContext(), R.color.active_fonts_dt));
@@ -923,5 +970,4 @@ public class DrawerMenuManager<T extends AppCompatActivity> implements View.OnCl
         // ......
         // To re-iterate, the order in which you enable and disable views IS important #dontSimplify.
     }
-
 }

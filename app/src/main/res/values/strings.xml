@@ -36,6 +36,7 @@
     <string name="service_description">Предназначен для работы приложения в фоне</string>
     <string name="yes">ДА</string>
     <string name="no">НЕТ</string>
+    <string name="sms_server_google_play_link">https://play.google.com/store/apps/details?id=ru.softvillage.smsserver</string>
 
     <string-array name="time_unit">
         <item>мин.</item>
