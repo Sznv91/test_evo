@@ -10,19 +10,20 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import ru.evotor.framework.users.UserApi;
 import ru.softvillage.fiscalizer.EvoApp;
-import ru.softvillage.fiscalizer.network.entity.FiscalizationRequest;
 import ru.softvillage.fiscalizer.roomDb.Entity.fromNetwork.OrderDbWithGoods;
+import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
 import ru.softvillage.fiscalizer.utils.PositionCreator;
 import ru.softvillage.fiscalizer.utils.PrintUtil;
+import ru.softvillage.fiscalizer.utils.SessionClose;
 
 public class PrintDispatcher extends Service {
     /**
@@ -33,6 +34,7 @@ public class PrintDispatcher extends Service {
     private static final int LATENCY_UPDATE_QUEUE = 30000;
     private static final int LATENCY_PRINT = 5000;
     private static final int RETRY_AFTER_FAILED = 50000;
+    private static final long DELTA_CHECK_PRINT = 480000; // 8мин. в миллесукундах
 
 
     @Nullable
@@ -131,7 +133,40 @@ public class PrintDispatcher extends Service {
                 if (UserApi.getAuthenticatedUser(getApplicationContext()) != null) {
                     if (receiptQueue.size() > 0) {
                         OrderDbWithGoods entity = receiptQueue.get(0);
-                        EvoApp.getInstance().getOrderInterface().postIsNeedPrint(entity.getOrderDb().getSv_id()).enqueue(new Callback<FiscalizationRequest>() {
+                        if (SessionPresenter.getInstance().isPingResult() && printerAccess.get()) {
+                            LocalDateTime receivedDateTime = null;
+                            receivedDateTime = EvoApp.getInstance().getDbHelper().getDateReceived_synchronized(entity.orderDb.getSv_id());
+                            Duration deltaReceivedDateTime = new Duration(receivedDateTime.toDateTime(), LocalDateTime.now().toDateTime());
+                            if (deltaReceivedDateTime.getMillis() < DELTA_CHECK_PRINT) {
+                                PositionCreator.OrderTo.PositionTo toProcessing = PositionCreator.makeSinglePositionTo(entity);
+                                printerAccess.set(false);
+                                PrintUtil.getInstance().printOrder(getApplicationContext(), toProcessing, new PrintUtil.PrintCallback() {
+                                    @Override
+                                    public void printSuccess() {
+                                        Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_printSuccess", "Получили положительный коллбек о печати чека ");
+                                        receiptQueue.remove(entity);
+                                        EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb(), () -> printerAccess.set(true));
+                                    }
+
+                                    @Override
+                                    public void printFailure(PositionCreator.OrderTo.PositionTo order, String errorMessage) {
+                                        Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_printFailure", "Получили Отрицательный коллбек о печати чека errorMessage: " + errorMessage);
+                                        if (errorMessage.contains("Session time expired")) {
+                                            Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue", "Закрываем сессию из за привышения лимита времени отрытой сессии в 24 часа.");
+                                            SessionClose.close(EvoApp.getInstance());
+                                        }
+                                        Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.postDelayed(() -> printerAccess.set(true), RETRY_AFTER_FAILED);
+                                    }
+                                });
+                            } else {
+                                Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue", "Время экперации печати чека окончилось. Задание печати удалено.");
+                                receiptQueue.remove(entity);
+                                EvoApp.getInstance().getDbHelper().removeOrderDbWithGoods(entity.getOrderDb(), () -> printerAccess.set(true));
+                            }
+                        }
+
+                        /*EvoApp.getInstance().getOrderInterface().postIsNeedPrint(entity.getOrderDb().getSv_id()).enqueue(new Callback<FiscalizationRequest>() {
                             @Override
                             public void onResponse(Call<FiscalizationRequest> call, Response<FiscalizationRequest> response) {
                                 Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_networker", "Получили ответ из сети. Entity id: " + entity.getOrderDb().getSv_id() + " результат: " + response.body().toString());
@@ -167,7 +202,7 @@ public class PrintDispatcher extends Service {
                             public void onFailure(Call<FiscalizationRequest> call, Throwable t) {
                                 Log.d(EvoApp.TAG + "_" + getClass().getSimpleName() + "_Thread_Queue_networker", "Ошибка обращения к сети " + t.getMessage());
                             }
-                        });
+                        });*/
                     }
                 }
                 try {

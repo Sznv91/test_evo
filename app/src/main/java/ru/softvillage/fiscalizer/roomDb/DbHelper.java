@@ -6,6 +6,9 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.room.Transaction;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
 import java.util.List;
 
 import ru.softvillage.fiscalizer.EvoApp;
@@ -46,6 +49,10 @@ public class DbHelper {
         dataBase.getQueryExecutor().execute(() -> {
             callback.receiptRequest(dataBase.receiptDao().getById(receiptId));
         });
+    }
+
+    public LocalDateTime getDateReceived_synchronized(long sv_receipt_id){
+        return dataBase.receiptDao().getDateTimeReceived(sv_receipt_id);
     }
 
     @Transaction

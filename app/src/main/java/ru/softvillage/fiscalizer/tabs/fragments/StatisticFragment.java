@@ -203,32 +203,30 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
 
     @Override
     public void updateView(SessionStatisticData data) {
-        if (data.getSessionId() == -1) {
-            statistic_session_number.setText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance())));
-            time_ticker_holder.setText("00:00:00");
-        } else {
-            if (getActivity() != null) {
-                statistic_session_number.setText(String.format(getActivity().getString(R.string.title_current_session), data.getSessionId()));
+        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            if (data.getSessionId() == -1) {
+                statistic_session_number.setText(String.format("Смена №%03d закрыта", SystemStateApi.getLastSessionNumber(EvoApp.getInstance())));
+                time_ticker_holder.setText("00:00:00");
+            } else {
+                if (getActivity() != null) {
+                    statistic_session_number.setText(String.format(getActivity().getString(R.string.title_current_session), data.getSessionId()));
+                }
             }
-        }
 
-        if (getInstance().getDateLastOpenSession() != null) {
-            statistic_current_data.setText(getInstance().getDateLastOpenSession().toString("YYYY-MM-dd"));
-            changeDateTimeColour();
-        }
+            if (getInstance().getDateLastOpenSession() != null) {
+                statistic_current_data.setText(getInstance().getDateLastOpenSession().toString("YYYY-MM-dd"));
+                changeDateTimeColour();
+            }
 
-        if (getActivity() != null) {
-            sum.setText(String.format(getActivity().getString(R.string.template_rub_count), data.getSumFiscalization()));
-            receipt_count.setText(String.format(getActivity().getString(R.string.template_count), data.getCountReceipt()));
-            sms_count.setText(String.format(getActivity().getString(R.string.template_count), data.getSendSms()));
-            email_count.setText(String.format(getActivity().getString(R.string.template_count), data.getSendEmail()));
-        }
+            if (getActivity() != null) {
+                sum.setText(String.format(getActivity().getString(R.string.template_rub_count), data.getSumFiscalization()));
+                receipt_count.setText(String.format(getActivity().getString(R.string.template_count), data.getCountReceipt()));
+                sms_count.setText(String.format(getActivity().getString(R.string.template_count), data.getSendSms()));
+                email_count.setText(String.format(getActivity().getString(R.string.template_count), data.getSendEmail()));
+            }
 
-        /*Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-
-
-         *//*statisticContainer.setText(data.toString());*//*
-        });*/
+            /*statisticContainer.setText(data.toString());*/
+        });
     }
 
     @Override

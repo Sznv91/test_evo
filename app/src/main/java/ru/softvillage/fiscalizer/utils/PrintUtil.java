@@ -47,6 +47,7 @@ import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
 
 public class PrintUtil {
     private static PrintUtil instance;
+    private static final String EMAIL_STAB = "stab@sv.ru";
 
     private PrintUtil() {
     }
@@ -119,12 +120,19 @@ public class PrintUtil {
          * Evotor - ничего не передаем.
          */
         String recipientPhone = SessionPresenter.getInstance().isSendSms() ? order.getOrderData().orderDb.phone : null;
-        String recipientEmail = SessionPresenter.getInstance().isSendEmail() ? order.getOrderData().orderDb.email : null;
+        String recipientEmail = SessionPresenter.getInstance().isSendEmail() ? order.getOrderData().orderDb.email : EMAIL_STAB;
         if (SessionPresenter.getInstance().getDefaultSmsService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE)) {
             recipientPhone = null;
         }
         if (SessionPresenter.getInstance().getDefaultEmailService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE)) {
-            recipientEmail = null;
+            recipientEmail = EMAIL_STAB;
+        }
+
+        /**
+         * Проверка на случаей если выбрана отправка чека, но при формированнии чека не заданы реквизиты получателя чека.
+         */
+        if (TextUtils.isEmpty(recipientPhone) && TextUtils.isEmpty(recipientEmail)){
+            recipientEmail = EMAIL_STAB;
         }
 
 

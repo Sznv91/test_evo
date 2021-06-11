@@ -1,13 +1,17 @@
 package ru.softvillage.fiscalizer.roomDb;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
+
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -66,4 +70,8 @@ public interface ReceiptDao {
 
     @Delete()
     void removeOrderDb(OrderDb entity);
+
+    @TypeConverters({DateTimeConverter.class})
+    @Query("SELECT date_time_received FROM receipt WHERE sv_id =:sv_receiptId")
+    LocalDateTime getDateTimeReceived(long sv_receiptId);
 }
