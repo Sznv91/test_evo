@@ -42,6 +42,7 @@ import ru.softvillage.fiscalizer.network.entity.FiscalizedAnswer;
 import ru.softvillage.fiscalizer.network.entity.NetworkAnswer;
 import ru.softvillage.fiscalizer.roomDb.Entity.fiscalized.PartialReceiptPrinted;
 import ru.softvillage.fiscalizer.services.ForegroundServiceDispatcher;
+import ru.softvillage.fiscalizer.tabs.left_menu.DrawerMenuManager;
 import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
 
 public class PrintUtil {
@@ -110,12 +111,27 @@ public class PrintUtil {
         ArrayList<Receipt.PrintReceipt> listDocs = new ArrayList<>();
         listDocs.add(printReceipt);
 
+        /**
+         * Если любой переключатель (Evotor/SW) отправки СМС/EMAIL активен, то достаем из полученного по сети запроса эти данные.
+         * Далее проверяем, если EVOTOR то оставляем переменные как есть, если SW то приравниваем к null, для того чтобы при фискализации
+         * не передавать эти данные. После окончания фискализации:
+         * SW - передаем сведения что необходимо выполнить отправку SMS/EMAIL.
+         * Evotor - ничего не передаем.
+         */
+        String recipientPhone = SessionPresenter.getInstance().isSendSms() ? order.getOrderData().orderDb.phone : null;
+        String recipientEmail = SessionPresenter.getInstance().isSendEmail() ? order.getOrderData().orderDb.email : null;
+        if (SessionPresenter.getInstance().getDefaultSmsService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE)) {
+            recipientPhone = null;
+        }
+        if (SessionPresenter.getInstance().getDefaultEmailService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE)) {
+            recipientEmail = null;
+        }
+
+
         new PrintSellReceiptCommand(listDocs,
                 null,
-//                "79011234567",
-                order.getOrderData().orderDb.phone,
-//                "example@example.com",
-                order.getOrderData().orderDb.email,
+                recipientPhone,
+                recipientEmail,
                 receiptDiscount,
                 null,
                 null,
@@ -155,8 +171,8 @@ public class PrintUtil {
                              * Отправка ответа на сервер
                              */
                             FiscalizedAnswer answer = new FiscalizedAnswer();
-                            answer.setEmailFlag(SessionPresenter.getInstance().isSendEmail());
-                            answer.setSmsFlag(SessionPresenter.getInstance().isSendSms());
+                            answer.setSmsFlag(SessionPresenter.getInstance().getDefaultSmsService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE) && SessionPresenter.getInstance().isSendSms());
+                            answer.setEmailFlag(SessionPresenter.getInstance().getDefaultEmailService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE) && SessionPresenter.getInstance().isSendEmail());
                             answer.setId(order.getOrderData().orderDb.sv_id);
                             answer.setNumber(Long.parseLong(result.getData().getString("receiptNumber")));
                             answer.setUuid(result.getData().getString("receiptUuid"));

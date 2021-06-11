@@ -26,6 +26,8 @@ import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
+import java.util.Objects;
+
 import ru.evotor.framework.system.SystemStateApi;
 import ru.softvillage.fiscalizer.EvoApp;
 import ru.softvillage.fiscalizer.R;
@@ -83,6 +85,7 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     @Override
     public void onResume() {
         super.onResume();
+        updateNetworkQuality();
         SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             float landscape_text_size = Float.parseFloat("14.4");
@@ -197,69 +200,6 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
         mViewModel = new ViewModelProvider(this).get(StatisticViewModel.class);
         // TODO: Use the ViewModel
     }
-
-
-/*    @SuppressLint("LongLogTag")
-    private void printOrder() {
-        BigDecimal allDiscount = new BigDecimal(editText.getText().toString());
-//        String string = "[ { \"id\": 2660, \"email\": \"89508543356@mail.ru\", \"phone\": \"89508543356\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 44028)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 11111)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 22222)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 44028)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2661, \"email\": \"89281246694@mail.ru\", \"phone\": \"89281246694\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 44597)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 44597)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2662, \"email\": \"89054282494@mail.ru\", \"phone\": \"89054282494\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 43668)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 43668)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2663, \"email\": \"89528508056@mail.ru\", \"phone\": \"89528508056\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 41581)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 11112)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 22221)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 11113)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 22224)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 41581)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2664, \"email\": \"41245@multi-m.ru\", \"phone\": \"\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата за услуги СКТВ (Л/С 41245)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 87.5, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата за поддержку СКТВ (Л/С 41245)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 62.5, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2665, \"email\": \"89515034974@mail.ru\", \"phone\": \"89515034974\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 42333)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 42333)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2666, \"email\": \"89185844276@mail.ru\", \"phone\": \"89185844276\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 43662)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 43662)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2667, \"email\": \"42437@multi-m.ru\", \"phone\": \"\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 42437)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 42437)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2668, \"email\": \"89508538081@mail.ru\", \"phone\": \"89508538081\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 41328)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 70, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 41328)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] }, { \"id\": 2669, \"email\": \"89081811301@mail.ru\", \"phone\": \"89081811301\", \"userUUID\": null, \"paymant_system\": 3, \"check_discount\": 0, \"goods\": [ { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 43420)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 1)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 2)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за услуги СКТВ (Л/С 3)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 100, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } }, { \"productUUID\": null, \"name\": \"Оплата долга за поддержку СКТВ (Л/С 43420)\", \"measure_name\": \"кг.\", \"measure_precision\": 2, \"price\": 50, \"discount\": 0, \"quantity\": 1, \"nds\": -1, \"type\": { \"number\": 1, \"mark_info\": null } } ] } ]";
-        String string = "[{\"id\":2660,\"email\":\"89508543356@mail.ru\",\"phone\":\"89508543356\",\"userUUID\":null,\"paymant_system\":3,\"check_discount\":" + allDiscount.toString() + ",\"goods\":[{\"productUUID\":null,\"name\":\"Оплата долга за услуги СКТВ (Л/С 44028)\",\"measure_name\":\"\\u043a\\u0433.\",\"measure_precision\":2,\"price\":103.67,\"discount\":17,\"quantity\":5,\"nds\":-1,\"type\":{\"number\":1,\"mark_info\":null}},{\"productUUID\":null,\"name\":\"Оплата долга за поддержку СКТВ (Л/С 44028)\",\"measure_name\":\"\\u043a\\u0433.\",\"measure_precision\":2,\"price\":1239.19,\"discount\":13,\"quantity\":57,\"nds\":-1,\"type\":{\"number\":1,\"mark_info\":null}}]}]";
-
-        java.lang.reflect.Type listType = new TypeToken<ArrayList<Order>>() {
-        }.getType();
-        List<Order> fromJsonString = new Gson().fromJson(string, listType);
-        PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(fromJsonString);
-        Log.d(EvoApp.TAG, "FROM JSON STRING: " + fromJsonString.toString());
-
-        PrintUtil.PrintCallback printCallback = new PrintUtil.PrintCallback() {
-            @Override
-            public void printSuccess() {
-
-            }
-
-            @Override
-            public void printFailure(PositionCreator.OrderTo.PositionTo order) {
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    PrintUtil.getInstance().printOrder(
-                            getContext().getApplicationContext(),
-                            order,
-                            this
-                    );
-                }, 1000);
-            }
-        };
-
-        for (PositionCreator.OrderTo.PositionTo order : toProcessing.getOrderList()) {
-            String toLog = new Gson().toJson(order);
-            Log.d(EvoApp.TAG + "_GSON", toLog);
-            PrintUtil.getInstance().printOrder(
-                    getContext().getApplicationContext(),
-                    order,
-                    printCallback
-            );
-//            Log.d(EvoApp.TAG + "_Handler", String.format("List: %s", entry.getKey()));
-        }
-    }
-
-    /////////////////////////
-    private void printExample() {
-        printUtil.printDemoOrder(getContext().getApplicationContext());
-    }
-
-    private void addFakeReceipt() {
-        LocalDateTime localDateTime = LocalDateTime.parse(dateField.getText().toString() + "T00:00:00");
-        ReceiptEntity entity = new ReceiptEntity();
-        entity.setId(Long.parseLong(LocalDateTime.now().toString("yyyyMMddHHssSSSS")));
-        entity.setReceived(localDateTime);
-        entity.setPrice(BigDecimal.valueOf(123.45));
-        entity.setCountOfPosition(6);
-        entity.setUuid(UUID.randomUUID().toString());
-
-        new Thread(() -> {
-            EvoApp.getInstance().getDbHelper().insertReceiptToDb(entity);
-        }).start();
-
-    }*/
 
     @Override
     public void updateView(SessionStatisticData data) {
@@ -452,29 +392,28 @@ public class StatisticFragment extends Fragment implements StatisticDisplayUpdat
     @SuppressLint("LongLogTag")
     public void startAnimation() {
         Log.d(EvoApp.TAG + "_pinger", "startAnimation");
-        /*Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
             network_quality.setVisibility(View.VISIBLE);
-        });*/
-
-        animation1 = new AlphaAnimation(0.2f, 1.0f);
-        animation1.setDuration(1000);
-        animation1.setFillAfter(true);
-        animation1.setRepeatCount(AlphaAnimation.INFINITE);
-        animation1.setRepeatMode(AlphaAnimation.REVERSE);
-        network_quality.startAnimation(animation1);
+            network_quality.setImageDrawable(ContextCompat.getDrawable(network_quality.getContext(), R.drawable.ic_network));
+            animation1 = new AlphaAnimation(0.2f, 1.0f);
+            animation1.setDuration(1000);
+//                animation1.setFillAfter(true);
+            animation1.setRepeatCount(AlphaAnimation.INFINITE);
+            animation1.setRepeatMode(AlphaAnimation.REVERSE);
+            network_quality.startAnimation(animation1);
+        });
     }
 
     @SuppressLint("LongLogTag")
     public void endAnimation() {
         Log.d(EvoApp.TAG + "_pinger", "endAnimation");
-
-        animation1 = new AlphaAnimation(0, 0);
-        animation1.setFillEnabled(true);
-        animation1.setFillAfter(true);
-        network_quality.startAnimation(animation1);
-
-        /*Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
-            network_quality.setVisibility(View.GONE);
-        });*/
+        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            animation1 = new AlphaAnimation(0, 0);
+            animation1.setFillEnabled(true);
+            animation1.setFillAfter(true);
+            network_quality.startAnimation(animation1);
+            network_quality.setImageDrawable(null);
+            network_quality.setVisibility(View.INVISIBLE);
+        });
     }
 }

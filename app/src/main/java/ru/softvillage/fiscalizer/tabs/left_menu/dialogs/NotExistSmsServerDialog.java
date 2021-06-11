@@ -134,8 +134,8 @@ public class NotExistSmsServerDialog extends DialogFragment implements View.OnCl
             case R.id.cancel:
                 dismiss();
                 break;
-            case R.id.close:
-                if (iExitDialog != null) iExitDialog.onCloseClick();
+            case R.id.ok:
+                SessionPresenter.getInstance().checkInitSmsServer();
                 dismiss();
                 break;
         }
