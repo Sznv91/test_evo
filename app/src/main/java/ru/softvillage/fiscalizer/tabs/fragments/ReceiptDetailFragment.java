@@ -462,8 +462,8 @@ public class ReceiptDetailFragment extends Fragment {
 
         }).start();
 
-        tab_title_statistic_information = getActivity().findViewById(R.id.tab_title_statistic_information);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            tab_title_statistic_information = getActivity().findViewById(R.id.tab_title_statistic_information);
             tab_title_statistic_information.setText("Детали чека");
         }
 
