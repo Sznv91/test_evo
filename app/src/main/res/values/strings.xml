@@ -90,5 +90,6 @@
     <string name="title_site_fns">Сайт ФНС: www.nalog.ru</string>
     <string name="title_fn_num">ФН № %d</string>
     <string name="title_inn_num">ИНН: %d</string>
+    <string name="title_empty_receipt_list">Журнал чеков пуст</string>
 
 </resources>

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +31,8 @@ public class ReceiptFragment extends Fragment {
     private ReceiptViewModel mViewModel;
     private FloatingActionButton fab;
     private ConstraintLayout receipt_layout_fragment;
+    private FrameLayout layout_empty_receipt_list;
+    private TextView title_empty_receipt_list;
 
     public static ReceiptFragment newInstance() {
         return new ReceiptFragment();
@@ -48,25 +52,33 @@ public class ReceiptFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mViewModel.setContext(null);
+        mViewModel.setReceiptFragment(null);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
+        layout_empty_receipt_list = view.findViewById(R.id.layout_empty_receipt_list);
+        title_empty_receipt_list = view.findViewById(R.id.title_empty_receipt_list);
         receipt_layout_fragment = view.findViewById(R.id.receipt_layout_fragment);
         fab = view.findViewById(R.id.fab_up);
         fab.hide();
         SessionPresenter.getInstance().getCurrentThemeLiveData().observe(this, currentTheme -> {
             if (currentTheme == SessionPresenter.THEME_LIGHT) {
+                layout_empty_receipt_list.setBackgroundColor(ContextCompat.getColor(layout_empty_receipt_list.getContext(), R.color.main_lt));
+                title_empty_receipt_list.setTextColor(ContextCompat.getColor(title_empty_receipt_list.getContext(), R.color.active_fonts_lt));
                 receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.divider_lt));
                 fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.header_lt)));
             } else {
+                layout_empty_receipt_list.setBackgroundColor(ContextCompat.getColor(layout_empty_receipt_list.getContext(), R.color.main_dt));
+                title_empty_receipt_list.setTextColor(ContextCompat.getColor(title_empty_receipt_list.getContext(), R.color.active_fonts_dt));
                 receipt_layout_fragment.setBackgroundColor(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.divider_dt));
                 fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(receipt_layout_fragment.getContext(), R.color.switcher_dt)));
             }
         });
         initRecyclerView();
+        mViewModel.setReceiptFragment(this);
     }
 
     @Override
@@ -115,6 +127,10 @@ public class ReceiptFragment extends Fragment {
             layoutManager.smoothScrollToPosition(recycler, new RecyclerView.State(), 0);
             fab.hide();
         });
+    }
+
+    public void hideEmptyListStab() {
+        layout_empty_receipt_list.setVisibility(View.INVISIBLE);
     }
 
 }

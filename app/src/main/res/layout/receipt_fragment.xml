@@ -27,4 +27,23 @@
         android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_arrow_up_gray" />
 
+    <FrameLayout
+        tools:visibility="invisible"
+        android:id="@+id/layout_empty_receipt_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_lt">
+
+        <TextView
+            android:id="@+id/title_empty_receipt_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/title_empty_receipt_list"
+            android:textColor="@color/active_fonts_lt"
+            android:textSize="28sp"
+            tools:text="Журнал чеков пуст" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,11 +29,13 @@ import ru.softvillage.fiscalizer.EvoApp;
 import ru.softvillage.fiscalizer.R;
 import ru.softvillage.fiscalizer.roomDb.Entity.fiscalized.ReceiptEntity;
 import ru.softvillage.fiscalizer.tabs.fragments.ReceiptDetailFragment;
+import ru.softvillage.fiscalizer.tabs.fragments.ReceiptFragment;
 import ru.softvillage.fiscalizer.tabs.fragments.recyclerView.ReceiptItemAdapter;
 import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
 
 public class ReceiptViewModel extends ViewModel {
     private Context context;
+    ReceiptFragment receiptFragment;
     private LinearLayoutManager layoutManager;
     Application app = EvoApp.getInstance();
     ReceiptItemAdapter adapter;
@@ -45,8 +47,15 @@ public class ReceiptViewModel extends ViewModel {
         List<ReceiptEntity> goodEntityListWithDate = injectDateEntity(receiptEntities);
         localCopyReceiptEntityListWithDate = goodEntityListWithDate;
         adapter.setItems(goodEntityListWithDate);
+        if (receiptEntities.size() > 0 && receiptFragment != null) {
+            receiptFragment.hideEmptyListStab();
+        }
         Log.d(EvoApp.TAG + "_Db", receiptEntities.toString());
     };
+
+    public void setReceiptFragment(ReceiptFragment fragment){
+        receiptFragment = fragment;
+    }
 
     public void setContext(Context context) {
         this.context = context;
