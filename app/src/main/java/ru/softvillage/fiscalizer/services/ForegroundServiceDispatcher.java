@@ -71,11 +71,11 @@ public class ForegroundServiceDispatcher extends Service {
             //todo запросить разрешение на работу "android.permission.FOREGROUND_SERVICE"
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String CHANNEL_ID = "alex_channel";
+            String CHANNEL_ID = "soft_village_channel";
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SoftVillageChanel",
                     NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription("SV channel description");
+            channel.setDescription("SV fiscalizer notify channel");
             manager.createNotificationChannel(channel);
 
             builder = new NotificationCompat.Builder(this, CHANNEL_ID);
@@ -176,6 +176,7 @@ public class ForegroundServiceDispatcher extends Service {
                         }
                     }
 
+                    @SuppressLint("LongLogTag")
                     @Override
                     public void onFailure(Call<NetworkAnswer> call, Throwable t) {
                         Log.d(EvoApp.TAG, "Network error: " + t.getMessage());
