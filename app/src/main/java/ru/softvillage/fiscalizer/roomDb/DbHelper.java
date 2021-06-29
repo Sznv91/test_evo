@@ -9,6 +9,7 @@ import androidx.room.Transaction;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.softvillage.fiscalizer.EvoApp;
@@ -20,6 +21,7 @@ import ru.softvillage.fiscalizer.roomDb.Entity.fromNetwork.OrderDb;
 import ru.softvillage.fiscalizer.roomDb.Entity.fromNetwork.OrderDbWithGoods;
 
 public class DbHelper {
+    List<LocalDate> localDateList = new ArrayList<>();
     LocalDataBase dataBase;
 
     LiveData<List<ReceiptEntity>> receiptList;
@@ -51,7 +53,7 @@ public class DbHelper {
         });
     }
 
-    public LocalDateTime getDateReceived_synchronized(long sv_receipt_id){
+    public LocalDateTime getDateReceived_synchronized(long sv_receipt_id) {
         return dataBase.receiptDao().getDateTimeReceived(sv_receipt_id);
     }
 
@@ -110,6 +112,19 @@ public class DbHelper {
                 callBack.removeFinish();
             }
         });
+    }
+
+    public List<LocalDate> getUniqueDate() {
+        LocalDataBase.databaseWriteExecutor.execute(() -> {
+            List<LocalDateTime> dateTimeList = dataBase.receiptDao().getAvailableDateTime();
+            for (LocalDateTime dateTime : dateTimeList) {
+                LocalDate tempLocalDate = dateTime.toLocalDate();
+                if (!localDateList.contains(tempLocalDate)) {
+                    localDateList.add(tempLocalDate);
+                }
+            }
+        });
+        return localDateList;
     }
 
     ////////////////////////////////////////////////////////////////////

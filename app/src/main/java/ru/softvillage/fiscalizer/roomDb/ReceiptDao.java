@@ -1,7 +1,6 @@
 package ru.softvillage.fiscalizer.roomDb;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -28,6 +27,10 @@ public interface ReceiptDao {
 
     @Query("SELECT * FROM receipt ORDER BY date_time_received DESC")
     LiveData<List<ReceiptEntity>> getAll();
+
+    @Query("SELECT date_time_received FROM receipt")
+    @TypeConverters(value = {DateTimeConverter.class})
+    List<LocalDateTime> getAvailableDateTime();
 
     /*@Query("SELECT * FROM receipt WHERE receipt_number = null ORDER BY date_time_received DESC")
     ArrayList<ReceiptEntity> getAllNotFiscalized();*/

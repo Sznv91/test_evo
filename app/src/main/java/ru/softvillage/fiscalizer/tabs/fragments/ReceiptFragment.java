@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ru.softvillage.fiscalizer.EvoApp;
 import ru.softvillage.fiscalizer.R;
 import ru.softvillage.fiscalizer.tabs.fragments.recyclerView.ReceiptItemAdapter;
 import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
@@ -38,6 +39,7 @@ public class ReceiptFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(ReceiptViewModel.class);
         mViewModel.setContext(getContext());
+        EvoApp.getInstance().getDbHelper().getUniqueDate().size(); // Первичная инициализация доступных дат
 
         return inflater.inflate(R.layout.receipt_fragment, container, false);
     }

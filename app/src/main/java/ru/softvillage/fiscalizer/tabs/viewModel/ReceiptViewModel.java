@@ -2,18 +2,22 @@ package ru.softvillage.fiscalizer.tabs.viewModel;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.DatePicker;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -83,15 +87,12 @@ public class ReceiptViewModel extends ViewModel {
                         @Override
                         public void pushOnDate(LocalDateTime date) {
                             Log.d(EvoApp.TAG + "_date_splitter", "Нажали на разделитель даты. Дата: " + date.toString());
-                            DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+                            MaterialPickerOnPositiveButtonClickListener<Long> selectListener = new MaterialPickerOnPositiveButtonClickListener<Long>() {
                                 @Override
-                                /**
-                                 *К месяцу прибавляем единицу. В Android счет месяцев ведется с 0
-                                 */
-                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                    LocalDateTime pickDate = LocalDateTime.parse(String.valueOf(year + "-"
-                                            + (month + 1) + "-" +
-                                            +dayOfMonth + "T00:00:00"));
+                                public void onPositiveButtonClick(Long selection) {
+                                    DateTime dateTime = new DateTime(selection);
+                                    LocalDateTime pickDate = dateTime.toLocalDateTime();
+                                    pickDate.withTime(0, 0, 0, 0);
                                     int position = positionSearcher(localCopyReceiptEntityListWithDate, pickDate);
                                     if (position != -1) {
                                         Log.d(EvoApp.TAG + "_date_splitter", "Перемещаемся к позиции: " + position);
@@ -99,8 +100,7 @@ public class ReceiptViewModel extends ViewModel {
                                     }
                                 }
                             };
-
-                            getDatePickerDialog(d, date);
+                            getDatePickerDialog(selectListener, date);
                         }
                     });
             observeOnChangeDb();
@@ -155,11 +155,41 @@ public class ReceiptViewModel extends ViewModel {
         return result;
     }
 
-    private void getDatePickerDialog(DatePickerDialog.OnDateSetListener d, LocalDateTime selectedDate) {
-        new DatePickerDialog(context, d,
-                selectedDate.getYear(),
-                selectedDate.getMonthOfYear() - 1,
-                selectedDate.getDayOfMonth())
-                .show();
+    private void getDatePickerDialog(MaterialPickerOnPositiveButtonClickListener<Long> listener, LocalDateTime selectedDate) {
+        MaterialDatePicker.Builder<Long> calendarDatePicker = MaterialDatePicker.Builder.datePicker();
+        calendarDatePicker.setCalendarConstraints(calendarDisableConstraints().build());
+        calendarDatePicker.setTitleText("Даты печати чеков");
+        LocalDateTime ldt = selectedDate.plusDays(1);
+        calendarDatePicker.setSelection(ldt.toDateTime().getMillis());
+        MaterialDatePicker<Long> pickerRange = calendarDatePicker.build();
+        pickerRange.addOnPositiveButtonClickListener(listener);
+        pickerRange.show(EvoApp.getInstance().getFragmentDispatcher().getActivity().getSupportFragmentManager(), pickerRange.toString());
+    }
+
+    private CalendarConstraints.Builder calendarDisableConstraints() {
+        CalendarConstraints.Builder constraintsBuilderRange = new CalendarConstraints.Builder();
+        constraintsBuilderRange.setValidator(new EnableDateValidator());
+        return constraintsBuilderRange;
+    }
+
+    @SuppressLint("ParcelCreator")
+    static class EnableDateValidator implements CalendarConstraints.DateValidator {
+
+        @Override
+        public boolean isValid(long date) {
+            DateTime dateTime = new DateTime(date);
+            LocalDate localDate = LocalDate.fromDateFields(dateTime.toDate());
+            return EvoApp.getInstance().getDbHelper().getUniqueDate().contains(localDate);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+        }
     }
 }
