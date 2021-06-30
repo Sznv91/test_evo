@@ -85,6 +85,9 @@ public class ReceiptFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         mViewModel.setContext(getContext());
+        if (mViewModel.getAdapter().getItemCount() > 0){
+            hideEmptyListStab();
+        }
         SessionPresenter.getInstance().getDrawerManager().showUpButton(false);
     }
 
