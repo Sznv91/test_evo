@@ -11,7 +11,7 @@ android {
         flavorDimensions "mode"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 28
+        versionCode 29
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -33,8 +33,8 @@ android {
             manifestPlaceholders = [uuid:"0e17a718-627a-4a80-8990-12f443233b23"]
         }
         version_test {
-            applicationId "ru.softvillage.fiscalizer_test"
-            manifestPlaceholders = [uuid:"02c5c0af-ca62-4e5c-bb8a-5e9d92d89f48"]
+            applicationId "ru.softvillage.fiscalizer__test"
+            manifestPlaceholders = [uuid:"a220b71d-e562-400e-8156-d05a5f95b729"]
         }
     }
 

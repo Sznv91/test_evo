@@ -277,7 +277,11 @@ public class SessionPresenter {
 
         if (!TextUtils.isEmpty(Prefs.getInstance().loadString(KEY_SESSION_DATA))) {
             Gson gson = new Gson();
-            data = gson.fromJson(Prefs.getInstance().loadString(KEY_SESSION_DATA), SessionStatisticData.class);
+            try{
+                data = gson.fromJson(Prefs.getInstance().loadString(KEY_SESSION_DATA), SessionStatisticData.class);
+            } catch (Exception e){
+                data = StatisticConsider.getEmptySessionData();
+            }
         } else {
             data = StatisticConsider.getEmptySessionData();
             if (SystemStateApi.isSessionOpened(EvoApp.getInstance().getApplicationContext())) {
