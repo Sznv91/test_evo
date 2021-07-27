@@ -19,7 +19,7 @@
     <uses-permission android:name="ru.evotor.permission.receipt.printExtra.SET" />
     <!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />-->
 
-<!--    android:usesCleartextTraffic="true"-->
+    <!--    android:usesCleartextTraffic="true"-->
     <application
         android:name="ru.softvillage.fiscalizer.EvoApp"
         android:allowBackup="true"
@@ -81,7 +81,8 @@
         <activity
             android:name="ru.softvillage.fiscalizer.MainActivity"
             android:icon="@mipmap/ic_launcher"
-            android:label="SV Фискализатор">
+            android:label="SV Фискализатор"
+            android:theme="@style/Theme.SWMailerTest.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

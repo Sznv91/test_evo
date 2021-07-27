@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <!-- <style name="SVLightTheme" parent = "NoActionBar">
-        <item name="thumbTint">@color/selector_switch_thumb</item>
-        <item name="android:colorForeground">@color/divider_lt</item>
-    </style>-->
+    <style name="Theme.SWMailerTest.Launcher" parent="Test_evo">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
 
-    <style name="SVLightTheme" parent = "NoActionBar">
+    <style name="SVLightTheme" parent="NoActionBar">
         <item name="colorControlActivated">@color/icon_lt</item>
         <item name="colorSwitchThumbNormal">@color/active_fonts_lt</item>
         <item name="android:colorForeground">@color/divider_lt</item>
@@ -16,5 +17,10 @@
         <item name="colorControlActivated">@color/icon_dt</item>
         <item name="colorSwitchThumbNormal">@color/active_fonts_dt</item>
         <item name="android:colorForeground">@color/divider_dt</item>
+    </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/icon_lt</item>
+        <item name="colorControlNormal">@color/header_lt</item>
     </style>
 </resources>

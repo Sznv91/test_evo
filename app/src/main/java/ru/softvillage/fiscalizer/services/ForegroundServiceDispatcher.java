@@ -88,7 +88,7 @@ public class ForegroundServiceDispatcher extends Service {
                 .setContentTitle(title/*info*/)
                 .setTicker(info)
 //                .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.ic_menu_2)
                 .setContentIntent(action)
                 .setOngoing(true)/*.build()*/;
         if (SystemStateApi.isSessionOpened(EvoApp.getInstance())) {
@@ -129,66 +129,67 @@ public class ForegroundServiceDispatcher extends Service {
         new Thread(() -> {
 
             while (true) {
-                orderInterface.getMainRequest().enqueue(new Callback<NetworkAnswer>() {
-                    @SuppressLint("LongLogTag")
-                    @Override
-                    public void onResponse(Call<NetworkAnswer> call, Response<NetworkAnswer> response) {
-                        if (response.code() == 200) {
-                            if (response.body().getSuccess()) {
-                                Log.d(EvoApp.TAG, "Received TRUE Order");
+                if (SessionPresenter.getInstance().getIsCheckedUserAgreement()) {
+                    orderInterface.getMainRequest().enqueue(new Callback<NetworkAnswer>() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onResponse(Call<NetworkAnswer> call, Response<NetworkAnswer> response) {
+                            if (response.code() == 200) {
+                                if (response.body().getSuccess()) {
+                                    Log.d(EvoApp.TAG, "Received TRUE Order");
 
-                                List<Order> orders = response.body().getOrderList();
-                                /**
-                                 * Добавление данных в БД для очереди печати
-                                 */
-                                for (Order order : orders) {
-                                    OrderDbWithGoods orderDbWithGoods = new OrderDbWithGoods(order);
-                                    EvoApp.getInstance().getDbHelper().createOrderDbWithGoods(orderDbWithGoods);
-                                }
-
-                                PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(new ArrayList<>(response.body().getOrderList()));
-                                for (PositionCreator.OrderTo.PositionTo orderTo : toProcessing.getOrderList()) {
-                                    ReceiptEntity dataToDb = new ReceiptEntity(orderTo);
-                                    ReceiptWithGoodEntity receiptWithGoodEntity = new ReceiptWithGoodEntity();
-                                    receiptWithGoodEntity.setReceiptEntity(dataToDb);
-//                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
-                                    List<GoodEntity> goodsToDB = new ArrayList<>();
-                                    for (GoodDb good : orderTo.getOrderData().goodDbEntities) {
-                                        GoodEntity tGoodEntity = new GoodEntity(good, orderTo.getOrderData().getOrderDb().sv_id);
-                                        Log.d(EvoApp.TAG + "_good_db", tGoodEntity.toString());
-                                        goodsToDB.add(tGoodEntity);
-
+                                    List<Order> orders = response.body().getOrderList();
+                                    /**
+                                     * Добавление данных в БД для очереди печати
+                                     */
+                                    for (Order order : orders) {
+                                        OrderDbWithGoods orderDbWithGoods = new OrderDbWithGoods(order);
+                                        EvoApp.getInstance().getDbHelper().createOrderDbWithGoods(orderDbWithGoods);
                                     }
-                                    receiptWithGoodEntity.setGoodEntities(goodsToDB);
-                                    EvoApp.getInstance().getDbHelper().insertReceiptWithGoods(receiptWithGoodEntity);
+
+                                    PositionCreator.OrderTo toProcessing = PositionCreator.makeOrderList(new ArrayList<>(response.body().getOrderList()));
+                                    for (PositionCreator.OrderTo.PositionTo orderTo : toProcessing.getOrderList()) {
+                                        ReceiptEntity dataToDb = new ReceiptEntity(orderTo);
+                                        ReceiptWithGoodEntity receiptWithGoodEntity = new ReceiptWithGoodEntity();
+                                        receiptWithGoodEntity.setReceiptEntity(dataToDb);
+//                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
+                                        List<GoodEntity> goodsToDB = new ArrayList<>();
+                                        for (GoodDb good : orderTo.getOrderData().goodDbEntities) {
+                                            GoodEntity tGoodEntity = new GoodEntity(good, orderTo.getOrderData().getOrderDb().sv_id);
+                                            Log.d(EvoApp.TAG + "_good_db", tGoodEntity.toString());
+                                            goodsToDB.add(tGoodEntity);
+
+                                        }
+                                        receiptWithGoodEntity.setGoodEntities(goodsToDB);
+                                        EvoApp.getInstance().getDbHelper().insertReceiptWithGoods(receiptWithGoodEntity);
 //                                    EvoApp.getInstance().getDbHelper().insertAllGood(goodsToDB);
-                                    //todo Вынести в отдельный метод.
+                                        //todo Вынести в отдельный метод.
 
-                                    EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
+                                        EvoApp.getInstance().getDbHelper().insertReceiptToDb(dataToDb);
 //                                    PrintUtil.getInstance().printOrder(getApplicationContext(), orderTo, printCallback);
+                                    }
+
+                                } else {
+                                    Log.d(EvoApp.TAG, response.body().getErrorMessage() + " : -> Received error message");
                                 }
-
                             } else {
-                                Log.d(EvoApp.TAG, response.body().getErrorMessage() + " : -> Received error message");
+                                Log.d(EvoApp.TAG, "Unexpected code: " + response.code());
                             }
-                        } else {
-                            Log.d(EvoApp.TAG, "Unexpected code: " + response.code());
                         }
-                    }
 
-                    @SuppressLint("LongLogTag")
-                    @Override
-                    public void onFailure(Call<NetworkAnswer> call, Throwable t) {
-                        Log.d(EvoApp.TAG, "Network error: " + t.getMessage());
-                    }
-                });
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onFailure(Call<NetworkAnswer> call, Throwable t) {
+                            Log.d(EvoApp.TAG, "Network error: " + t.getMessage());
+                        }
+                    });
+                }
 
                 try {
                     Thread.sleep(60000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
 
 

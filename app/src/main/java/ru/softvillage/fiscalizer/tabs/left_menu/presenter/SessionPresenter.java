@@ -93,6 +93,9 @@ public class SessionPresenter {
 
     public final static String LAST_OPEN_RECEIPT_DETAIL_FRAGMENT = "lastOpenReceiptDetailFragment";
     private LocalDateTime lastOpenReceiptDetailFragment;
+
+    public final static String IS_CHECKED_USER_AGREEMENT = "is_checked_user_agreement";
+    private boolean isCheckedUserAgreement;
     /**
      * Константа для интервала проверки открытия сессии в миллисекундах.
      */
@@ -277,9 +280,9 @@ public class SessionPresenter {
 
         if (!TextUtils.isEmpty(Prefs.getInstance().loadString(KEY_SESSION_DATA))) {
             Gson gson = new Gson();
-            try{
+            try {
                 data = gson.fromJson(Prefs.getInstance().loadString(KEY_SESSION_DATA), SessionStatisticData.class);
-            } catch (Exception e){
+            } catch (Exception e) {
                 data = StatisticConsider.getEmptySessionData();
             }
         } else {
@@ -394,6 +397,8 @@ public class SessionPresenter {
                 pingerThread.start();
             }
         }, PING_UPDATE_TIME);
+
+        isCheckedUserAgreement = Prefs.getInstance().loadBoolean(IS_CHECKED_USER_AGREEMENT);
     }
 
     /*public MutableLiveData<Integer> getNotifyCount() {
@@ -845,5 +850,16 @@ public class SessionPresenter {
 
             }
         });
+    }
+
+    public boolean getIsCheckedUserAgreement() {
+        return isCheckedUserAgreement;
+    }
+
+    public void setIsCheckedUserAgreement(boolean checkedUserAgreement) {
+        if (this.isCheckedUserAgreement != checkedUserAgreement) {
+            isCheckedUserAgreement = checkedUserAgreement;
+            Prefs.getInstance().saveBoolean(IS_CHECKED_USER_AGREEMENT, checkedUserAgreement);
+        }
     }
 }

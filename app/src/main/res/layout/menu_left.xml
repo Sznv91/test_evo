@@ -13,373 +13,710 @@
     android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UseCompoundDrawables">
-
-        <TextView
-            android:id="@+id/titleParams"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto_medium"
-            android:paddingStart="@dimen/padding_8"
-            android:paddingTop="@dimen/margin_16"
-            android:paddingBottom="@dimen/margin_16"
-            android:text="@string/title_params"
-            android:textColor="@color/color20"
-            android:textSize="21sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/changeTheme"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="@dimen/margin_16"
-            android:layout_marginEnd="@dimen/padding_8"
-            android:layout_marginBottom="@dimen/margin_16"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_moon" />
-
-        <FrameLayout
-            android:id="@+id/changeThemeBottom"
-            android:layout_width="40dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/padding_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <ScrollView
-        android:id="@+id/menu_container"
+        tools:visibility="visible"
+        android:id="@+id/main_menu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fastScrollEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/exit"
-        app:layout_constraintTop_toBottomOf="@id/header">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/menuContent"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/exit"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/printReportAfterClose"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/titleParams"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:padding="@dimen/padding_8"
-                android:text="@string/print_report_after_close"
-                android:textColor="@color/color21"
-                android:textSize="@dimen/tsize_14" />
 
-            <View
-                android:id="@+id/dividerPrintAfterClose"
+
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingStart="@dimen/padding_8"
+                android:paddingTop="@dimen/margin_16"
+                android:paddingBottom="@dimen/margin_16"
+                android:text="@string/title_params"
+                android:textColor="@color/color20"
+                android:textSize="21sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/changeTheme"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/padding_8"
+                android:layout_marginBottom="@dimen/margin_16"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_moon" />
+
+            <FrameLayout
+                android:id="@+id/changeThemeBottom"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/padding_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/menu_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fastScrollEnabled="false"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="@+id/main_menu"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color22" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/printReceipts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fastScrollEnabled="false"
-                android:fontFamily="@font/roboto_regular"
-                android:padding="@dimen/padding_8"
-                android:text="@string/print_checks"
-                android:textColor="@color/color21"
-                android:textSize="@dimen/tsize_14" />
-
-            <View
-                android:id="@+id/dividerPrintReceipts"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color22" />
-
-            <LinearLayout
-                android:id="@+id/layoutAutoClose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_8"
-                tools:ignore="UseCompoundDrawables">
-
-                <TextView
-                    android:id="@+id/titleAutoClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/title_auto_close_session"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_12" />
-
-                <ImageView
-                    android:id="@+id/arrowAutoClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_arrow_up_gray" />
-            </LinearLayout>
-
-            <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/expandableAutoClose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fastScrollEnabled="false"
-                app:el_duration="150"
-                app:el_expanded="true"
-                app:el_parallax="0.5">
+                android:layout_height="0dp">
 
                 <LinearLayout
+                    android:id="@+id/menuContent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
-                        android:id="@+id/everyDay"
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/printReportAfterClose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/padding_8"
+                        android:text="@string/print_report_after_close"
+                        android:textColor="@color/color21"
+                        android:textSize="@dimen/tsize_14" />
+
+                    <View
+                        android:id="@+id/dividerPrintAfterClose"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color22" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/printReceipts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fastScrollEnabled="false"
                         android:fontFamily="@font/roboto_regular"
                         android:padding="@dimen/padding_8"
-                        android:text="@string/every_day"
+                        android:text="@string/print_checks"
                         android:textColor="@color/color21"
                         android:textSize="@dimen/tsize_14" />
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout
+                    <View
+                        android:id="@+id/dividerPrintReceipts"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color22" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutAutoClose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fastScrollEnabled="false"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/padding_8"
+                        tools:ignore="UseCompoundDrawables">
 
                         <TextView
-                            android:id="@+id/titleEvery"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/roboto_regular"
-                            android:paddingStart="@dimen/padding_8"
-                            android:text="@string/every_"
-                            android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_14" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/every"
+                            android:id="@+id/titleAutoClose"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_regular"
-                            android:padding="@dimen/padding_8"
-                            android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_14" />
+                            android:layout_weight="1"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/title_auto_close_session"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/tsize_12" />
 
-                    </ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout>
+                        <ImageView
+                            android:id="@+id/arrowAutoClose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_arrow_up_gray" />
+                    </LinearLayout>
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/expandableAutoClose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fastScrollEnabled="false"
+                        app:el_duration="150"
+                        app:el_expanded="true"
+                        app:el_parallax="0.5">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
+                                android:id="@+id/everyDay"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="@dimen/padding_8"
+                                android:text="@string/every_day"
+                                android:textColor="@color/color21"
+                                android:textSize="@dimen/tsize_14" />
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/titleEvery"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:paddingStart="@dimen/padding_8"
+                                    android:text="@string/every_"
+                                    android:textColor="@color/color21"
+                                    android:textSize="@dimen/tsize_14" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/every"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:padding="@dimen/padding_8"
+                                    android:textColor="@color/color21"
+                                    android:textSize="@dimen/tsize_14" />
+
+                            </ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout>
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/titleAt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:paddingStart="@dimen/padding_8"
+                                    android:text="@string/at_"
+                                    android:textColor="@color/color21"
+                                    android:textSize="@dimen/tsize_14"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/at"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/at"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:padding="@dimen/padding_8"
+                                    android:textColor="@color/color21"
+                                    android:textSize="@dimen/tsize_14"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout>
+
+                        </LinearLayout>
+
+                    </net.cachapa.expandablelayout.ExpandableLayout>
+
+                    <View
+                        android:id="@+id/dividerAutoClose"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color22" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutSendSms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/padding_8"
+                        tools:ignore="UseCompoundDrawables">
 
                         <TextView
-                            android:id="@+id/titleAt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/roboto_regular"
-                            android:paddingStart="@dimen/padding_8"
-                            android:text="@string/at_"
-                            android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_14"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/at"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/at"
+                            android:id="@+id/titleSendSms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_regular"
-                            android:padding="@dimen/padding_8"
-                            android:textColor="@color/color21"
-                            android:textSize="@dimen/tsize_14"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_weight="1"
+                            android:fastScrollEnabled="false"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/title_send_sms_settings"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/tsize_12" />
 
-                    </ru.softvillage.fiscalizer.tabs.left_menu.ELinearLayout>
+                        <ImageView
+                            android:id="@+id/arrowSendSms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_arrow_up_gray" />
+                    </LinearLayout>
 
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/expandableSendSms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fastScrollEnabled="false"
+                        app:el_duration="150"
+                        app:el_expanded="true"
+                        app:el_parallax="0.5">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fastScrollEnabled="false"
+                            android:orientation="vertical">
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
+                                android:id="@+id/sendSmsEvotor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="@dimen/padding_8"
+                                android:text="@string/title_send_from_evotor"
+                                android:textColor="@color/color21"
+                                android:textSize="@dimen/tsize_14" />
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
+                                android:id="@+id/sendSmsSv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="@dimen/padding_8"
+                                android:text="@string/title_send_from_sv"
+                                android:textColor="@color/color21"
+                                android:textSize="@dimen/tsize_14" />
+                        </LinearLayout>
+                    </net.cachapa.expandablelayout.ExpandableLayout>
+
+                    <View
+                        android:id="@+id/dividerSendSms"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color22" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutSendEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/padding_8"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:id="@+id/titleSendEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fastScrollEnabled="false"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/title_send_email_settings"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/tsize_12" />
+
+                        <ImageView
+                            android:id="@+id/arrowSendEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_arrow_up_gray" />
+                    </LinearLayout>
+
+                    <net.cachapa.expandablelayout.ExpandableLayout
+                        android:id="@+id/expandableSendEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fastScrollEnabled="false"
+                        app:el_duration="150"
+                        app:el_expanded="true"
+                        app:el_parallax="0.5">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
+                                android:id="@+id/sendEmailEvotor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="@dimen/padding_8"
+                                android:text="@string/title_send_from_evotor"
+                                android:textColor="@color/color21"
+                                android:textSize="@dimen/tsize_14" />
+
+                            <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
+                                android:id="@+id/sendEmailSv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fastScrollEnabled="false"
+                                android:fontFamily="@font/roboto_regular"
+                                android:padding="@dimen/padding_8"
+                                android:text="@string/title_send_from_sv"
+                                android:textColor="@color/color21"
+                                android:textSize="@dimen/tsize_14" />
+                        </LinearLayout>
+                    </net.cachapa.expandablelayout.ExpandableLayout>
                 </LinearLayout>
 
-            </net.cachapa.expandablelayout.ExpandableLayout>
-
-            <View
-                android:id="@+id/dividerAutoClose"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color22" />
-
-            <LinearLayout
-                android:id="@+id/layoutSendSms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_8"
-                tools:ignore="UseCompoundDrawables">
-
-                <TextView
-                    android:id="@+id/titleSendSms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fastScrollEnabled="false"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/title_send_sms_settings"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_12" />
-
-                <ImageView
-                    android:id="@+id/arrowSendSms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_arrow_up_gray" />
-            </LinearLayout>
-
-            <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/expandableSendSms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fastScrollEnabled="false"
-                app:el_duration="150"
-                app:el_expanded="true"
-                app:el_parallax="0.5">
-
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/about_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fastScrollEnabled="false"
-                    android:orientation="vertical">
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
-                        android:id="@+id/sendSmsEvotor"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/icon_about"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fastScrollEnabled="false"
-                        android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_8"
-                        android:text="@string/title_send_from_evotor"
-                        android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_14" />
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:paddingTop="@dimen/margin_4"
+                        android:paddingBottom="@dimen/margin_4"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/ic_left_menu_about" />
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
-                        android:id="@+id/sendSmsSv"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/title_about"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fastScrollEnabled="false"
+                        android:layout_marginLeft="@dimen/margin_8"
                         android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_8"
-                        android:text="@string/title_send_from_sv"
-                        android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_14" />
-                </LinearLayout>
-            </net.cachapa.expandablelayout.ExpandableLayout>
+                        android:text="@string/title_about"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/icon_about"
+                        app:layout_constraintLeft_toRightOf="@+id/icon_about"
+                        app:layout_constraintTop_toTopOf="@+id/icon_about" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/about_menu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/exit"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/about_menu_title_about"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingStart="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="О приложении"
+                android:textColor="@color/fonts_lt"
+                android:textSize="21sp"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_button_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/about_menu_image_back"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_left_menu_arrow_back" />
+
+            <FrameLayout
+                android:id="@+id/about_menu_button_back"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frame_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            app:layout_constraintTop_toBottomOf="@+id/header_about">
+
+            <ImageView
+                android:id="@+id/about_menu_big_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sv_big_logo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/about_menu_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Версия 1.0.0 (555)"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/about_menu_big_logo" />
 
             <View
-                android:id="@+id/dividerSendSms"
+                android:id="@+id/about_menu_divider_title"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/color22" />
+                android:layout_marginTop="15dp"
+                android:background="@color/divider_lt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/about_menu_version" />
 
-            <LinearLayout
-                android:id="@+id/layoutSendEmail"
-                android:layout_width="match_parent"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/about_menu_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frame_logo">
+
+            <ImageView
+                android:id="@+id/about_menu_icon_feedback"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_8"
-                tools:ignore="UseCompoundDrawables">
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_icon_feedback" />
 
-                <TextView
-                    android:id="@+id/titleSendEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fastScrollEnabled="false"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/title_send_email_settings"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/tsize_12" />
-
-                <ImageView
-                    android:id="@+id/arrowSendEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_arrow_up_gray" />
-            </LinearLayout>
-
-            <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/expandableSendEmail"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/about_menu_title_feedback"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fastScrollEnabled="false"
-                app:el_duration="150"
-                app:el_expanded="true"
-                app:el_parallax="0.5">
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/about_menu_title_feedback"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_icon_feedback"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
-                        android:id="@+id/sendEmailEvotor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fastScrollEnabled="false"
-                        android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_8"
-                        android:text="@string/title_send_from_evotor"
-                        android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_14" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/about_menu_rate_the_app"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="@+id/about_menu_feedback"
+            app:layout_constraintRight_toRightOf="@+id/about_menu_feedback"
+            app:layout_constraintTop_toBottomOf="@+id/about_menu_feedback">
 
-                    <ru.softvillage.fiscalizer.tabs.left_menu.ESwitchCompat
-                        android:id="@+id/sendEmailSv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fastScrollEnabled="false"
-                        android:fontFamily="@font/roboto_regular"
-                        android:padding="@dimen/padding_8"
-                        android:text="@string/title_send_from_sv"
-                        android:textColor="@color/color21"
-                        android:textSize="@dimen/tsize_14" />
-                </LinearLayout>
-            </net.cachapa.expandablelayout.ExpandableLayout>
+            <ImageView
+                android:id="@+id/about_menu_icon_rate_the_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_about_menu_icon_rate_the_app" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/about_menu_title_rate_the_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/about_menu_title_rate_the_app"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_icon_rate_the_app"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/about_menu_privacy_policy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="@+id/about_menu_rate_the_app"
+            app:layout_constraintRight_toRightOf="@+id/about_menu_rate_the_app"
+            app:layout_constraintTop_toBottomOf="@+id/about_menu_rate_the_app">
+
+            <ImageView
+                android:id="@+id/about_menu_icon_privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_icon_privacy_policy" />
+
+            <TextView
+                android:id="@+id/about_menu_title_privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/about_menu_title_privacy_policy"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_icon_privacy_policy"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/about_menu_user_agreement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="@+id/about_menu_privacy_policy"
+            app:layout_constraintRight_toRightOf="@+id/about_menu_privacy_policy"
+            app:layout_constraintTop_toBottomOf="@+id/about_menu_privacy_policy">
+
+            <ImageView
+                android:id="@+id/about_menu_icon_user_agreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_icon_user_agreement" />
+
+            <TextView
+                android:id="@+id/about_menu_title_user_agreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/about_menu_title_user_agreement"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_icon_user_agreement"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/about_menu_licenses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="@+id/about_menu_user_agreement"
+            app:layout_constraintRight_toRightOf="@+id/about_menu_user_agreement"
+            app:layout_constraintTop_toBottomOf="@+id/about_menu_user_agreement">
+
+            <ImageView
+                android:id="@+id/about_menu_icon_licenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_icon_licenses" />
+
+            <TextView
+                android:id="@+id/about_menu_title_licenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/about_menu_title_licenses"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_icon_licenses"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/about_menu_data_protection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="@+id/about_menu_licenses"
+            app:layout_constraintRight_toRightOf="@+id/about_menu_licenses"
+            app:layout_constraintTop_toBottomOf="@+id/about_menu_licenses">
+
+            <ImageView
+                android:id="@+id/about_menu_icon_data_protection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_icon_data_protection" />
+
+            <TextView
+                android:id="@+id/about_menu_title_data_protection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/about_menu_title_data_protection"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/about_menu_icon_data_protection"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- <View
+             android:id="@+id/about_menu_divider_bottom"
+             android:layout_width="match_parent"
+             android:layout_height="1dp"
+             android:layout_marginTop="15dp"
+             android:background="@color/divider_lt"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/about_menu_data_protection" />-->
 
 
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/exit"

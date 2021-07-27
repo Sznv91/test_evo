@@ -18,6 +18,7 @@ import ru.softvillage.fiscalizer.services.ForegroundServiceDispatcher;
 import ru.softvillage.fiscalizer.tabs.LandscapeTabLayoutFragment;
 import ru.softvillage.fiscalizer.tabs.TabLayoutFragment;
 import ru.softvillage.fiscalizer.tabs.left_menu.DrawerMenuManager;
+import ru.softvillage.fiscalizer.tabs.left_menu.dialogs.AboutDialog;
 import ru.softvillage.fiscalizer.tabs.left_menu.presenter.SessionPresenter;
 
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
@@ -48,6 +49,12 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         setContentView(R.layout.activity_main);
         startForegroundService();
         manager = new DrawerMenuManager<>(this);
+
+        if (!SessionPresenter.getInstance().getIsCheckedUserAgreement()){
+            AboutDialog dialog = AboutDialog.newInstance(AboutDialog.TYPE_USER_AGREEMENT);
+            dialog.setCancelable(false);
+            dialog.show(getSupportFragmentManager(), AboutDialog.TYPE_USER_AGREEMENT);
+        }
 
         if (savedInstanceState == null) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
