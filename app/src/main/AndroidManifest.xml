@@ -83,6 +83,9 @@
             android:icon="@mipmap/ic_launcher"
             android:label="SV Фискализатор"
             android:theme="@style/Theme.SWMailerTest.Launcher">
+            <meta-data
+                android:name="ru.evotor.launcher.BACKGROUND_COLOR"
+                android:value="#67a520" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
