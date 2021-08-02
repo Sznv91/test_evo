@@ -13,26 +13,16 @@ import ru.softvillage.fiscalizer.network.entity.SmsServerInitResponse;
 
 public interface OrderInterface {
 
-    @GET("test_app/order_false.php")
-    Call<NetworkAnswer> getFalse();
-
-    @GET("test_app/order.php")
-    Call<NetworkAnswer> getOrder();
-
-    @GET("test_app/index.php")
+    @GET("app_fiscalizer/get_receipt.php")
     Call<NetworkAnswer> getMainRequest();
 
-    @GET("test_app/firm_info.php")
+    @GET("cloud/organization_data.php")
     Call<OrgInfo> getOrgInfo();
 
-    @POST("test_app/update_status.php")
+    @POST("app_fiscalizer/set_status_receipt.php")
     @Headers("Content-Type: application/x-www-form-urlencoded")
     Call<NetworkAnswer> postUpdateReceipt(@Body FiscalizedAnswer answer);
 
-    @POST("test_app/check_fiscal.php")
-    @Headers("Content-Type: application/x-www-form-urlencoded")
-    Call<FiscalizationRequest> postIsNeedPrint(@Body long sv_receipt_id);
-
-    @GET("test_app/check_sms_server.php")
+    @GET("app_fiscalizer/check_sms_server.php")
     Call<SmsServerInitResponse> getIsInitSmsServer();
 }

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 
@@ -24,8 +26,7 @@ import ru.softvillage.fiscalizer.roomDb.DbHelper;
 import ru.softvillage.fiscalizer.roomDb.LocalDataBase;
 
 public class EvoApp extends Application {
-    public static final String TAG = "ru.evotor.ru.softvillage.fiscalizer__test";
-    public static final String SHOP_INFO_ENDPOINT = "https://kkt-evotor.ru/test_app/firm_info.php";
+    public final static String TAG = "ru.evotor." + BuildConfig.APPLICATION_ID;
     private final static long CONNECT_TIMEOUT = 15;
     private final static long READ_TIMEOUT = 15;
     private final static long WRITE_TIMEOUT = 15;
@@ -60,18 +61,6 @@ public class EvoApp extends Application {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(logging)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://kkt-evotor.ru/")
-                .client(okHttpClient) // Необязательно. Необходимо для логирования
-                .addConverterFactory(GsonConverterFactory.create(/*new Gson()*/))
-                .build();
-
-        orderInterface = retrofit.create(OrderInterface.class);
-
-        /*OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(logging)
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
@@ -82,7 +71,7 @@ public class EvoApp extends Application {
 
 
         orderInterface = new Retrofit.Builder()
-                .baseUrl("https://kkt-evotor.ru/")
+                .baseUrl("https://ofd.soft-village.ru/")
                 .client(getUnsafeOkHttpClient().addInterceptor(logging).hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
@@ -92,8 +81,7 @@ public class EvoApp extends Application {
 //                .client(okHttpClient) // Необязательно
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build()
-                .create(OrderInterface.class);*/
-
+                .create(OrderInterface.class);
     }
 
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {

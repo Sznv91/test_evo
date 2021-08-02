@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "test_evo"
+rootProject.name = "SV Fiscalizer"
