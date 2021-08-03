@@ -199,9 +199,10 @@ public class ForegroundServiceDispatcher extends Service {
         return Service.START_STICKY;
     }
 
+    @SuppressLint("DefaultLocale")
     public static void updateNotificationCounter(/*int count*/) {
         synchronized (notification) {
-            if (SystemStateApi.isSessionOpened(EvoApp.getInstance())) {
+            if (SystemStateApi.isSessionOpened(EvoApp.getInstance()) != null && SystemStateApi.isSessionOpened(EvoApp.getInstance())) {
                 ForegroundServiceDispatcher.notification = builder
                         .setContentText("Фискализированно чеков за смену: " + SessionPresenter.getInstance().getSessionData().getCountReceipt()/*info*/).build();
             } else {

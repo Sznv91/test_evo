@@ -91,8 +91,8 @@ public class SessionCloseWatcher extends Service {
                     if (SessionPresenter.getInstance().isPrintReportOnClose()) {
                         Log.d(EvoApp.TAG + "_print_report", "Ожидаем печати отчета из SessionCloseWatcher.class отдельной проверки.");
                         PrintCustomTextUtil.printStatistic(data, getApplicationContext());
-                        ForegroundServiceDispatcher.updateNotificationCounter();
                     }
+                    ForegroundServiceDispatcher.updateNotificationCounter();
                 }
             }
             if (data != SessionPresenter.getInstance().getSessionData()) {
