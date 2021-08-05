@@ -1,5 +1,7 @@
 package ru.softvillage.fiscalizer.utils;
 
+import static ru.softvillage.fiscalizer.EvoApp.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,6 +10,7 @@ import android.widget.Toast;
 
 import org.joda.time.LocalDateTime;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -16,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import ru.evotor.framework.component.PaymentPerformer;
 import ru.evotor.framework.core.IntegrationException;
@@ -66,12 +67,12 @@ public class PrintUtil {
         //Добавление скидки на чек
         BigDecimal receiptDiscount = BigDecimal.ZERO;
         if (!order.getOrderData().orderDb.checkDiscount.equals(BigDecimal.ZERO)) {
-            Log.d(EvoApp.TAG + "_discount_", "Сумма чека без скидок: " + order.getSumPrice());
+            Log.d(TAG + "_discount_", "Сумма чека без скидок: " + order.getSumPrice());
             BigDecimal onePercentFromAllPrice = order.getSumPrice().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-            Log.d(EvoApp.TAG + "_discount_", "Цена одного процента от общей стоимости: " + onePercentFromAllPrice);
-            Log.d(EvoApp.TAG + "_discount_", "Процент скидки: " + order.getOrderData().orderDb.checkDiscount);
+            Log.d(TAG + "_discount_", "Цена одного процента от общей стоимости: " + onePercentFromAllPrice);
+            Log.d(TAG + "_discount_", "Процент скидки: " + order.getOrderData().orderDb.checkDiscount);
             receiptDiscount = onePercentFromAllPrice.multiply(order.getOrderData().orderDb.checkDiscount);
-            Log.d(EvoApp.TAG + "_discount_", "Размер скидки: " + receiptDiscount);
+            Log.d(TAG + "_discount_", "Размер скидки: " + receiptDiscount);
         }
 
         BigDecimal finalCost = order.getSumPrice().subtract(receiptDiscount);
@@ -131,7 +132,7 @@ public class PrintUtil {
         /**
          * Проверка на случаей если выбрана отправка чека, но при формированнии чека не заданы реквизиты получателя чека.
          */
-        if (TextUtils.isEmpty(recipientPhone) && TextUtils.isEmpty(recipientEmail)){
+        if (TextUtils.isEmpty(recipientPhone) && TextUtils.isEmpty(recipientEmail)) {
             recipientEmail = EMAIL_STAB;
         }
 
@@ -176,7 +177,7 @@ public class PrintUtil {
                             EvoApp.getInstance().getDbHelper().updateReceipt(dataToDb);
 
                             /**
-                             * Отправка ответа на сервер
+                             * Подготовка к Отправки ответа на сервер
                              */
                             FiscalizedAnswer answer = new FiscalizedAnswer();
                             answer.setSmsFlag(SessionPresenter.getInstance().getDefaultSmsService().equals(DrawerMenuManager.SOFT_VILLAGE_SERVICE) && SessionPresenter.getInstance().isSendSms());
@@ -195,7 +196,15 @@ public class PrintUtil {
                             }
                             fiscalReceiptCursor.close();
 
-                            EvoApp.getInstance().getOrderInterface().postUpdateReceipt(answer).enqueue(new Callback<NetworkAnswer>() {
+                            /**
+                             * Отправка на сервер
+                             */
+                            recursionSyncSend(answer);
+
+                            /**
+                             * Старый способ отправки (асинхронный)
+                             */
+                            /*EvoApp.getInstance().getOrderInterface().postUpdateReceipt(answer).enqueue(new Callback<NetworkAnswer>() {
                                 @Override
                                 public void onResponse(Call<NetworkAnswer> call, Response<NetworkAnswer> response) {
 
@@ -205,7 +214,7 @@ public class PrintUtil {
                                 public void onFailure(Call<NetworkAnswer> call, Throwable t) {
 
                                 }
-                            });
+                            });*/
 
 
                             /**
@@ -227,7 +236,7 @@ public class PrintUtil {
                             break;
                         case ERROR:
                             //todo отловить причину истечения срока сессии -> закрыть сессию по условию.
-                            Log.d(EvoApp.TAG + "_print_error", result.getError().getMessage());
+                            Log.d(TAG + "_print_error", result.getError().getMessage());
                             callback.printFailure(order, result.getError().getMessage() + " Code:" + result.getError().getCode() + " Data: " + result.getError().getData());
 //                            Toast.makeText(context, result.getError().getMessage(), Toast.LENGTH_LONG).show();
                             break;
@@ -238,6 +247,20 @@ public class PrintUtil {
             }
         });
 
+    }
+
+    private void recursionSyncSend(FiscalizedAnswer answer) {
+        try {
+            Response<NetworkAnswer> response = EvoApp.getInstance().getOrderInterface().postUpdateReceipt(answer).execute();
+            NetworkAnswer networkAnswer = response.body();
+            if (response.code() != 200) {
+                Log.d(TAG, "recursionSyncSend: response.code() != 200: actual code: " + response.code());
+                recursionSyncSend(answer);
+            }
+        } catch (IOException e) {
+            Log.d(TAG, "recursionSyncSend: IOException:" + e.getMessage());
+            recursionSyncSend(answer);
+        }
     }
 
     public void printDemoOrder(Context context) {
